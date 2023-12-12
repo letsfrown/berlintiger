@@ -1,0 +1,28 @@
+/* IMPORT FONTS */
+
+@font-face {
+  font-family: 'Rotonto-Bold-Italic';
+  src: url('/assets/fonts/Rotonto-BoldItalic.woff2') format('woff2'),
+    url('/assets/fonts/Rotonto-BoldItalic.woff') format('woff');
+}
+
+:root {
+  --Rotonto-Bold-Italic: 'Rotonto-Bold-Italic';
+}
+
+/* STYLE PANEL */
+
+.k-header::after {
+  content: '';
+  position: fixed;
+  inset: var(--spacing-4) var(--main-padding-inline) auto auto;
+  width: 8rem;
+  aspect-ratio: 3/1;
+  background-image: url('/assets/logo/berlintiger-logo.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.k-header-title-text {
+  font-family: var(--Rotonto-Bold-Italic);
+}

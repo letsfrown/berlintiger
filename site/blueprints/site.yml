@@ -1,5 +1,22 @@
 title: Site
 
-sections:
-  pages:
-    type: pages
+columns:
+
+  main:
+    width: 2/3
+    sections:
+      menupages:
+        type: pages
+        status: listed
+        label: Menü-Seiten
+        icon: page
+  
+
+  sidebar:
+    width: 1/3
+    sections:
+      functionpages:
+        type: pages
+        status: unlisted
+        label: Funktions-Seiten
+        icon: page
