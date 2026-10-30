@@ -12,67 +12,72 @@ if [[ "${1:-}" == "--execute" ]]; then
   DRY_RUN=0
 elif [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
   echo "Usage: $0 [--execute]"
-  echo "  (default) dry-run mirror of code paths"
+  echo "  (default) dry-run upload of allowlisted code paths"
   echo "  --execute  perform upload (still never uploads content/ or media/)"
   exit 0
 fi
 
-# Hard safety: refuse if critical excludes are missing from this script
-REQUIRED_EXCLUDES=(content media site/accounts site/cache site/sessions)
-for req in "${REQUIRED_EXCLUDES[@]}"; do
-  if ! grep -q -- "$req" "$0"; then
-    echo "error: safety check failed — expected exclude '$req' documented in deploy-code.sh" >&2
+# Allowlist only — content/ and media/ are intentionally absent.
+ALLOWLIST_DIRS=(assets kirby site)
+ALLOWLIST_FILES=(index.php .htaccess composer.json)
+
+# Refuse to run if someone reintroduces content into the allowlist.
+for item in "${ALLOWLIST_DIRS[@]}" "${ALLOWLIST_FILES[@]}"; do
+  if [[ "${item}" == "content" || "${item}" == "content/" || "${item}" == "media" || "${item}" == "media/" ]]; then
+    echo "error: refuse to deploy content/ or media/" >&2
     exit 1
   fi
 done
 
-REMOTE_BASE="$(remote_path)"
-MIRROR_OPTS=(
-  --reverse
-  --verbose
-  --exclude-glob .git/
-  --exclude-glob .DS_Store
-  --exclude-glob content/
-  --exclude-glob media/
-  --exclude-glob scripts/
+if [[ "${DRY_RUN}" -eq 1 ]]; then
+  DRY_FLAG="--dry-run"
+  echo "DRY-RUN (no changes on server). Re-run with --execute to upload."
+else
+  DRY_FLAG=""
+  echo "EXECUTE: uploading allowlisted code only to ${FTPS_HOST}."
+fi
+
+echo "Allowlist dirs: ${ALLOWLIST_DIRS[*]}"
+echo "Allowlist files: ${ALLOWLIST_FILES[*]}"
+echo "Never deployed: content/, media/, site/accounts|cache|sessions, .license, scripts/"
+
+cd "${ROOT_DIR}"
+
+# Intentionally NO --delete so remote-only files stay put.
+SITE_EXCLUDES=(
   --exclude-glob site/accounts/
   --exclude-glob site/cache/
   --exclude-glob site/sessions/
   --exclude-glob site/config/.license
-  --exclude-glob "*.md"
-  --exclude-glob phpinfo.php
-  --exclude-glob _new-website/
-  --exclude-glob berlintiger-live-backups/
 )
 
-if [[ "${DRY_RUN}" -eq 1 ]]; then
-  MIRROR_OPTS+=(--dry-run)
-  echo "DRY-RUN (no changes on server). Re-run with --execute to upload."
-else
-  echo "EXECUTE: uploading code only to ${FTPS_HOST} (content/ and media/ excluded)."
-fi
-
-# Only sync allowlisted top-level trees / files by mirroring project root with excludes.
-# Excludes above ensure content/ and media/ are never uploaded or deleted remotely
-# as long as we do NOT pass --delete.
-# Intentionally NO --delete so remote-only files (e.g. leftover) are kept.
-
-echo "Remote base: '${REMOTE_BASE:-/}'"
-echo "Excluded from deploy: content/, media/, site/accounts|cache|sessions, .license, scripts/"
-
-# Build lftp mirror command
-OPTS_STR=""
-for o in "${MIRROR_OPTS[@]}"; do
-  OPTS_STR+=" ${o}"
+for dir in "${ALLOWLIST_DIRS[@]}"; do
+  if [[ ! -d "${dir}" ]]; then
+    echo "skip missing dir: ${dir}"
+    continue
+  fi
+  remote="$(remote_path "${dir}")"
+  echo "→ mirror ${dir}/ -> ${remote}/"
+  EXTRA_STR=""
+  if [[ "${dir}" == "site" ]]; then
+    EXTRA_STR="${SITE_EXCLUDES[*]}"
+  fi
+  run_lftp "mirror --reverse --verbose ${DRY_FLAG} ${EXTRA_STR} ${dir} ${remote}"
 done
 
-TARGET="."
-if [[ -n "${REMOTE_BASE}" ]]; then
-  TARGET="${REMOTE_BASE}"
-fi
-
-cd "${ROOT_DIR}"
-run_lftp "mirror ${OPTS_STR} . ${TARGET}"
+for file in "${ALLOWLIST_FILES[@]}"; do
+  if [[ ! -f "${file}" ]]; then
+    echo "skip missing file: ${file}"
+    continue
+  fi
+  remote="$(remote_path "${file}")"
+  echo "→ put ${file} -> ${remote}"
+  if [[ "${DRY_RUN}" -eq 1 ]]; then
+    echo "   (dry-run) would upload ${file}"
+  else
+    run_lftp "put -O $(dirname "${remote}")/ ${file}"
+  fi
+done
 
 echo "Done."
 if [[ "${DRY_RUN}" -eq 1 ]]; then
