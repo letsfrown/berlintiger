@@ -1,0 +1,161 @@
+name: Change report
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  summarize:
+    name: Summarize changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve diff range
+        id: range
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            BEFORE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
+            # First push / force-push with unknown before → compare to previous commit if possible
+            if [[ -z "${BEFORE}" || "${BEFORE}" =~ ^0+$ ]]; then
+              if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+                BASE="$(git rev-parse HEAD^)"
+              else
+                BASE="$(git hash-object -t tree /dev/null)"
+              fi
+            else
+              BASE="${BEFORE}"
+            fi
+          else
+            HEAD="${{ github.sha }}"
+            if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+              BASE="$(git rev-parse HEAD^)"
+            else
+              BASE="$(git hash-object -t tree /dev/null)"
+            fi
+          fi
+          echo "base=${BASE}" >> "$GITHUB_OUTPUT"
+          echo "head=${HEAD}" >> "$GITHUB_OUTPUT"
+          echo "Comparing ${BASE} → ${HEAD}"
+
+      - name: Secret path guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          BAD="$(git ls-tree -r --name-only "${{ steps.range.outputs.head }}" \
+            | grep -E '(^|/)scripts/\.env\.ftps$|(^|/)site/config/\.license$|(^|/)site/accounts/.+\.php$|(^|/)site/sessions/.+\.sess$' \
+            || true)"
+          if [[ -n "${BAD}" ]]; then
+            echo "::error::Sensitive paths must not be in git:"
+            echo "${BAD}"
+            exit 1
+          fi
+          echo "No sensitive paths found in commit tree."
+
+      - name: Build change summary
+        shell: bash
+        env:
+          BASE: ${{ steps.range.outputs.base }}
+          HEAD: ${{ steps.range.outputs.head }}
+        run: |
+          set -euo pipefail
+
+          {
+            echo "# Change report"
+            echo
+            echo "**Event:** \`${{ github.event_name }}\`"
+            echo "**Commit:** [\`${HEAD:0:7}\`](${{ github.server_url }}/${{ github.repository }}/commit/${HEAD})"
+            echo "**Compare:** \`${BASE:0:7}\` → \`${HEAD:0:7}\`"
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if ! git cat-file -e "${BASE}^{commit}" 2>/dev/null && ! git cat-file -e "${BASE}^{tree}" 2>/dev/null; then
+            echo "_Base revision unavailable (shallow history or new branch). Showing files in HEAD only._" >> "$GITHUB_STEP_SUMMARY"
+            git ls-tree -r --name-only "$HEAD" | sed 's/^/- /' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          mapfile -t FILES < <(git diff --name-only "${BASE}" "${HEAD}" || true)
+          TOTAL=${#FILES[@]}
+
+          code=()
+          content=()
+          scripts=()
+          other=()
+          for f in "${FILES[@]+"${FILES[@]}"}"; do
+            case "$f" in
+              content/*) content+=("$f") ;;
+              site/*|assets/*|kirby/*|index.php|.htaccess|composer.json|composer.lock) code+=("$f") ;;
+              scripts/*|.github/*) scripts+=("$f") ;;
+              *) other+=("$f") ;;
+            esac
+          done
+
+          {
+            echo "## Overview"
+            echo
+            echo "| Area | Files | Notes |"
+            echo "| --- | ---: | --- |"
+            echo "| Code (deployable) | ${#code[@]} | Would be uploaded by \`./scripts/deploy-code.sh --execute\` |"
+            echo "| Content (live panel) | ${#content[@]} | Pull from live with \`./scripts/content-pull.sh\` — do **not** auto-deploy |"
+            echo "| Scripts / CI | ${#scripts[@]} | Local/CI only |"
+            echo "| Other | ${#other[@]} | |"
+            echo "| **Total** | **${TOTAL}** | |"
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ ${#code[@]} -gt 0 ]]; then
+            echo "## Code changes (needs deploy to go live)" >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+            printf '%s\n' "${code[@]}" | sed 's/^/- `/;s/$/`/' >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Code changes" >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+            echo "_None — no FTPS code deploy needed for this commit._" >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          if [[ ${#content[@]} -gt 0 ]]; then
+            echo "## Content changes" >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+            echo "_These are Kirby content files. Live panel remains source of truth unless you intentionally push content._" >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+            printf '%s\n' "${content[@]}" | sed 's/^/- `/;s/$/`/' >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          if [[ ${#scripts[@]} -gt 0 || ${#other[@]} -gt 0 ]]; then
+            echo "## Other / tooling" >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+            printf '%s\n' "${scripts[@]+"${scripts[@]}"}" "${other[@]+"${other[@]}"}" | sed '/^$/d' | sed 's/^/- `/;s/$/`/' >> "$GITHUB_STEP_SUMMARY"
+            echo >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          echo "## Diffstat" >> "$GITHUB_STEP_SUMMARY"
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          git diff --stat "${BASE}" "${HEAD}" >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+          # Also echo a short console summary for the Actions log
+          echo "Changed files: ${TOTAL}"
+          echo "Code: ${#code[@]} | Content: ${#content[@]} | Scripts/CI: ${#scripts[@]} | Other: ${#other[@]}"
+          if [[ ${#code[@]} -gt 0 ]]; then
+            echo "Deploy hint: code paths changed — run ./scripts/deploy-code.sh --execute after review."
+          fi
