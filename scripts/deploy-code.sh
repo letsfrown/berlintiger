@@ -44,11 +44,13 @@ echo "Never deployed: content/, media/, site/accounts|cache|sessions, .license, 
 cd "${ROOT_DIR}"
 
 # Intentionally NO --delete so remote-only files stay put.
+# Paths are relative to the mirrored source dir (site/), not the project root.
 SITE_EXCLUDES=(
-  --exclude-glob site/accounts/
-  --exclude-glob site/cache/
-  --exclude-glob site/sessions/
-  --exclude-glob site/config/.license
+  --exclude-glob .DS_Store
+  --exclude-glob accounts/**
+  --exclude-glob cache/**
+  --exclude-glob sessions/**
+  --exclude-glob config/.license
 )
 
 for dir in "${ALLOWLIST_DIRS[@]}"; do
