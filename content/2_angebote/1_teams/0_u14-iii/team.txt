@@ -1,0 +1,39 @@
+Title: U14 III
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/rachid-potzsch
+  position: Head Coach
+
+----
+
+Schedules:
+
+- 
+  league: ""
+  widgetnumber: "1789586027391"
+  widgetid: "318098"
+
+----
+
+Category: 14-u14
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://cCLM0215TA7UYkHt
+- file://dFal4t8RdGMi4OUQ
+- file://HnsvKfYneWcVkLaM
+- file://fOTPFnvAl2Ylb8iF
+
+----
+
+Uuid: anJQ0TFoh6iCu4Fa

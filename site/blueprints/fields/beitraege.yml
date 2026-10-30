@@ -1,0 +1,40 @@
+label: Beitragsliste
+type: structure
+columns:
+    ageGroup:
+      width: 4/12
+      mobile: true
+    category:
+      width: 4/12
+      mobile: true
+    priceMonthly:
+      width: 1/12
+      mobile: true
+    comment:
+      width: 3/12
+      mobile: true
+      
+fields:
+  ageGroup:
+    width: 1/12
+    type: radio
+    label: Altersgruppe
+    options:
+      - Minis
+      - Jugend
+      - Erwachsene
+  category:
+    type: radio
+    label: Kategorie
+    options:
+      - Regulär
+      - Ermäßigt
+      - Intensiv
+      - Leistungssport
+      - Freizeit
+  priceMonthly:
+    type: number
+    label: Preis / Monat
+  comment:
+    type: text
+    label: Kommentar

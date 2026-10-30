@@ -1,0 +1,40 @@
+Title: U13 II
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/karl-vollborn
+  position: Head Coach
+
+----
+
+Schedules:
+
+- 
+  league: ""
+  widgetnumber: "1789585848909"
+  widgetid: "322971"
+
+----
+
+Category: 14-u14
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://NUXjSziZcr9Pcsqe
+- file://6RG3qWPbV9Erh3ta
+- file://s2ejfKRkHyy3yL31
+- file://b5oSU68wWpfCsawj
+- file://T5ZqpGMWV2ELZCge
+
+----
+
+Uuid: 44YY80ZZTqzbSz7D

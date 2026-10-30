@@ -1,0 +1,51 @@
+Title: Kinderschutz
+
+----
+
+Headline: Kinderschutz bei Berlin&nbsp;Tiger
+
+----
+
+Subheadline: Für das Thema Kinderschutz sind bei Berlin Tiger unsere drei unabhängigen Kinderschutzbeauftragten Anke, Guido und Jantje zuständig.
+
+----
+
+Text:
+
+Berlin Tiger soll ein Ort sein, an dem sich alle Kinder und Jugendlichen wohl und sicher fühlen. Damit das so ist, gibt es Jantje Heumann, Anke Morgenroth und Guido Siegel. Sie sind die Kinderschutzbeauftragten bei uns im Verein. Anke, Jantje und Guido sind selbst Eltern von Kindern, die bei Berlin Tiger spielen. Sonst haben sie keine andere Aufgabe im Verein.
+
+<br>
+
+### Habt ihr Fragen zum Thema Kinderschutz oder wisst noch nicht genau, was das bedeutet?
+
+Vielleicht ist beim Training, beim Spiel oder auf dem Weg dorthin etwas passiert, das euch komisch oder unangenehm vorkam. Oder ihr habt etwas beobachtet und seid nicht sicher, was das bedeutet. Dann könnt ihr jederzeit mit unseren Kinderschutzbeauftragten reden. Sie hören euch zu und helfen euch, wenn ihr euch unwohl fühlt. Das kann zum Beispiel Mobbing sein, unpassende Bemerkungen von Trainern oder Eltern, grenzüberschreitendes Verhalten oder einfach ein komisches Gefühl im Bauch – eure Sorgen sind wichtig und werden ernst genommen.
+
+<br>
+
+### Wie erreicht ihr unsere Kinderschutzbeauftragten?
+
+Ihr könnt Anke, Guido und Jantje jederzeit per E-Mail unter (link: mailto:kinderschutz@berlintiger.de text: kinderschutz@berlintiger.de) erreichen. Oder auch telefonisch, per Whats-App und Signal unter folgender Nummer: (link: tel:+49015239511597 text: 01523 9511597)
+
+Wenn ihr sofortige Unterstützung benötigt, empfehlen wir die Ansprechstelle Safe Sport. Ds ist die unabhängige Ansprechstelle für Betroffene sexualisierter, psychischer und physischer Gewalt im Sport.
+Ihr erreicht sie Mo, Mi, Fr 10-12 Uhr und Do 15-17 Uhr telefonisch unter 0800 11 222 00.  
+Über die Online-Beratung können rund um die Uhr Nachrichten geschickt oder Beratungen gebucht werden.
+
+<br>
+
+(image: kinderschutz.png class: kinderschutz)
+
+----
+
+Bgcolor: Hellgrau
+
+----
+
+Cover: - file://d2yYkrGRrL56Fo0A
+
+----
+
+Extends: - file://d2yYkrGRrL56Fo0A
+
+----
+
+Uuid: u8nk3qaIYIyM94cu

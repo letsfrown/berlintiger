@@ -1,0 +1,125 @@
+Title: Spenden
+
+----
+
+Headline: Berlin Tiger braucht Support, um den Basketball in Kreuzberg erfolgreich und nachhaltig aufstellen zu können!
+
+----
+
+Subheadline: Berlin Tiger hat sich eine Aufgabe gesetzt: In einem kooperativen Umfeld und gestützt auf ein fortschrittliches Verständnis des Bewegungslernens sollen in unserem Verein talentierte und gut ausgebildete Basketballer heranwachsen. Unsere Sponsor:innen und Unterstützer:innen helfen uns jeden Tag, diesem Ziel gerecht zu werden.
+
+----
+
+Textbefore:
+
+<br>
+
+### Wie finanzieren wir uns?
+
+Grundsätzlich gilt: Engagierter und nachhaltiger Sport benötigt Geld. Nicht nur möchte Berlin Tiger in Zukunft das sportliche Niveau in den ersten Mannschaften immer weiter erhöhen, auch der laufende Betrieb verursacht Kosten, die nicht immer aus den Mitgliedsbeiträgen der Tigerspieler bezahlt werden können. Uns ist es dabei ein Herzensanliegen, dass die Teilnahme der Kids an unseren Angeboten nicht vom Portemonnaie der Eltern abhängt.
+
+Den überwiegenden Anteil unserer Einnahmen generieren wir durch unsere Mitglieder, die uns durch ihre Mitgliedsbeiträge unterstützen. Zusätzlich erhalten wir, wie viele andere Sportvereine, finanzielle Zuwendungen aus verschiedenen Förderprogrammen des Landes Berlin. 
+
+All diese Einnahmen reichen jedoch nicht aus, um die Kosten unseres erfolgreichen Leistungssportprogrammes vollständig zu decken – **finanzielle Engpässe können dazu führen, dass die am besten qualifizierten Trainer den Verein verlassen oder Wachstum dort begrenzt ist, wo es sportlich am effektivsten sein kann.**
+
+Daher benötigt Berlin Tiger Sponsor:innen und Unterstützer:innen, denen es am Herzen liegt, dass Berlin Tiger dem Basketball in unserer Hauptstadt, insbesondere in Kreuzberg, weiterhin neuen Schwung gibt. 
+
+<br>
+
+### Wie kann man Sponsor:in oder Großspender:in werden?
+
+Wer Berlin Tiger über ein Sponsoring bzw. eine Großspende unterstützt, erklärt sich jährlich bereit, eine feste Geldsumme in die Arbeit des Vereins zu investieren. Hierbei gibt es drei unterschiedliche Supportstufen:
+
+----
+
+Sponsorshiptiers:
+
+- 
+  tiername: Gold-Support
+  pricerange: ab 7.500 €/Jahr
+  benefits: |
+    Firmenevents mit Trainern des Vereins
+    Trikotwerbung
+    Möglichkeit, Namensgeber eines Turniers zu sein
+    Besondere Präsenz im Kontext der Jugendbundesliga-Mannschaft
+    Präsenz auf Mannschaftsbildern
+    Präsenz (Infomaterial, Stände, …) bei Heimspielen
+    Eigener Instagram-Post, der das Sponsoring hervorhebt
+    Möglichkeit, Namensgeber eines Camps zu sein
+    Präsenz im Newsletter und im BT-Social Media
+    Präsenz auf der Website
+    Außenwerbung bei Heimspielen
+    Regelmäßige Updates, wofür das Geld verwendet wird
+  supporters:
+    - 
+      logo:
+        - file://DnQeZWqQVSbKFPCc
+      link: https://inbright.de/
+- 
+  tiername: Silber-Support
+  pricerange: 4.000–7.499 €/Jahr
+  benefits: |
+    Möglichkeit, Namensgeber eines Turniers zu sein
+    Besondere Präsenz im Kontext der Jugendbundesliga-Mannschaft
+    Präsenz auf Mannschaftsbildern
+    Präsenz (Infomaterial, Stände, …) bei Heimspielen
+    Eigener Instagram-Post, der das Sponsoring hervorhebt
+    Möglichkeit, Namensgeber eines Camps zu sein
+    Präsenz im Newsletter und im BT-Social Media
+    Präsenz auf der Website
+    Außenwerbung bei Heimspielen
+    Regelmäßige Updates, wofür das Geld verwendet wird
+  supporters: [ ]
+- 
+  tiername: Bronze-Support
+  pricerange: 1.000–3.999 €/Jahr
+  benefits: |
+    Möglichkeit, Namensgeber eines Camps zu sein
+    Präsenz im Newsletter und im BT-Social Media
+    Präsenz auf der Website
+    Außenwerbung bei Heimspielen
+    Regelmäßige Updates, wofür das Geld verwendet wird
+  supporters: [ ]
+
+----
+
+Textafter:
+
+Wer sich als Supporter:in dafür entscheidet, all die aufgeführten Gegenleistungen zu erhalten, kann nicht den vollen Betrag der Unterstützung als Spendenquittung ausgewiesen bekommen – Sponsoring kann vereinsrechtlich nicht als Spende abgerechnet werden. Wer lediglich „regelmäßige Updates, wofür das Geld verwendet wird“, erhalten möchte, kann den gesamten Betrag der Unterstützung als Spende quittiert bekommen und wird Großspender:in. 
+
+Ihr überlegt, Berlin Tiger als Supporter:in oder Großspender:in zu unterstützen? Ihr habt noch Fragen dazu, wie ein solches Engagement aussehen kann? 
+Dann meldet euch gerne direkt bei  (email: max.schmidtke@berlintiger.de text: max.schmidtke@berlintiger.de)
+
+<br>
+
+### Helfen Berlin Tiger auch einmalige Spenden/Unterstützungen?
+
+Jede Spende, egal wie hoch sie ausfallen kann, hilft Berlin Tiger. Einzelne oder regelmäßige Spenden von unseren großartigen Unterstützern und Unterstützerinnen leisten einen wesentlichen Beitrag zu unserer Finanzierung. Im Jahr 2025 haben uns beispielsweise die Berliner Sparkasse und das Forum Kreuzberg mit Unterstützungen bedacht, die es uns ermöglicht haben, Kids auf unsere Vereinsreisen mitzunehmen, die den entsprechenden Beitrag sonst nicht hätten stemmen können. 
+ 
+Spenden von einzelnen Eltern und Freunden des Vereins haben es uns zudem erlaubt, Materialanschaffungen und Trainerförderung zu finanzieren, die sonst nicht finanzierbar gewesen wären. 
+
+#### Wir freuen uns über jede Form finanzieller Unterstützung:
+
+Empfänger: 	Berlin Tiger e.V. 
+IBAN: 		DE18 1203 0000 1005 3804 62 
+BLZ: 		BYLADEM1001 (DKB)
+
+Oder habt ihr noch ein paar Fragen, die ihr gerne mit uns klären würdet? Wollt ihr vielleicht materielle Unterstützung beisteuern oder uns überhaupt erstmal ein wenig kennenlernen? 
+
+Dann schreibt uns gerne an (email: info@berlintiger.de text: info@berlintiger.de)
+
+----
+
+Bgcolor: Weiß
+
+----
+
+Cover: 
+
+----
+
+Extends: - file://Zz31kp0FqkstjgDV
+
+----
+
+Uuid: 5ePiBXSjBbmwFh1O

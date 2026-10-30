@@ -1,0 +1,8 @@
+label: Cover-Bild
+type: files
+layout: cards
+max: 1
+size: full
+image:
+  ratio: 2/1
+  cover: true

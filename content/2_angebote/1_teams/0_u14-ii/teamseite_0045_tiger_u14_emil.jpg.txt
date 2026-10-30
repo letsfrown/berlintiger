@@ -1,0 +1,5 @@
+Uuid: s2ejfKRkHyy3yL31
+
+----
+
+Template: image

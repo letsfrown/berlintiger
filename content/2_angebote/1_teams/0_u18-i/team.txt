@@ -1,0 +1,42 @@
+Title: U18 I
+
+----
+
+Coaches:
+
+- 
+  coach: >
+    about/members/yannick-von-eisenhart-rothe
+  position: Head Coach
+- 
+  coach: about/members/max-schmidtke
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: Oberliga
+  widgetnumber: "1708509498567"
+  widgetid: "313458"
+- 
+  league: Landesliga
+  widgetnumber: "1708509521925"
+  widgetid: "318076"
+
+----
+
+Category: 18-u18
+
+----
+
+Cover: - file://9araIVMDqecVVnrn
+
+----
+
+Drawings: 
+
+----
+
+Uuid: AqupFNWSKzuExMo1

@@ -1,0 +1,22 @@
+title: Datenschutz
+icon: lock
+options:
+  delete: false
+
+columns:
+
+  - width: 2/3
+    fields:
+      extends: fields/textfields
+
+  - width: 1/3
+    sections:
+      files: true
+        label: Bilder
+      fields:
+        type: fields
+        fields:
+          footerLink:
+            label: Footer-Link
+            type: toggle
+

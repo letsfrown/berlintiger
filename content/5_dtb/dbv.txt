@@ -1,0 +1,63 @@
+Title: DBV Tiger Berlin
+
+----
+
+Schedules:
+
+- 
+  league: JBBL
+  widgetnumber: "1779544898768"
+  widgetid: "163330"
+- 
+  league: Oberliga
+  widgetnumber: "1789585016961"
+  widgetid: "313575"
+
+----
+
+Headline: DBV Tiger Berlin (DTB)
+
+----
+
+Subheadline: Mehr als eine JBBL-Kooperation
+
+----
+
+Introtext: Im Frühjahr 2025 haben sich Berlin Tiger und der DBV Charlottenburg zusammengeschlossen, um gemeinsam ein neues Kapitel im Berliner Jugendbasketball aufzuschlagen. Mit der erfolgreichen Qualifikation zur Jugendbundesliga im Sommer 2025 entstand ein leistungsstarkes Zuhause für die talentiertesten U16-Spieler aus Kreuzberg und Charlottenburg – ein Ort, an dem Leidenschaft, Teamgeist und Spitzenförderung zusammenkommen.
+
+----
+
+Text:
+
+### DBV Tiger Berlin – Zwei Vereine, ein gemeinsamer Weg
+Mit DBV Tiger Berlin haben sich DBV Charlottenburg und Berlin Tiger zusammengeschlossen, um Berliner Talenten ein leistungsstarkes Zuhause im eigenen Kiez zu bieten. Beide Vereine teilen Werte, Spielidee und eine lange Tradition guter Jugendarbeit – und bündeln nun ihre Stärken, um jungen Spielern aus Kreuzberg und Charlottenburg den Weg in den Leistungssport zu vereinfachen.
+
+###Warum diese Kooperation? – Sinnvoll, nachhaltig, zukunftsorientiert
+Die Zusammenarbeit verbindet das Beste aus zwei Welten: durch die räumliche Nähe, gleiche sportliche Ausrichtung und eine ähnliche Nachwuchslage war die Partnerschaft ein logischer Schritt. Auch unterhalb der U16 soll dabei punktuelle Kooperation zwischen den Vereinen entstehen – durch gemeinsame Camps, Turniere und Trainings, die die Basis für ein gemeinsames Programm über viele Jahrgänge hinweg schaffen. Gleichzeitig bleibt die Kreuzberger Identität erhalten: Der Tiger bleibt im Namen, im Logo und auf dem Trikot.
+
+###JBBL-Qualifikation – und ein Projekt, das erst beginnt
+Nach intensiver Vorbereitung gelang im Sommer 2025 der große Erfolg: DTB qualifizierte sich für die Jugendbasketball-Bundesliga, die höchste deutsche U16-Spielklasse und sicherte durch die Qualifikation für die Playoffs die Teilnahme auch für 2026/2027. Für beide Vereine ist das ein Meilenstein – und der Start einer langfristigen Entwicklung. Die Kooperation schafft sportliche Tiefe, reduziert Kosten, hält Talente im Kiez und eröffnet die Chance, in den kommenden Jahren nicht nur teilzunehmen, sondern in der JBBL erfolgreich mitzuspielen und hoffentlich oben anzugreifen.
+
+**DBV Tiger Berlin: Eine Partnerschaft mit Zukunft – für nachhaltigen Leistungssport im Herzen von Berlin.**
+
+----
+
+Cover: - file://x70pKitcqxpupCLz
+
+----
+
+Gallery:
+
+- file://fMViaSxJErGZjZ3L
+- file://eaELn4O6roQg3ulC
+- file://LwT974MtAaeOlx63
+- file://HtUFXa9wGUb9JJW4
+- file://UFBIf5266YoYd0Gb
+- file://d835MrXn5HdHbPvi
+- file://7Fu2pF47zJ89EAG3
+- file://VRAAbVE09u6o5VJv
+- file://hScL8hez2cS8yv6Z
+
+----
+
+Uuid: cZTzKGqWun4DG5hb

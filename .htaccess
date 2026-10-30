@@ -1,0 +1,110 @@
+# Kirby .htaccess
+# revision 2023-07-22
+
+# rewrite rules
+<IfModule mod_rewrite.c>
+
+# enable awesome urls. i.e.:
+# http://yourdomain.com/about-us/team
+RewriteEngine On
+
+# Your existing rewrite rules here...
+
+# Redirect URLs with consistent naming
+RewriteRule ^teams/([^/]+)/$ /angebote/teams/$1 [R=301,L]
+RewriteRule ^teaminfo/([^/]+)/$ /angebote/teams/$1 [R=301,L]
+
+# Redirect URLs with dead slugs
+RewriteRule ^teams/[^/]+/$ /angebote#teams [R=301,L]
+RewriteRule ^teaminfo/[^/]+/$ /angebote#teams [R=301,L]
+
+
+# Redirect all other dead slugs to the homepage
+# RewriteRule ^([^/]+)/?$ / [R=301,L]
+
+
+
+# make sure to set the RewriteBase correctly
+# if you are running the site in a subfolder;
+# otherwise links or the entire site will break.
+#
+# If your homepage is http://yourdomain.com/mysite,
+# set the RewriteBase to:
+#
+# RewriteBase /mysite
+
+# In some environments it's necessary to
+# set the RewriteBase to:
+#
+# RewriteBase /
+
+# block files and folders beginning with a dot, such as .git
+# except for the .well-known folder, which is used for Let's Encrypt and security.txt
+RewriteRule (^|/)\.(?!well-known\/) index.php [L]
+
+# block all files in the content folder from being accessed directly
+RewriteRule ^content/(.*) index.php [L]
+
+# block all files in the site folder from being accessed directly
+RewriteRule ^site/(.*) index.php [L]
+
+# block direct access to Kirby and the Panel sources
+RewriteRule ^kirby/(.*) index.php [L]
+
+# make site links work
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*) index.php [L]
+
+# # HTTPS Redirect
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP_HOST} ^www\. [NC]
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# # www Redirect
+# RewriteEngine On
+# RewriteCond %{HTTP_HOST} !^www\. [NC]
+# RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+
+</IfModule>
+
+# pass the Authorization header to PHP
+SetEnvIf Authorization "(.+)" HTTP_AUTHORIZATION=$1
+
+# compress text file responses
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE application/json
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# set security headers in all responses
+<IfModule mod_headers.c>
+
+# serve files as plain text if the actual content type is not known
+# (hardens against attacks from malicious file uploads)
+Header set Content-Type "text/plain" "expr=-z %{CONTENT_TYPE}"
+Header set X-Content-Type-Options "nosniff"
+
+
+# Redirects for Google
+Redirect 301 /kontakt/ /about
+Redirect 301 /der-verein/hallen/ /angebote
+Redirect 301 /der-verein/download/ /about
+Redirect 301 /der-verein/faq/ /about
+Redirect 301 /category/allgemein/ /news
+Redirect 301 /category/aboutimpressum/ /imprint
+
+Redirect 301 /shop/ https://www.colorcrew.de/kategorie/berlin-tiger.aspx?WebPortalCmd=8473&WPParams=77BDA8D1BFDADBD9B1DBBCCAD5DAAAA4
+
+
+
+
+
+</IfModule>

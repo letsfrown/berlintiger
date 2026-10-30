@@ -1,0 +1,4 @@
+label: Widget-Nummer
+type: text
+required: true
+help: Die Widget-Nummer findet ihr am Anfang des Embed-Code von basketball-bund.net <br>&rarr; id="widget_**DasWasHierSteht**"

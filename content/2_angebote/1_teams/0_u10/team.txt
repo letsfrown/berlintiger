@@ -1,0 +1,57 @@
+Title: U10
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/julian-krumrey
+  position: Head Coach
+- 
+  coach: about/members/lovin-zepezauer
+  position: Assistant Coach
+- 
+  coach: about/members/mio-von-blume
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: Fortgeschrittene
+  widgetnumber: "1708590429593"
+  widgetid: "313332"
+- 
+  league: Anfänger
+  widgetnumber: "1789586444034"
+  widgetid: "314088"
+- 
+  league: Neulinge
+  widgetnumber: "1789586463449"
+  widgetid: "323044"
+
+----
+
+Category: 6-minis
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://EkGHgvP1LA5M8Wlg
+- file://8WAPWydrF3hQwjOu
+- file://lD7dgDEc8v7UJmJL
+- file://myv6lChrbn8FmeiM
+- file://jvUJBjKpuGa1jEMK
+- file://GGvsST2uY9OcY5jp
+- file://6e4lNxJ0dKZ5GDPD
+- file://za0My8GwNYgrKAc3
+
+----
+
+Uuid: gQyRtJzyjoLTcgW4

@@ -1,0 +1,11 @@
+type: pages
+label: Mitglieder
+parent: site.find("about").find("members")
+template: member
+empty: Noch keine Mitglieder
+info: "{{ page.jobs }}"
+layout: cardlets
+image:
+  cover: true
+  ratio: 1/1
+  back: white

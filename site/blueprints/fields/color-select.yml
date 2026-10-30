@@ -1,0 +1,7 @@
+label: Hintergrundfarbe
+type: radio
+options: query
+query: 
+  fetch: site.colors.toStructure.filterBy("background", true)
+  text: "{{ structureItem.name }}"
+  value: "{{ structureItem.name }}"

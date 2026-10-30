@@ -1,0 +1,35 @@
+Title: Herren II
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/julian-krumrey
+  position: Head Coach
+
+----
+
+Schedules:
+
+- 
+  league: Bezirksliga
+  widgetnumber: "1708508962762"
+  widgetid: "313409"
+  embed: ""
+
+----
+
+Category: 19-herren
+
+----
+
+Cover: 
+
+----
+
+Drawings: 
+
+----
+
+Uuid: taYl13Ie682JpJ4a

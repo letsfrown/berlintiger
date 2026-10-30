@@ -1,0 +1,33 @@
+title: Spenden
+icon: 💸
+
+
+tabs:
+  # Tab Layout
+  layout:
+    label: Layout
+    icon: page
+    columns:
+      - width: 1/1
+        fields:
+          headline:
+            type: text
+            help: Nur ausfüllen, wenn Überschrift anders als Seitentitel.
+          subheadline:
+            type: text
+            help: Optional.
+          textBefore:
+            label: Text (vor Tabelle)
+            type: textarea
+            help: Text, der vor der Sponsoring-Tabelle angezeigt wird
+          sponsorshipTiers:
+            extends: fields/sponsorship-tiers
+          textAfter:
+            label: Text (nach Tabelle)
+            type: textarea
+            help: Text, der nach der Sponsoring-Tabelle angezeigt wird
+          bgColor: fields/color-select
+    
+  # Tab Uploads
+  uploads:
+    extends: layouts/uploads

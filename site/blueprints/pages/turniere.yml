@@ -1,0 +1,28 @@
+title: Turniere
+icon: megaphone
+options:
+  delete: false
+
+
+columns:
+
+  - width: 1/2
+    sections:
+      listed:
+        extends: sections/pages
+        headline: Publizierte Turniere
+        status:  listed
+        template: turnier
+        sortBy: title desc
+
+  - width: 1/2
+    sections:
+      drafts:
+        extends: sections/pages
+        headline: Entwürfe
+        status: drafts
+        template: turnier
+      unlisted:
+        extends: sections/pages
+        headline: Versteckte Turniere
+        status: unlisted

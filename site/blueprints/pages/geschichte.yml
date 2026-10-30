@@ -1,0 +1,68 @@
+title: Geschichte
+icon: 🏺
+
+
+tabs:
+  # Tab Layout
+  layout:
+    label: Layout
+    icon: page
+    columns:
+
+      - width: 1/2
+        fields:
+          extends: fields/textfields
+          bgColor: fields/color-select
+  
+  zeitstrahl:
+    label: Zeitstrahl
+    icon: clock
+    columns:
+      - width: 1/2
+        sections:
+          annotator:
+            type: annotator
+            tools:
+              - pin
+            colors:
+              - orange
+            theme: light
+            debug: false
+            max: false
+            storage:
+              color: color
+              src: src
+              markers: markers
+      - width: 1/2
+        sections:
+          myfields:
+            type: fields
+            fields:
+              markers:
+                label: Koordinaten Karte
+                type: structure
+                fields:
+                  year:
+                    label: Jahr
+                    type: text
+                    required: true
+                  comment:
+                    label: Kommentar
+                    type: text
+                    size: medium
+                    required: true
+                columns:
+                  year:
+                    mobile: true
+                  comment:
+                    mobile: true
+              src:
+                label: Bildquelle Karte
+                type: files
+                max: 1
+
+
+
+  # Tab Uploads
+  uploads:
+    extends: layouts/uploads

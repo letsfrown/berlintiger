@@ -1,0 +1,14 @@
+title: Beiträge
+icon: 💰
+
+columns:
+
+  - width: 1/2
+    fields:
+      extends: fields/textfields
+      bgColor: fields/color-select
+
+
+  - width: 1/2
+    fields:
+      beitraege: fields/beitraege

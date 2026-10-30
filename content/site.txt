@@ -1,0 +1,62 @@
+Title: Berlin Tiger
+
+----
+
+Email: info@berlintiger.de
+
+----
+
+Address:
+
+c/o Nicolai
+Steinmetzstraße 18
+10783 Berlin
+
+----
+
+Googlemaps: https://maps.app.goo.gl/64Ej5FM8wz4eL8hq6
+
+----
+
+Instagram: https://www.instagram.com/berlin_tiger
+
+----
+
+Shop: https://www.indoortrends.de/vereinsheim/berlin-tiger/
+
+----
+
+Satzung: - file://YRqc12FMfBZrT2Xy
+
+----
+
+Colors:
+
+- 
+  color: '#fe5000'
+  name: Tiger-Orange
+  background: 'false'
+- 
+  color: '#000000'
+  name: Schwarz
+  background: 'true'
+- 
+  color: '#867d79'
+  name: Mittelgrau
+  background: 'false'
+- 
+  color: '#f5f1f0'
+  name: Hellgrau
+  background: 'true'
+- 
+  color: '#ffffff'
+  name: Weiß
+  background: 'true'
+
+----
+
+Phone: 
+
+----
+
+Facebook: 

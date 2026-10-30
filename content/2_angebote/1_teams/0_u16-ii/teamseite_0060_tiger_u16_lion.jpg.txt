@@ -1,0 +1,5 @@
+Uuid: qDW27GMco1zubdzx
+
+----
+
+Template: image

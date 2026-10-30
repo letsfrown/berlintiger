@@ -1,0 +1,16 @@
+type: group
+fields:
+  email:
+    label: E-Mail
+    type: email
+  # phone:
+  #   label: Telefon
+  #   type: tel
+  address:
+    label: Adresse
+    icon: pin
+    type: textarea
+    buttons: false
+  googlemaps:
+    label: Adresse (Google-Maps-Link)
+    type: url

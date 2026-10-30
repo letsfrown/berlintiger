@@ -1,0 +1,11 @@
+type: pages
+label: Tiger-Turniere
+parent: site.find("tiger-turnier")
+template: turnier
+empty: Noch keine Turniere
+sortBy: title desc
+layout: list
+image:
+  cover: true
+  ratio: 1/1
+  back: white

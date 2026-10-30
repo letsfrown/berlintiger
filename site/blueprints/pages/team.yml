@@ -1,0 +1,103 @@
+title: Team
+icon: 🐯
+num: false
+
+
+
+tabs:
+  # Tab Layout
+  layout:
+    label: Layout
+    icon: page
+    columns:
+
+      - width: 2/3
+        type: fields
+        fields:
+
+          coaches:
+            type: structure
+            fields:
+              coach:
+                type: select
+                options: query
+                query: site.find('about/members').children.listed
+              position:
+                type: select
+                options:
+                  - Head Coach
+                  - Assistant Coach
+                  
+          schedules:
+            type: structure
+            label: Spielplan / -pläne
+            fields:
+              info: 
+                type: info
+                theme: positive
+                text: Bei "Liga" nur dann eine Auswahl treffen, wenn es mehr als eine in dieser Altersklasse gibt. Der "iFrame-Embed" ist der Code für den ensprechenden Spielplan von www.basketball-bund.net
+              league:
+                type: select
+                label: Liga
+                options:
+                  - Oberliga
+                  - Landesliga
+                  - Bezirksliga
+                  - Kreisliga
+                  - JBBL
+                  - Fortgeschrittene
+                  - Anfänger
+                  - Neulinge
+              widgetNumber:
+                extends: fields/widget-number
+              widgetId:
+                extends: fields/widget-id
+          category:
+            type: select
+            label: Kategorie für Dropdown
+            options:
+              19-herren: Herren
+              18-u18: U18
+              16-u16: U16
+              14-u14: U14
+              12-u12: U12
+              11-u11: U11
+              10-u10: U10
+              6-minis: Minis
+
+      - width: 1/3
+        type: files
+        fields:
+          cover:
+            label: Cover-Foto
+            help: Nicht befüllen, wenn es Zeichnungen gibt!
+            type: files
+            layout: cards
+            max: 1
+            size: full
+            image:
+              ratio: 3/2
+              cover: true
+          drawings:
+            type: files
+            uploads: image
+            label: Zeichnungen
+            help: Nicht befüllen, wenn es ein Cover-Foto gibt!
+            image:
+              cover: true
+              ratio: 3/2
+
+  # Tab Uploads
+  uploads:
+    label: Alle Uploads
+    icon: folder
+    sections:
+      uploads:
+        type: files
+        size: medium
+        layout: cards
+        info: "{{ file.dimensions }} px"
+        sortable: false
+        sortBy: filename asc
+        image:
+          ratio: 1/1

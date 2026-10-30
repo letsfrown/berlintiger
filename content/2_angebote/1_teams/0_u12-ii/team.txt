@@ -1,0 +1,46 @@
+Title: U12 II
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/rachid-potzsch
+  position: Head Coach
+- 
+  coach: about/members/yavuz-tasdemir
+  position: Head Coach
+
+----
+
+Schedules:
+
+- 
+  league: Bezirksliga
+  widgetnumber: "1708590090435"
+  widgetid: "316708"
+
+----
+
+Category: 12-u12
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://IoPcVaDF3FSvLFIg
+- file://r0syhPzkyGqXZuFL
+- file://0MEM3j3IADSKL58k
+- file://nhyTBeAaMxiMTiKm
+- file://M0q2L0QZM0heMqFC
+- file://5tvtU2xxySKuwuWe
+- file://3IA0eIU4NevdwIHJ
+- file://ufEhZ1ZIlsgCkfz4
+
+----
+
+Uuid: Z9lDGgn980fGsCJ9

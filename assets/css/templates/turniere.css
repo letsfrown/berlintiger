@@ -1,0 +1,53 @@
+/* – – – – – – */
+/* LAYOUT RESET */
+/* – – – – – – */
+
+section {
+  padding-top: 0;
+  padding-bottom: calc(1.5 * var(--padding-lg));
+}
+
+h2 {
+  font-size: var(--font-size-xxl);
+  font-family: var(--display-font);
+  text-align: center;
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  font-family: var(--display-font);
+}
+
+.turnier-header {
+  border: var(--border-2px);
+  border-top: 0;
+  padding: var(--padding-responsive-md);
+  border-radius: 0 0 100vw 100vw;
+  aspect-ratio: 2/1;
+  margin-bottom: var(--padding-responsive-lg);
+}
+
+.turnier-logo {
+  margin-top: var(--padding-responsive-md);
+  margin-inline: auto;
+}
+
+.turnier-logo.placeholder {
+  width: 200px;
+  aspect-ratio: 1/1;
+  border-radius: 100vw;
+  background-color: var(--tiger-orange);
+}
+
+
+.gallery {
+  margin-top: var(--padding-responsive-lg);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: var(--padding-responsive-md);
+}
+
+.gallery li {
+  list-style-type: none;
+  margin-inline: auto;
+}

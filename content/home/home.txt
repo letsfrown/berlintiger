@@ -1,0 +1,108 @@
+Title: Home
+
+----
+
+Headline: Willkommen in deinem Basketballzuhause in Kreuzberg!
+
+----
+
+Subheadline: Was ist das Beste am Spielen bei Berlin Tiger?
+
+----
+
+Widgetnumber: 1707389695519
+
+----
+
+Promovideo: https://www.youtube.com/watch?v=OzLZWb5CgZ0
+
+----
+
+Cover: - file://f8UzxB7sidXjkMnn
+
+----
+
+Quotes:
+
+- file://T9qq308KjTmjufqk
+- file://Wv2z02G9OnakPuZQ
+- file://2LEVkZoknwBTmdY9
+- file://wdZ5dS1fXHdvOPV9
+- file://lBevJ9BeSbuDj1ya
+- file://Y4UlBbteraUVpvhS
+- file://SOveDEHuuvmRlpE1
+- file://HfjTTeu5MNCuDQck
+- file://whB5LjwcvgadLQKo
+- file://3x4Idfip2C9j1b24
+- file://QcSd6WsXrAqQo1hj
+- file://nUeyATpFNGTlpslg
+- file://KI81CbUEjVgmGO0K
+- file://p0jJ62KIRXmEuIly
+- file://wH2ECeZCifrL6N7p
+- file://jDR7xwEyraY7qYV8
+- file://VCBrytBVQg9HMCkB
+- file://DfGcWeTJfpQ3wEcG
+- file://IEEpQ3bCDOuGu2s1
+- file://hjlnKRVPAwfKKG5s
+- file://9nRYk9JGExTFBUfF
+- file://Yf07qQSWwbvvSDHP
+- file://i5Ql4gBHu4MIPtKo
+- file://wF8WvbTFyLDANU7d
+- file://QNr2ch9tCEE0n8JP
+- file://Wcz9jzWYeZjxeXn1
+- file://2FhiMON0GbRaDwyY
+- file://4e7uUynlyqllPlpA
+- file://CkabUviXWCOUpvfo
+- file://M7GWQoZy861pot8i
+- file://VUvA8IXQFos2Cu4j
+- file://4EqySOydBWSIc3OP
+- file://IOhHolQHm5J0tnzd
+- file://JQfLP2LPKsq9GV0u
+- file://2jF47KG7iB1zcSYL
+- file://nSpSHZMMb5zO3mC4
+- file://Dv8OfTEt9SjouqeF
+- file://YyHPyJw5Iwqs5qrj
+- file://o4MrHRsyvqG1MpwU
+- file://YEKi21JnORyBiXaB
+- file://n34AFpsWSpJJKVMn
+- file://1D3zWoSpu2ieu0L7
+- file://WRHjUgeYHCI8cacn
+- file://JdulAdSbKMtjbWeA
+- file://wCH5hXcSaIvtTxad
+- file://sDJtsEhuLu35qfVD
+- file://1FBP3BfwiO7IjXXT
+- file://AITCnZ2ALK9ywVef
+- file://jMIqdLz7NXujCEyT
+- file://BqOmPOXF6nZe9ox6
+- file://8brzhug88J0n7ioA
+- file://zw3DstlRvG1czgAE
+- file://oFqOgLFShPbCD6V0
+- file://2xtsrJgAEcCLtRu1
+- file://dzRHi5DD1Yp6lzGe
+- file://dWCYh0Tm2ahMc5vD
+- file://8hZVUc8vmwxHja4K
+- file://c5Z050Pji7vJSjFF
+- file://tT02YiM8lJofvUZP
+- file://h5wEK9DMjhRuXFCK
+- file://FnKFD8AmFtPt5jNa
+- file://jjfcInoILnI6H3I1
+- file://fcz3WmpzadxNwTj5
+- file://4lh1jI8IbJiXAkMJ
+- file://oroKpW1YMn3Wz58r
+- file://VQqFnTTIv4JEh3kT
+
+----
+
+Footerlink: false
+
+----
+
+Trailer: - file://J702rQvxPxdrD69R
+
+----
+
+Embed: 1707389695519
+
+----
+
+Uuid: 6ryRDSoyNDgoVGFW

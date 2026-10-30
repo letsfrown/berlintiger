@@ -1,0 +1,37 @@
+Title: DTB-Next
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/philip-nicolai
+  position: Head Coach
+- 
+  coach: about/members/julian-krumrey
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: ""
+  widgetnumber: "1789586710985"
+  widgetid: "313575"
+
+----
+
+Category: 16-u16
+
+----
+
+Cover: - file://GO0fxyBfJNs1rjey
+
+----
+
+Drawings: 
+
+----
+
+Uuid: cCYJEosR8U0BcgaB

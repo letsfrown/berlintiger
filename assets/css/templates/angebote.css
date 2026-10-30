@@ -1,0 +1,104 @@
+/* – – – – – – */
+/* LAYOUT RESET */
+/* – – – – – – */
+
+h2 {
+  font-size: var(--font-size-xl);
+  font-family: var(--display-font);
+}
+
+.grid-2clm article {
+  padding: 0 0 var(--padding-lg);
+}
+
+.grid-2clm.nopadding article {
+  padding: var(--padding-responsive-lg) var(--padding-responsive-lg) var(--padding-lg);
+}
+
+.grid-2clm.nopadding img {
+  aspect-ratio: 1/1;
+  border-radius: 0 100vw 100vw 0;
+  outline: var(--border-2px);
+}
+
+.grid-2clm.nopadding.reverse img {
+  border-radius: 100vw 0 0 100vw;
+}
+
+
+@media screen and (max-width: 800px) {
+
+  .grid-2clm.nopadding img,
+  .grid-2clm.nopadding.reverse img {
+    border-radius: 0 0 100vw 100vw;
+    aspect-ratio: 3/2;
+  }
+}
+
+
+
+/* – – – – – – */
+/* JUGENDTEAMS DROPDOWN */
+/* – – – – – – */
+
+.accordeon li {
+  font-size: var(--font-size-md);
+  border-top: var(--border-light-gray-2px);
+}
+
+.accordeon label {
+  color: var(--medium-gray);
+  padding: var(--padding-sm) 0;
+  font-family: var(--display-font);
+  display: block;
+  cursor: pointer;
+}
+
+.accordeon label:hover {
+  color: var(--black);
+}
+
+.panel {
+  max-height: 0px;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 300ms ease-out;
+}
+
+.panel a {
+  display: block;
+  padding-bottom: var(--padding-sm);
+  font-weight: var(--font-weight-semibold);
+  transition: all 150ms ease-in;
+}
+
+.panel a:hover {
+  padding-left: var(--padding-sm);
+  color: var(--tiger-orange);
+}
+
+/* Hide checkboxes and radio-buttons */
+.accordeon input[type="radio"],
+.accordeon input[type="checkbox"] {
+  display: none;
+}
+
+/* Change .label corresponding to checked radio or checkbox */
+.accordeon li:has(input[type="radio"]:checked),
+.accordeon li:has(input[type="checkbox"]:checked) {
+  border-top: var(--border-2px);
+}
+
+.accordeon li:has(input[type="radio"]:checked) label,
+.accordeon li:has(input[type="checkbox"]:checked) label {
+  color: var(--black);
+}
+
+/* Show .panel corresponding to checked radio or checkbox */
+.accordeon input[type="radio"]:checked+.panel,
+.accordeon input[type="checkbox"]:checked+.panel {
+  max-height: 50vh;
+  opacity: 1;
+  transition: all 150ms ease-in;
+}
+

@@ -1,0 +1,11 @@
+type: group
+fields:
+  headline:
+    type: text
+    help: Nur ausfüllen, wenn Überschrift anders als Seitentitel.
+  subheadline:
+    type: text
+    help: Optional.
+  text:
+    type: textarea
+    

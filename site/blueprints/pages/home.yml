@@ -1,0 +1,83 @@
+title: Home
+icon: home
+
+
+tabs:
+
+  # Tab Layout
+  layout:
+    label: Layout
+    icon: page
+    columns:
+      main:
+        width: 2/3
+        sections:
+          info:
+            type: fields
+            fields:
+              headline:
+                type: text
+                size: small
+              subheadline:
+                type: text
+                size: small
+              widgetNumber:
+                extends: fields/widget-number
+              showDbvSpielplan:
+                label: DBV-Spielplan anzeigen
+                type: toggle
+                text:
+                  - "nein"
+                  - "ja"
+                width: 1/2
+                help: Zeigt den Spielplan der DBV Tiger Berlin unter dem Vereinsspielplan
+              newsMaxAge:
+                label: Maximales Alter der News
+                type: select
+                default: none
+                width: 1/2
+                options:
+                  "1": 1 Monat
+                  "2": 2 Monate
+                  "3": 3 Monate
+                  "6": 6 Monate
+                  "12": 12 Monate
+                  none: Keine Begrenzung
+                help: Ältere Beiträge werden auf der Startseite nicht angezeigt
+      sidebar:
+        width: 1/3
+        sections:
+          files:
+            type: fields
+            fields: 
+              # promoVideo:
+              #   type: url
+              #   label: URL Promovideo
+              cover:
+                type: files
+                accept: image/jpeg, image/png
+                label: Cover-Bild
+                max: 1
+                image:
+                  cover: true
+              quotes:
+                type: files
+                accept: image/jpeg, image/png
+                label: Zitate Kinder
+                image:
+                  cover: true
+
+  # Tab Uploads
+  uploads:
+    label: Alle Uploads
+    icon: folder
+    sections:
+      images:
+        type: files
+        size: small
+        layout: cards
+        info: "{{ file.dimensions }} px"
+        sortable: false
+        sortBy: filename asc
+        image:
+          ratio: 5/3

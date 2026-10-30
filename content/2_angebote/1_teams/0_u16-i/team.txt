@@ -1,0 +1,43 @@
+Title: U16 I
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/kemal-kostrebic
+  position: Head Coach
+- 
+  coach: about/members/gabriel-capitolin
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: ""
+  widgetnumber: "1752826205266"
+  widgetid: "319191"
+
+----
+
+Category: 16-u16
+
+----
+
+Cover: - file://vmas6i3r8OkuhoWp
+
+----
+
+Drawings:
+
+- file://HRRXKy3aUnbkF7jA
+- file://jUdYygQR16sB3Qdz
+- file://Nu7Sr71Ha2mB5sxO
+- file://pLPiI3PdQDP2KtBr
+- file://tfdFa0DRrZ2LIeZf
+
+----
+
+Uuid: 0JOSDihjKFvKoKRB

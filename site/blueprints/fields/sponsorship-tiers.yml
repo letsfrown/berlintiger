@@ -1,0 +1,48 @@
+label: Sponsoring-Stufen
+type: structure
+columns:
+  tierName:
+    width: 2/12
+    mobile: true
+  priceRange:
+    width: 3/12
+    mobile: true
+  benefits:
+    width: 7/12
+    mobile: true
+
+fields:
+  tierName:
+    type: select
+    label: Stufe
+    options:
+      - Gold-Support
+      - Silber-Support
+      - Bronze-Support
+    required: true
+  priceRange:
+    type: text
+    label: Preis
+    help: z.B. "Ab 7.500 €/Jahr" oder "4.000–7.499 €/Jahr"
+    required: true
+  benefits:
+    type: textarea
+    label: Vorteile
+    help: Jeder Vorteil in einer neuen Zeile
+    buttons: false
+    required: true
+  supporters:
+    type: structure
+    label: Supporter
+    fields:
+      logo:
+        type: files
+        label: Logo
+        max: 1
+        layout: cards
+        image:
+          cover: true
+          ratio: 3/2
+      link:
+        type: url
+        label: Link

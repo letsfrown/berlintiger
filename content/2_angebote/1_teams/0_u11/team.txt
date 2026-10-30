@@ -1,0 +1,73 @@
+Title: U11
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/leo-schmidtke
+  position: Head Coach
+- 
+  coach: about/members/nima-massarrat-mashhadi
+  position: Head Coach
+- 
+  coach: about/members/adrian-sancho-incirci
+  position: Assistant Coach
+- 
+  coach: about/members/rachid-potzsch
+  position: Assistant Coach
+- 
+  coach: about/members/gustav-brunger
+  position: Assistant Coach
+- 
+  coach: about/members/anton-konig
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: Fortgeschrittene
+  widgetnumber: "1708590233338"
+  widgetid: "314094"
+- 
+  league: Anfänger
+  widgetnumber: "1789586366939"
+  widgetid: "314094"
+- 
+  league: Anfänger
+  widgetnumber: "1789586386801"
+  widgetid: "317090"
+
+----
+
+Category: 6-minis
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://81lKIi6TjwCCG8WM
+- file://73eoitOnZI2MAPQe
+- file://47nifBCE3jexv2kC
+- file://RCurYzRIQhjdq9kN
+- file://DAr5cGfzy5ykZP4E
+- file://IFMcRqbc2cKTqe0K
+- file://6TcHWUpM8fZRmMnd
+- file://QkVsOmoAkQGQLnTU
+- file://VI9GyTetZ7jvEBwc
+- file://ko6RVRzGkxAbeEGe
+- file://ptMvMzpD1PvRSAqg
+- file://8aikurXA4zSxq4aD
+- file://lPWgzOBJsPF4pZU7
+- file://frnECUuLhff7Yt4G
+- file://f4rwit3xVGKuRMzk
+
+----
+
+Uuid: PUEawHguOCLFbcWG

@@ -1,0 +1,73 @@
+title: Site
+
+
+tabs:
+
+# TAB: DASHBOARD
+  dashboard:
+    label: Dashboard
+    icon: dashboard
+    columns:
+      - width: 1/2
+        sections:
+          news:
+            extends: sections/news
+            layout: cardlets
+            size: small
+      - width: 1/4
+        sections:
+          members:
+            extends: sections/members
+            layout: list
+          turniere:
+            extends: sections/turniere
+            layout: list
+            image: 
+              query: page.cover.toFile
+      - width: 1/4
+        sections:
+          teams:
+            extends: sections/teams
+            layout: list
+
+# TAB: SITEMAP
+  sitemap:
+    label: Seitenbaum
+    icon: sitemap
+    columns:
+      - width: 1/2
+        sections:
+          menupages:
+            extends: sections/pages
+            headline: Menü-Seiten
+            status: listed
+      - width: 1/2
+        sections:
+          functionpages:
+            extends: sections/pages
+            headline: Funktions-Seiten
+            template:
+              - home
+              - news
+              - imprint
+              - privacy
+
+            
+# TAB: METADATEN
+  meta:
+    label: Metadaten
+    icon: settings
+    columns:
+      - width: 3/12
+        fields:
+          meta:
+            extends: fields/site-meta
+      - width: 4/12
+        fields:
+          links:
+            extends: fields/site-links
+      - width: 5/12
+        fields:
+          colors:
+            extends: fields/color-palette
+

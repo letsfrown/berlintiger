@@ -1,0 +1,37 @@
+Title: Herren I
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/janek-rebner
+  position: Head Coach
+- 
+  coach: about/members/kemal-kostrebic
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: Oberliga
+  widgetnumber: "1708508888444"
+  widgetid: "312588"
+
+----
+
+Category: 19-herren
+
+----
+
+Cover: 
+
+----
+
+Drawings: 
+
+----
+
+Uuid: FFuNBNJ0j5gmM3my

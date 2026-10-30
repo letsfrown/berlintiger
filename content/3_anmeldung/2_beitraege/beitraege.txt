@@ -1,0 +1,101 @@
+Title: Beiträge
+
+----
+
+Headline: Was kostet der Spaß?
+
+----
+
+Subheadline: 
+
+----
+
+Text:
+
+Wir streben stets danach, die Mitgliedsbeiträge so niedrig wie möglich zu halten. Gleichzeitig ist es uns wichtig, unsere Trainer fair zu entlohnen, um eine erstklassige Betreuung im Kinder- und Jugendtraining sicherstellen zu können und den Trainer die Möglichkeit zu bieten, sich regelmäßig fortzubilden.
+
+Der Mitgliedsbeitrag wird vierteljährlich automatisch per Lastschrift von eurem Konto abgebucht. Somit braucht ihr euch, nach erfolgter Anmeldung, um nichts weiter zu kümmern.
+
+----
+
+Bgcolor: Schwarz
+
+----
+
+Beitraege:
+
+- 
+  agegroup: Minis
+  category: Regulär
+  pricemonthly: 31
+  comment: ""
+- 
+  agegroup: Minis
+  category: Ermäßigt
+  pricemonthly: 15
+  comment: mit Berlinpass o.ä.
+- 
+  agegroup: Minis
+  category: Freizeit
+  pricemonthly: 26
+  comment: Ballsportgruppe
+- 
+  agegroup: Jugend
+  category: Regulär
+  pricemonthly: 31
+  comment: ""
+- 
+  agegroup: Jugend
+  category: Ermäßigt
+  pricemonthly: 15
+  comment: mit Berlinpass o.ä.
+- 
+  agegroup: Jugend
+  category: Intensiv
+  pricemonthly: 41
+  comment: U12I, U13II, U14II, U16I, U18I
+- 
+  agegroup: Jugend
+  category: Leistungssport
+  pricemonthly: 51
+  comment: ""
+- 
+  agegroup: Jugend
+  category: Leistungssport
+  pricemonthly: 65
+  comment: In der DTB-Kooperation
+- 
+  agegroup: Erwachsene
+  category: Regulär
+  pricemonthly: 30
+  comment: ""
+- 
+  agegroup: Erwachsene
+  category: Ermäßigt
+  pricemonthly: 25
+  comment: Schüler:innen, Studierende o.ä.
+- 
+  agegroup: Erwachsene
+  category: Freizeit
+  pricemonthly: 20
+  comment: ""
+- 
+  agegroup: Erwachsene
+  category: Freizeit
+  pricemonthly: 15
+  comment: Elternfreizeit
+
+----
+
+Uuid: kGbN1PYaFE7NihbH
+
+----
+
+Extends:
+
+- 
+  agegroup: null
+  category: null
+  pricemonthly: ""
+  comment: null
+  _id: 6a95af4b-c7da-42d9-b950-183e1bfd8bdf

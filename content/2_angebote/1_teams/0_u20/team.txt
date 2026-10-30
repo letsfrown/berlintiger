@@ -1,0 +1,34 @@
+Title: U20
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/chris-kurt
+  position: Head Coach
+
+----
+
+Schedules:
+
+- 
+  league: Oberliga
+  widgetnumber: "1721123896831"
+  widgetid: "313457"
+
+----
+
+Category: 19-herren
+
+----
+
+Cover: - file://b0PQ9Ha2GFFyOxaR
+
+----
+
+Drawings: 
+
+----
+
+Uuid: 8ENljS8iXYIT6MMY

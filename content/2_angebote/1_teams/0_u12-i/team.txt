@@ -1,0 +1,50 @@
+Title: U12 I
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/max-schmidtke
+  position: Head Coach
+- 
+  coach: about/members/jakob-kaelble
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: Oberliga
+  widgetnumber: "1708511206283"
+  widgetid: "313401"
+- 
+  league: Landesliga
+  widgetnumber: "1708511226895"
+  widgetid: "313441"
+
+----
+
+Category: 12-u12
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://oUGdb45sQyZaDs2z
+- file://B62F9gjklFTKw0ze
+- file://natYdfiiQZZecd5w
+- file://IsfuaO0H0l8BaPVC
+- file://jPcOZa5Ih4TRK86V
+- file://YhleKaCv1BF3qYzK
+- file://b7IVnv8HI3EImmUG
+- file://nXgxZbbCbvsA2Al6
+
+----
+
+Uuid: K90wNx7PJ0EAzLT3

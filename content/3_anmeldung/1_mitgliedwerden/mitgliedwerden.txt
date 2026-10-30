@@ -1,0 +1,29 @@
+Title: Mitmachen
+
+----
+
+Headline: Möchtest du bei Berlin Tiger mitmachen?
+
+----
+
+Subheadline: Melde dich hier für ein Probetraining an:
+
+----
+
+Text: Mit dem Ausfüllen dieses Kontaktformulars bestätigst du, dass du unsere (link: page://Ctel69rvHM4LXVqp text: Datenschutzerklärung) gelesen hast und akzeptierst.
+
+----
+
+Bgcolor: 
+
+----
+
+Cover: - file://zROwDnc84F0tMgdb
+
+----
+
+Extends: - file://oj1YbFzLxnh0SQ5n
+
+----
+
+Uuid: CNxVatkXLQQqEYWC

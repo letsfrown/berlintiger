@@ -1,0 +1,40 @@
+Title: U16 II
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/yavuz-tasdemir
+  position: Head Coach
+
+----
+
+Schedules:
+
+- 
+  league: Kreisliga
+  widgetnumber: "1752826322637"
+  widgetid: "321063"
+
+----
+
+Category: 16-u16
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://qDW27GMco1zubdzx
+- file://TMOiB53jiU6qBvzN
+- file://YLg13wppGfDGF4oW
+- file://l1AnYhfILEaSSGtb
+- file://4EG6UVI0Iv5o11Dq
+
+----
+
+Uuid: pV8O70yE0zagPcd1

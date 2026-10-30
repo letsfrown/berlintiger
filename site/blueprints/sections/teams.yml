@@ -1,0 +1,12 @@
+type: pages
+label: Teams
+parent: site.find("angebote").find("teams")
+template: team
+empty: Noch keine Teams
+info: "{{ page.category }}"
+sortBy: category desc
+layout: list
+image:
+  cover: true
+  ratio: 3/2
+  back: white

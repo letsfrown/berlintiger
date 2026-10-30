@@ -1,0 +1,25 @@
+label: Farbpalette
+type: structure
+
+columns:
+    color:
+      mobile: true
+    name:
+      mobile: true
+    background:
+      mobile: true
+
+fields:
+  color:
+    label: Farbe
+    type: color
+  name:
+    type: text
+  background:
+    label: Hintergrund
+    help: Auf "ja" stellen, wenn die Farbe als Hintergrundfarbe vorgesehe ist.
+    type: toggle
+    text:
+      - nein
+      - ja 
+

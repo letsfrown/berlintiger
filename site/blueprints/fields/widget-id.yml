@@ -1,0 +1,4 @@
+label: Mannschafts-ID
+type: text
+required: true
+help: Die Mannschafts-ID findet ihr am Ende des Embed-Code von basketball-bund.net <br>&rarr; "mannschaftsId":"**DasWasHierSteht**"});

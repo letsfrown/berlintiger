@@ -1,0 +1,5 @@
+Uuid: 0MEM3j3IADSKL58k
+
+----
+
+Template: image

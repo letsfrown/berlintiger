@@ -1,0 +1,41 @@
+Title: Ballsportgruppe
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/leo-schmidtke
+  position: Head Coach
+
+----
+
+Schedules: 
+
+----
+
+Category: 6-minis
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://KYfqWYwWrVY3z6TM
+- file://QiJmydBk5nDEA36o
+- file://v1dp72rlIAcrmAx7
+- file://eQ6TKxUzEAGCs1P2
+- file://RBco7UzS6ltL5o6f
+- file://HGG9MmfEk7tbQQou
+- file://QfHC64n1qf1NM4Mb
+- file://zlmvljcmZgB7VbUF
+- file://Bs3i1FNZ2XOF57gU
+- file://Iu2RflKh3t9tqwuR
+- file://9EniKmoneziDmShW
+
+----
+
+Uuid: hNVqSUwNjh4DR5vi

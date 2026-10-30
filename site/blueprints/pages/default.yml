@@ -1,0 +1,20 @@
+title: Default Page
+icon: empty
+
+tabs:
+  # Tab Layout
+  layout:
+    label: Layout
+    icon: page
+    columns:
+      - width: 1/2
+        fields:
+          extends: fields/textfields
+          bgColor: fields/color-select
+      - width: 1/2
+        fields:
+          cover:
+            extends: fields/cover           
+  # Tab Uploads
+  uploads:
+    extends: layouts/uploads

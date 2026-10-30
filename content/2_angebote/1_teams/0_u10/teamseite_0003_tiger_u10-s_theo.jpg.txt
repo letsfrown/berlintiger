@@ -1,0 +1,5 @@
+Uuid: myv6lChrbn8FmeiM
+
+----
+
+Template: image

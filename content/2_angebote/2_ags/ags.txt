@@ -1,0 +1,109 @@
+Title: Schul-AGs
+
+----
+
+Headline: Unsere Schul-AGs
+
+----
+
+Subheadline: 
+
+----
+
+Text:
+
+Ihr habt Interesse am Basketball, aber seid unsicher, ob die Teams unseres Vereins das Richtige für euch sind? Oder steht ihr bereits auf unserer Warteliste und könnt es kaum erwarten, endlich einen Platz zu bekommen? Vielleicht habt ihr ja Glück und es gibt bereits eine Berlin Tiger-Basketball-AG an eurer Schule!
+
+Mit mittlerweile 13 Basketball- und Ballsport-AGs an fünf Schulen in Kreuzberg, Neukölln, Schöneberg und Mitte bieten wir Grundschülern über die Grenzen unserer Vereinsteams hinaus die Möglichkeit, unseren Sport spielerisch in ihrem Alltagsumfeld kennenzulernen. Qualifizierte und erfahrene Vereinstrainer kommen dafür direkt an die Schulen und bieten Basketballtrainings direkt in der Schulturnhalle an. 
+
+<div class="button">
+(link: mailto:info@berlintiger.de text: → Kontakt)
+</div>
+
+----
+
+Bgcolor: Hellgrau
+
+----
+
+Markers:
+
+- 
+  schoolname: Charlotte-Salomon-Grundschule
+  schoolbezirk: Kreuzberg
+  schoolags: 1
+  type: pin
+  x: 0.2452
+  y: 0.6255
+  w: 0
+  h: 0
+- 
+  schoolname: Carl-von-Ossietzky-Grundschule
+  schoolbezirk: 'Trainings- und Spielhalle'
+  schoolags: ""
+  type: pin
+  x: 0.4638
+  y: 0.6526
+  w: 0
+  h: 0
+- 
+  schoolname: >
+    Turnhalle der
+    Bürgermeister-Herz-Grundschule
+  schoolbezirk: Spielhalle
+  schoolags: ""
+  type: pin
+  x: 0.4852
+  y: 0.5468
+  w: 0
+  h: 0
+- 
+  schoolname: Lemgo-Grundschule
+  schoolbezirk: 'Trainings- und Spielhalle'
+  schoolags: ""
+  type: pin
+  x: 0.5984
+  y: 0.571
+  w: 0
+  h: 0
+- 
+  schoolname: Nürtingen-Grundschule
+  schoolbezirk: Kreuzberg
+  schoolags: 2
+  type: pin
+  x: 0.7224
+  y: 0.3112
+  w: 0
+  h: 0
+- 
+  schoolname: Evangelische Schule Neukölln
+  schoolbezirk: Neukölln
+  schoolags: 3
+  type: pin
+  x: 0.748
+  y: 0.8338
+  w: 0
+  h: 0
+- 
+  schoolname: >
+    Bergmannkiez-Gemeinschaftsschule
+    (Nostitz)
+  schoolbezirk: 'Trainings- und Spielhalle'
+  schoolags: ""
+  type: pin
+  x: 0.3295
+  y: 0.5777
+  w: 0
+  h: 0
+
+----
+
+Src: - file://y2ylwk0RqdwJ2aJC
+
+----
+
+Cover: - file://y2ylwk0RqdwJ2aJC
+
+----
+
+Uuid: GvPcvLSsMBWYXW9Y

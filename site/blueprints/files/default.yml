@@ -1,0 +1,23 @@
+columns:
+
+  - width: 1/2
+    sections:
+      content:
+        type: fields
+        fields:
+          caption:
+            label: Caption
+            type: writer
+            size: medium
+            
+  - width: 1/2
+    sections:
+      meta:
+        type: fields
+        fields:
+          alt:
+            label: Alternativ-Text
+            type: text
+          photographer:
+            label: Name Fotograf:in
+            type: text

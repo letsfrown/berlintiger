@@ -1,0 +1,52 @@
+title: Teammitglied
+icon: 🏀
+
+
+tabs:
+  # Tab Layout
+  layout:
+    label: Layout
+    icon: page
+    columns:
+    
+      - width: 2/3
+        fields:
+          jobs:
+            label: Rolle im Verein
+            type: tags
+            options:
+              - Vorstand
+              - Trainer
+          email:
+            label: E-Mail
+            type: email
+          facts:
+            label: Fun Facts
+            type: textarea
+            buttons: 
+              - ul
+      - width: 1/3
+        fields:
+          headshot:
+            label: Foto
+            type: files
+            layout: cards
+            size: medium
+            multiple: false
+            image: 
+              cover: true
+
+  # Tab Uploads
+  uploads:
+    label: Alle Uploads
+    icon: folder
+    sections:
+      uploads:
+        type: files
+        size: medium
+        layout: cards
+        info: "{{ file.dimensions }} px"
+        sortable: false
+        sortBy: filename asc
+        image:
+          ratio: 1/1

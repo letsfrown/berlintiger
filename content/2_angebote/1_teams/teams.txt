@@ -1,0 +1,33 @@
+Title: Teams
+
+----
+
+Headline: Unsere Teams
+
+----
+
+Subheadline: 
+
+----
+
+Text:
+
+Das Herz von Berlin Tiger bilden unsere Kinder- und Jugendmannschaften. 
+
+Von der U9 bis zur U20 bekommen Kinder und Jugendliche aus Kreuzberg und Umgebung bei uns regelmäßiges Basketballtraining bei gut ausgebildeten Trainern. Zudem messen sie sich im Spielbetrieb des Berliner Basketball Verbands mit anderen Berliner Vereinsteams. 
+
+Vom ”Miniteam” über die Jugendfreizeittruppe bis hin zur eingespielten Leistungssportmannschaft auf Jugendbundesliganiveau - bei uns findet jeder Basketballer das passende Team für sich!
+
+Damit sich auch die älter werdenden Tiger keinen neuen Verein suchen müssen, haben wir auch zwei Herren Teams.
+
+<div class="button">
+(link: page://bXigy0Q1fxm9MXww text:→ Anmelden)
+</div>
+
+----
+
+Bgcolor: Weiß
+
+----
+
+Uuid: jDH4Xraye5patLtm

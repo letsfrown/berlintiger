@@ -1,0 +1,70 @@
+title: Schul-AGs
+icon: 🏫
+
+tabs:
+  # Tab Layout
+  layout:
+    label: Layout
+    icon: page
+    columns:
+      - width: 1/2
+        fields:
+          extends: fields/textfields
+          bgColor: fields/color-select
+  
+  map:
+    label: Karte
+    icon: map
+    columns:
+      - width: 1/2
+        sections:
+          annotator:
+            type: annotator
+            tools:
+              - pin
+            colors:
+              - orange
+            theme: light
+            debug: false
+            max: false
+            storage:
+              color: color
+              src: src
+              markers: markers
+      - width: 1/2
+        sections:
+          myfields:
+            type: fields
+            fields:
+              markers:
+                label: Koordinaten Karte
+                type: structure
+                fields:
+                  schoolName:
+                    label: Schule
+                    type: text
+                    required: true
+                  schoolBezirk:
+                    label: Bezirk
+                    type: text
+                  schoolAgs:
+                    label: Anzahl AGs
+                    type: number
+                columns:
+                  schoolName:
+                    mobile: true
+                  schoolBezirk:
+                    mobile: true
+                  schoolAgs:
+                    mobile: true
+              src:
+                label: Bildquelle Karte
+                type: files
+                max: 1
+
+
+
+  # Tab Uploads
+  uploads:
+    extends: layouts/uploads
+

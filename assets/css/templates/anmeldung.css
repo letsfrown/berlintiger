@@ -1,0 +1,187 @@
+/* – – – – – – */
+/* GENERAL */
+/* – – – – – – */
+
+h2 {
+  font-size: var(--font-size-xl);
+  font-family: var(--display-font);
+}
+
+section img {
+  margin: auto;
+}
+
+/* – – – – – – */
+/* FORMULARE */
+/* – – – – – – */
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+}
+
+.mitglied-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--padding-xs) var(--padding-md);
+  justify-items: start;
+}
+
+.mitglied-form .button {
+  /* justify-self: end; */
+  grid-column: 1/3;
+  align-self: start;
+}
+
+.field,
+.field label,
+.field input,
+.field select,
+.field textarea {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  display: block;
+  width: 100%;
+}
+
+.field:has(textarea),
+.field.school {
+  grid-column: 1 / 3;
+}
+
+.g-recaptcha {
+  grid-column: 1 / 3;
+  width: 100%;
+}
+
+.field abbr {
+  color: var(--tiger-orange);
+  margin-left: .25em;
+}
+
+.field input,
+.field select,
+.field textarea {
+  resize: none;
+  min-height: 2.25rem;
+  margin-top: 0;
+  padding: .25em;
+  border-radius: .25em;
+  border: var(--border-light-gray-2px);
+  box-sizing: content-box;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border: var(--border-tiger-orange-2px);
+}
+
+
+input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+}
+
+.disclaimer {
+  font-size: var(--font-size-sm);
+  grid-column: 1/3;
+  color: var(--medium-gray);
+
+}
+
+
+
+/* Job-Anmeldung */
+.subheadline.jobs {
+  font-size: var(--font-size-base);
+  color: var(--medium-gray);
+  font-weight: var(--font-weight-medium);
+}
+
+.job-form,
+.job-form .button {
+  margin-top: 2em;
+}
+
+.job-form div {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+}
+
+.job-form label {
+  cursor: pointer;
+  margin-top: 0;
+  font-size: var(--font-size-md);
+  color: var(--medium-gray);
+  font-weight: var(--font-weight-semibold);
+}
+
+.job-form input[type='radio'] {
+  cursor: pointer;
+  width: initial;
+}
+
+.job-form input[type='radio']:checked+label,
+label.cta {
+  color: var(--tiger-orange);
+}
+
+
+
+/* – – – – – – */
+/* BEITRÄGE */
+/* – – – – – – */
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  border-top: var(--border-gray-1px);
+  gap: var(--padding-md);
+  align-items: baseline;
+  align-items: last baseline;
+}
+
+.flex :first-child {
+  flex-shrink: 555;
+}
+
+.flex :last-child {
+  flex-shrink: 0;
+}
+
+.price-list h3,
+.price,
+.time-period {
+  color: var(--tiger-orange);
+}
+
+.price-list h3,
+.price {
+  font-family: var(--display-font);
+  font-size: var(--font-size-lg)
+}
+
+.price-list h4 {
+  margin-top: 1em;
+  font-size: var(--font-size-md);
+}
+
+.comment {
+  color: var(--medium-gray);
+}
+
+.price::after {
+  content: "€ ";
+}
+
+.time-period {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+
+}

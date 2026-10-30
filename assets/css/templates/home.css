@@ -1,0 +1,230 @@
+/* HERO */
+
+.hero {
+  padding: var(--padding-lg) var(--padding-responsive-lg) var(--padding-responsive-md);
+  background-size: cover;
+  background-position: 50% 70%;
+  background-repeat: no-repeat;
+  background-color: var(--light-gray);
+  background-blend-mode: multiply;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  min-height: 85vh;
+}
+
+h1 {
+  font-size: var(--font-size-xxl) !important;
+}
+
+.hero img {
+  margin-top: var(--padding-md);
+  mix-blend-mode: multiply;
+  margin-right: auto;
+}
+
+.hero .button {
+  margin-top: auto;
+  margin-right: var(--padding-md);
+  margin-left: auto;
+  position: relative;
+  z-index: 2;
+
+}
+
+≈
+/* NEWS */
+
+.news p:first-of-type,
+.map p:first-of-type {
+  color: var(--medium-gray);
+}
+
+.news,
+.map {
+  padding: var(--padding-responsive-lg);
+}
+
+.news img,
+.map img {
+  margin-top: unset;
+}
+
+.news h2,
+.map h2 {
+  margin-top: .5em;
+  font-family: var(--display-font);
+}
+
+.news a {
+  display: flex;
+  gap: var(--padding-responsive-md);
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.news a :first-child {
+  flex-basis: 300px;
+  flex-grow: 2;
+}
+
+.news a :last-child {
+  flex-grow: 0;
+  margin-inline: auto;
+}
+
+.news a span {
+  color: var(--tiger-orange);
+}
+
+
+/* DBV SPIELPLAN */
+.sidebar .dbv-spielplan h2 {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+/* VIDEO */
+
+.video-container {
+  position: relative;
+  margin-top: 0px;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background-color: black;
+  border-bottom: var(--border-2px);
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed,
+.video-container .video-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-container .video-poster {
+  display: block;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  background: var(--black);
+}
+
+.video-container .video-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.video-container .video-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 30%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.video-container .video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 4.5rem;
+  height: 4.5rem;
+  transform: translate(-50%, -50%);
+  border-radius: 100%;
+  background-color: var(--black);
+  pointer-events: none;
+  transition: background-color 0.2s ease;
+}
+
+.video-container .video-play::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 0.7rem 0 0.7rem 1.15rem;
+  border-color: transparent transparent transparent var(--white);
+}
+
+.video-container .video-poster:hover::after,
+.video-container .video-poster:focus-visible::after {
+  opacity: 1;
+}
+
+.video-container .video-poster:hover .video-play,
+.video-container .video-poster:focus-visible .video-play {
+  background-color: var(--tiger-orange);
+}
+
+
+/* – – – – – – */
+/* MAP */
+/* – – – – – – */
+
+
+/* Evangelische Schule NK */
+.annotated .dot:nth-of-type(1) {
+  left: 75%;
+  top: 80%;
+}
+
+/* Charlotte-Salomon-Grundschule */
+.annotated .dot:nth-of-type(2) {
+  left: 26%;
+  top: 60%;
+}
+
+/* Nürtingen-Grundschule */
+.annotated .dot:nth-of-type(3) {
+  left: 72%;
+  top: 28%;
+}
+
+/* neumark-Grundschule */
+.annotated .dot:nth-of-type(4) {
+  left: 6%;
+  top: 53%;
+}
+
+/* Teltow-Grundschule */
+.annotated .dot:nth-of-type(5) {
+  left: 0%;
+  top: 78%;
+}
+
+/* Grundschule am Brandenburger Tor */
+.annotated .dot:nth-of-type(6) {
+  left: 24%;
+  top: 5%;
+}
+
+/* Carl-von-Ossietzky-Schule */
+.annotated .dot:nth-of-type(7) {
+  left: 47%;
+  top: 60%;
+}
+
+/* Lemgo-Grundschule */
+.annotated .dot:nth-of-type(8) {
+  left: 58%;
+  top: 52%;
+}
+
+/* Bürgermeister-Herz-Grundschule */
+.annotated .dot:nth-of-type(9) {
+  left: 48%;
+  top: 50%;
+}

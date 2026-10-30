@@ -1,0 +1,49 @@
+Title: U9
+
+----
+
+Coaches:
+
+- 
+  coach: about/members/fabian-von-winterfeld
+  position: Head Coach
+- 
+  coach: about/members/konrad-weickmann
+  position: Assistant Coach
+
+----
+
+Schedules:
+
+- 
+  league: Anfänger
+  widgetnumber: "1708590484786"
+  widgetid: "314657"
+
+----
+
+Category: 6-minis
+
+----
+
+Cover: 
+
+----
+
+Drawings:
+
+- file://bLFKbIyn152u2BU8
+- file://IkCMN0GmUw5zYvJj
+- file://0kRcg577jlrrIpNs
+- file://1AFcrW7uAjh8zK5z
+- file://6yaRjhlSRa7aqAJZ
+- file://sfkkr9W6odCUO2xY
+- file://waAroub1gSRdPsCj
+- file://B0GdsHD6P6aQjyQB
+- file://hOZboqCcyQs8W4g9
+- file://A6ayQlLeOJZlqHL4
+- file://rTRsfSLozow17O70
+
+----
+
+Uuid: MP3bnKQ4S2w4kTzE

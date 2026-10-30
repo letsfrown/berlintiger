@@ -1,0 +1,26 @@
+title: Angebote
+icon: list-bullet
+options:
+  delete: false
+
+
+columns:
+
+  - width: 1/2
+    sections:
+      listed:
+        extends: sections/pages
+        headline: Publizierte Abschnitte
+        status:  listed
+
+  - width: 1/2
+    sections:
+      unlisted:
+        extends: sections/pages
+        headline: Versteckte Abschnitte
+        status: unlisted
+      drafts:
+        extends: sections/pages
+        headline: Entwürfe
+        status: drafts
+        create: false

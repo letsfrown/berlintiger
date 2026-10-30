@@ -1,0 +1,12 @@
+label: Alle Uploads
+icon: folder
+sections:
+  images:
+    type: files
+    size: small
+    layout: cards
+    info: "{{ file.dimensions }} px"
+    sortable: false
+    sortBy: filename asc
+    image:
+      ratio: 1/1

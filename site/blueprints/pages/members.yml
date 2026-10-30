@@ -1,0 +1,23 @@
+title: Team
+icon: 🏀
+
+
+columns:
+
+  - width: 1/2
+    fields:
+      headline:
+        type: text
+      subheadline:
+        type: text
+      text:
+        type: textarea
+      bgColor: 
+        extends: fields/color-select
+        label: Hintergrundfarbe
+              
+  - width: 1/2
+    sections:
+      members:
+        extends: sections/members
+        

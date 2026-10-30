@@ -1,0 +1,14 @@
+type: group
+fields:
+  instagram:
+    label: Instagram
+    type: url
+  shop:
+    label: Link zum Shop
+    type: url
+  satzung:
+    label: Satzung
+    type: files
+    layout: list
+    accept: pdf
+    max: 1

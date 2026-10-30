@@ -1,0 +1,12 @@
+type: pages
+label: News
+parent: kirby.page("news")
+template: newsbeitrag
+empty: Noch keine Newsbeiträge
+layout: cards
+sortBy: status desc date desc
+info: "{{ page.date.toDate('d.m.Y') }}"
+image:
+  cover: true
+  ratio: 3/2
+  back: white

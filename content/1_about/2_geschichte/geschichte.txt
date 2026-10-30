@@ -1,0 +1,234 @@
+Title: Geschichte
+
+----
+
+Headline: Wir schreiben Geschichte.
+
+----
+
+Subheadline: Berlin Tiger – Basketball in Kreuzberg gibt es seit 2009.
+
+----
+
+Text: 
+
+----
+
+Bgcolor: Hellgrau
+
+----
+
+Markers:
+
+- 
+  year: "2009"
+  comment: >
+    Berlin Tiger geht aus der Berliner
+    Turnerschaft hervor.
+  type: pin
+  x: 0.5198
+  y: 0.0356
+  w: 0
+  h: 0
+- 
+  year: "2013"
+  comment: 'Berlin Tiger hat erstmals über 200 Spieler*innen.'
+  type: pin
+  x: 0.3606
+  y: 0.1695
+  w: 0
+  h: 0
+- 
+  year: 2017/18
+  comment: >
+    Gewinn der Berliner Meisterschaft in der
+    U18 und der U20.
+  type: pin
+  x: 0.7541
+  y: 0.2617
+  w: 0
+  h: 0
+- 
+  year: "2018"
+  comment: 'Berlin Tiger ist der erste Verein deutschlandweit, der sich beim ersten Versuch für die Jugend- (U16) und Nachwuchsbasketballbundesliga (U19) qualifiziert.'
+  type: pin
+  x: 0.2475
+  y: 0.287
+  w: 0
+  h: 0
+- 
+  year: "2020"
+  comment: >
+    Rückzug aus JBBL und NBBL (finanzielle
+    Einbußen durch Corona-Pandemie).
+  type: pin
+  x: 0.5431
+  y: 0.4674
+  w: 0
+  h: 0
+- 
+  year: seit 2019
+  comment: 'Ein neuer Ansatz bei Berlin Tiger im Mini- und Jugendbasketball entsteht.'
+  type: pin
+  x: 0.817
+  y: 0.4979
+  w: 0
+  h: 0
+- 
+  year: "2022"
+  comment: >
+    Berlin Tiger knackt erstmals die Marke
+    von 150 Minispieler:innen (bis 11
+    Jahre).
+  type: pin
+  x: 0.656
+  y: 0.5267
+  w: 0
+  h: 0
+- 
+  year: "2022"
+  comment: >
+    Berlin Tiger bringt mit seinen
+    Turnierfahrten mehr als 130 Kids ins
+    europäische Ausland.
+  type: pin
+  x: 0.3392
+  y: 0.4751
+  w: 0
+  h: 0
+- 
+  year: "2023"
+  comment: >
+    Berlin Tiger hat erstmals über 500
+    Mitglieder.
+  type: pin
+  x: 0.1539
+  y: 0.484
+  w: 0
+  h: 0
+- 
+  year: "2023"
+  comment: >
+    Berlin Tiger betreut erstmals 11
+    Basketball-AGs an Berliner Schulen.
+  type: pin
+  x: 0.1533
+  y: 0.5902
+  w: 0
+  h: 0
+- 
+  year: "2023"
+  comment: >
+    Die U12 von Berlin Tiger gewinnt mit dem
+    Limfjords-Cup (Lemvig) das erste
+    internationale Turnier der
+    Vereinsgeschichte.
+  type: pin
+  x: 0.3252
+  y: 0.579
+  w: 0
+  h: 0
+- 
+  year: "2024"
+  comment: >
+    Erstmals qualifizieren sich vier
+    Jugendteams von Berliner Tiger für das
+    Endturnier um die Berliner Meisterschaft
+    (U12, U14, U16, U18).
+  type: pin
+  x: 0.5871
+  y: 0.6652
+  w: 0
+  h: 0
+- 
+  year: "2024"
+  comment: >
+    Berlin Tiger gewinnt in der U12 das
+    Osterturnier Wien, das größte
+    Jugendturnier Europas.
+  type: pin
+  x: 0.8343
+  y: 0.6508
+  w: 0
+  h: 0
+- 
+  year: "2024"
+  comment: >
+    Die U12 von Berlin Tiger gewinnt die
+    Berliner Meisterschaft.
+  type: pin
+  x: 0.7839
+  y: 0.7544
+  w: 0
+  h: 0
+- 
+  year: "2024"
+  comment: >
+    Berlin Tiger U13 gewinnt Radom Basket
+    Cup.
+  type: pin
+  x: 0.5712
+  y: 0.7258
+  w: 0
+  h: 0
+- 
+  year: "2024"
+  comment: >
+    Berlin Tiger gewinnt 1. Mini-Preis des
+    BBV.
+  type: pin
+  x: 0.4733
+  y: 0.6973
+  w: 0
+  h: 0
+- 
+  year: "2025"
+  comment: >
+    Berlin Tiger gewinnt in der U20 die
+    Berliner und Norddeutsche
+    Vizemeisterschaft.
+  type: pin
+  x: 0.3712
+  y: 0.667
+  w: 0
+  h: 0
+- 
+  year: "2025"
+  comment: >
+    Berlin Tiger wird in der U14 eins der
+    besten sechs Teams in Deutschland.
+  type: pin
+  x: 0.2554
+  y: 0.6436
+  w: 0
+  h: 0
+- 
+  year: "2025"
+  comment: >
+    Berlin Tiger qualifiziert sich gemeinsam
+    mit DBV für die JBBL.
+  type: pin
+  x: 0.1575
+  y: 0.6774
+  w: 0
+  h: 0
+
+----
+
+Src: - file://ww7OgYlozVM99hjV
+
+----
+
+Zeitstrahl: 
+
+----
+
+Timeline: - file://ww7OgYlozVM99hjV
+
+----
+
+Color: 
+
+----
+
+Uuid: 2MRZOobHZK0Wid0Q
