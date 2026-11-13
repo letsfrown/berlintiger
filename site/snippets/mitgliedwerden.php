@@ -1,4 +1,4 @@
-<section id="<?= $data->title()->lower() ?>" class="grid-2clm align-top ratio-3-2
+<section id="<?= $data->title()->lower() ?>" class="grid-2clm align-top
 <?php if ($bgColor = $data->bgColor()->lower()) : ?> 
 <?= $bgColor ?> 
 <?php endif ?>">

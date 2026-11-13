@@ -33,7 +33,6 @@ h1 {
 
 }
 
-≈
 /* NEWS */
 
 .news p:first-of-type,
@@ -130,16 +129,19 @@ h1 {
   pointer-events: none;
 }
 
+/* Same circular icon-button language as .team-card-toggle */
 .video-container .video-play {
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 1;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
   transform: translate(-50%, -50%);
   border-radius: 100%;
-  background-color: var(--black);
+  border: var(--border-2px);
+  background-color: var(--tiger-orange);
+  color: var(--black);
   pointer-events: none;
   transition: background-color 0.2s ease;
 }
@@ -151,8 +153,8 @@ h1 {
   left: 54%;
   transform: translate(-50%, -50%);
   border-style: solid;
-  border-width: 0.7rem 0 0.7rem 1.15rem;
-  border-color: transparent transparent transparent var(--white);
+  border-width: 0.4rem 0 0.4rem 0.65rem;
+  border-color: transparent transparent transparent currentColor;
 }
 
 .video-container .video-poster:hover::after,
@@ -160,9 +162,13 @@ h1 {
   opacity: 1;
 }
 
+.video-container .video-poster:focus-visible {
+  outline-offset: -4px;
+}
+
 .video-container .video-poster:hover .video-play,
 .video-container .video-poster:focus-visible .video-play {
-  background-color: var(--tiger-orange);
+  background-color: var(--white);
 }
 
 

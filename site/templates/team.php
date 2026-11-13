@@ -36,22 +36,19 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
         <h2>Coaches der <?= $page->title() ?></h2>
         <div class="team-card-grid">
           <?php foreach ($page->coaches()->toStructure() as $coach) : ?>
-            <div class="team-card">
-              <?php if ($coach->coach()->toPage()->headshot()->isNotEmpty()) : ?>
-                <?= $coach->coach()->toPage()->headshot()->toFile()->crop(400) ?>
-              <?php else : ?>
-                <div class="placeholder"></div>
-              <?php endif ?>
-              <h3><?= $coach->coach()->toPage()->title() ?></h3>
-              <p><?= $coach->position() ?></p>
-            </div>
+            <?php if ($member = $coach->coach()->toPage()) : ?>
+              <?php snippet('member', [
+                'data' => $member,
+                'role' => $coach->position(),
+                'includeFacts' => false,
+                'tag' => 'div',
+              ]) ?>
+            <?php endif ?>
           <?php endforeach ?>
         </div>
 
       </article>
     <?php endif ?>
-
-
 
   </section>
 
@@ -67,12 +64,6 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
           <?php snippet('spielplan-mannschaft', ['schedule' => $schedule]); ?>
       </article>
     <?php endforeach ?>
-
-    <?php if ($schedules->count() < 2) :  ?>
-      <div class="decoration"></div>
-    <?php endif ?>
-
-
 
   </aside>
 

@@ -3,7 +3,7 @@
 <?= $bgColor ?> 
 <?php endif ?>">
 
-  <article>
+  <article class="sticky-copy">
     <h2><?= $data->headline()->or($data->title()) ?></h2>
     <p class="subheadline"><?= $data->subheadline() ?></p>
     <?= $data->text()->kirbytext() ?>

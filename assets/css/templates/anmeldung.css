@@ -22,19 +22,49 @@ section img {
 
 .mitglied-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-  gap: var(--padding-xs) var(--padding-md);
-  justify-items: start;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--padding-sm) var(--padding-md);
+  width: 100%;
+  align-items: start;
+}
+
+.mitglied-form > * {
+  margin-top: 0;
+  min-width: 0;
+}
+
+.mitglied-form .button,
+.mitglied-form .disclaimer,
+.mitglied-form .g-recaptcha,
+.mitglied-form .field:has(textarea),
+.mitglied-form .field.school {
+  grid-column: 1 / -1;
 }
 
 .mitglied-form .button {
-  /* justify-self: end; */
-  grid-column: 1/3;
   align-self: start;
+  margin-top: var(--padding-xs);
 }
 
-.field,
-.field label,
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  width: 100%;
+}
+
+.field label {
+  display: block;
+  width: 100%;
+  font-weight: var(--font-weight-base);
+}
+
+.field abbr {
+  color: var(--tiger-orange);
+  margin-left: .25em;
+  text-decoration: none;
+}
+
 .field input,
 .field select,
 .field textarea {
@@ -43,55 +73,133 @@ section img {
   -moz-appearance: none;
   display: block;
   width: 100%;
-}
-
-.field:has(textarea),
-.field.school {
-  grid-column: 1 / 3;
-}
-
-.g-recaptcha {
-  grid-column: 1 / 3;
-  width: 100%;
-}
-
-.field abbr {
-  color: var(--tiger-orange);
-  margin-left: .25em;
-}
-
-.field input,
-.field select,
-.field textarea {
+  margin: 0;
+  box-sizing: border-box;
   resize: none;
-  min-height: 2.25rem;
-  margin-top: 0;
-  padding: .25em;
-  border-radius: .25em;
+  height: 2.75rem;
+  padding: 0 1.15em;
   border: var(--border-light-gray-2px);
-  box-sizing: content-box;
+  border-radius: 4rem;
+  background-color: var(--white);
+  color: var(--black);
+  font: inherit;
+  line-height: 1.3;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
+}
+
+.field textarea {
+  height: auto;
+  min-height: 7rem;
+  border-radius: 1.25rem;
+  resize: vertical;
+  padding: 0.85em 1.15em;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--medium-gray);
+  opacity: 1;
+}
+
+.field input:hover:not(:disabled):not(:focus):not([aria-invalid="true"]),
+.field select:hover:not(:disabled):not(:focus):not([aria-invalid="true"]),
+.field textarea:hover:not(:disabled):not(:focus):not([aria-invalid="true"]) {
+  background-color: var(--light-gray);
 }
 
 .field input:focus,
 .field select:focus,
-.field textarea:focus {
-  outline: none;
-  border: var(--border-tiger-orange-2px);
+.field textarea:focus,
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--tiger-orange);
+  outline-offset: 2px;
+  border-color: var(--black);
+  background-color: var(--white);
 }
 
+.field input[aria-invalid="true"],
+.field select[aria-invalid="true"],
+.field textarea[aria-invalid="true"],
+.field:has(.alert.error) input,
+.field:has(.alert.error) select,
+.field:has(.alert.error) textarea {
+  border-color: var(--tiger-orange);
+  background-color: var(--light-gray);
+}
 
-input[type="date"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+.field input:disabled,
+.field select:disabled,
+.field textarea:disabled {
+  background-color: var(--light-gray);
+  color: var(--medium-gray);
+  border-color: var(--medium-gray);
+  cursor: not-allowed;
+}
 
+.field input:user-invalid:not(:focus),
+.field select:user-invalid:not(:focus),
+.field textarea:user-invalid:not(:focus) {
+  border-color: var(--tiger-orange);
+}
+
+.alert.error {
+  display: block;
+  color: var(--tiger-orange);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.alert.success {
+  padding: var(--padding-sm);
+  border: var(--border-2px);
+  background-color: var(--light-gray);
+}
+
+/* Native date fields ignore normal padding; align the inner edit UI. */
+.field input[type="date"] {
+  display: flex;
+  align-items: center;
+  line-height: normal;
+  color-scheme: light;
+}
+
+.field input[type="date"]::-webkit-datetime-edit,
+.field input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  height: 100%;
+}
+
+.field input[type="date"]::-webkit-datetime-edit-text,
+.field input[type="date"]::-webkit-datetime-edit-day-field,
+.field input[type="date"]::-webkit-datetime-edit-month-field,
+.field input[type="date"]::-webkit-datetime-edit-year-field {
+  padding: 0;
+}
+
+.field input[type="date"]::-webkit-calendar-picker-indicator {
+  margin-left: auto;
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.field input[type="date"]:hover::-webkit-calendar-picker-indicator,
+.field input[type="date"]:focus::-webkit-calendar-picker-indicator {
+  opacity: 1;
 }
 
 .disclaimer {
   font-size: var(--font-size-sm);
-  grid-column: 1/3;
   color: var(--medium-gray);
+}
 
+@media screen and (max-width: 680px) {
+  .mitglied-form {
+    grid-template-columns: 1fr;
+  }
 }
 
 
@@ -153,6 +261,15 @@ label.cta {
 
 .flex :last-child {
   flex-shrink: 0;
+}
+
+/* Keep the intro copy in view while the longer price list scrolls. */
+@media screen and (min-width: 801px) {
+  .sticky-copy {
+    position: sticky;
+    top: calc(var(--header-height, 0px) + var(--padding-sm));
+    align-self: start;
+  }
 }
 
 .price-list h3,

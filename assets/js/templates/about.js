@@ -29,37 +29,6 @@
     viewport.scrollBy({ left: dir * cardStep(), behavior: 'smooth' });
   }
 
-  function closeCard(card) {
-    var panel = card.querySelector('.team-card-panel');
-    var toggle = card.querySelector('.team-card-toggle');
-    if (!panel) return;
-    card.classList.remove('is-open');
-    panel.setAttribute('aria-hidden', 'true');
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
-  }
-
-  function openCard(card) {
-    cards.forEach(function (other) {
-      if (other !== card) closeCard(other);
-    });
-
-    var panel = card.querySelector('.team-card-panel');
-    var toggle = card.querySelector('.team-card-toggle');
-    if (!panel) return;
-    card.classList.add('is-open');
-    panel.setAttribute('aria-hidden', 'false');
-    if (toggle) toggle.setAttribute('aria-expanded', 'true');
-  }
-
-  function toggleCard(card) {
-    if (!card.classList.contains('has-extras')) return;
-    if (card.classList.contains('is-open')) {
-      closeCard(card);
-    } else {
-      openCard(card);
-    }
-  }
-
   function sliderIsActive() {
     var active = document.activeElement;
     return slider.contains(active) || slider.matches(':hover');
@@ -81,22 +50,6 @@
     window.requestAnimationFrame(updateArrowState);
   }, { passive: true });
 
-  cards.forEach(function (card) {
-    var toggle = card.querySelector('.team-card-toggle');
-    if (!toggle) return;
-
-    toggle.addEventListener('click', function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      toggleCard(card);
-    });
-
-    card.addEventListener('click', function (event) {
-      if (event.target.closest('a, button')) return;
-      toggleCard(card);
-    });
-  });
-
   document.addEventListener('keydown', function (event) {
     if (event.key === 'ArrowLeft') {
       if (!sliderIsActive()) return;
@@ -106,9 +59,6 @@
       if (!sliderIsActive()) return;
       event.preventDefault();
       scrollByDir(1);
-    } else if (event.key === 'Escape') {
-      if (!slider.contains(document.activeElement) && !slider.matches(':hover')) return;
-      cards.forEach(closeCard);
     }
   });
 

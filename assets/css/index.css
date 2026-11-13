@@ -66,17 +66,46 @@ p {
   font-size: var(--font-size-base);
 }
 
-p a {
-  text-decoration-style: solid;
-  text-decoration-line: underline;
-  text-decoration-skip: none;
-  text-decoration-color: var(--tiger-orange);
-  text-decoration-thickness: .15em;
-  text-underline-offset: .15em;
+/* Keyboard focus shares the 2px black stroke used everywhere else.
+   On orange, black, and the lightbox the ring flips to white. */
+:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 3px;
 }
 
-p a:hover {
-  text-decoration-color: inherit;
+footer :focus-visible,
+.subnavigation :focus-visible,
+.schwarz :focus-visible,
+.lightbox :focus-visible {
+  outline-color: var(--white);
+}
+
+/* Body copy only. Nav, cards, and pills keep their own treatments. */
+main :is(p, li) a:not(.button) {
+  text-decoration-line: underline;
+  text-decoration-color: var(--tiger-orange);
+  text-decoration-thickness: 2px;
+  text-underline-offset: .18em;
+  text-decoration-skip-ink: none;
+}
+
+main :is(p, li) a:not(.button):hover,
+main :is(p, li) a:not(.button):active {
+  text-decoration-color: currentColor;
+}
+
+main :is(p, li) a:not(.button):has(img),
+main li ul.panel a,
+main li ul.panel a:hover,
+main li ul.panel a:active {
+  text-decoration: none;
+}
+
+a:hover .readmore,
+a:focus-visible .readmore {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .18em;
 }
 
 h1:not(:empty) {
@@ -113,22 +142,67 @@ h4 {
   margin-top: 0.5em;
 }
 
-button,
+button {
+  cursor: pointer;
+}
+
+/* Pill CTA. Icon buttons (slider, lightbox, video, card toggle)
+   are not .button, so they do not inherit this fill. */
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
   width: fit-content;
+  max-width: 100%;
   padding: 0.5em 1.5em;
   border: var(--border-2px);
-  cursor: pointer;
   border-radius: 4rem;
   background-color: var(--tiger-orange);
   color: var(--black);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
 }
 
-button:hover,
-.button:hover {
+.button:hover,
+.button:focus-visible {
   background-color: var(--white);
+  color: var(--black);
+}
+
+.button:active {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.button:disabled,
+.button:disabled:hover,
+.button[aria-disabled="true"] {
+  background-color: var(--light-gray);
+  color: var(--medium-gray);
+  border-color: var(--medium-gray);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Orange pill on the orange footer reads as a border only. Invert it. */
+footer .button {
+  background-color: var(--white);
+}
+
+footer .button:hover,
+footer .button:focus-visible {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+footer .button:active {
+  background-color: var(--black);
+  color: var(--tiger-orange);
 }
 
 
@@ -139,12 +213,37 @@ button:hover,
 body {
   accent-color: var(--tiger-orange);
   min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
+
+body > main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+/* Team / DBV: main itself is the two-column row.
+   Do not flex-grow — that leaves a white band above the footer
+   under short coach sections. */
+body > main.with-sidebar {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 0;
+}
+
+/* Home keeps a normal document flow under the hero. */
 
 main {
   border-inline: var(--border-2px);
   max-width: var(--main-max-width);
   margin-inline: auto;
+}
+
+main:not(.with-sidebar) {
   min-height: 60vh;
 }
 
@@ -202,26 +301,43 @@ body > header {
   border-right: var(--border-2px);
   border-bottom: var(--border-2px);
   padding: var(--padding-sm) var(--padding-xs);
-  background-color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.menu a.dbv-page:hover {
-  color: var(--white);
-  background-color: var(--blue);
+  transition: background-color 150ms ease, color 150ms ease;
 }
 
 .menu a:hover,
+.menu a:focus-visible {
+  color: var(--white);
+  background-color: var(--black);
+  outline-color: var(--tiger-orange);
+}
+
 .menu a:active {
   color: var(--white);
   background-color: var(--black);
 }
 
-.menu a.active {
+.menu a.dbv-page:hover,
+.menu a.dbv-page:focus-visible {
+  color: var(--white);
+  background-color: var(--blue);
+  outline-color: var(--white);
+}
+
+/* Current page keeps its color when hovered or focused. */
+.menu a.active,
+.menu a.active:hover,
+.menu a.active:focus-visible,
+.menu a.active:active {
   background-color: var(--tiger-orange);
   color: var(--black);
+  outline-color: var(--black);
+}
+
+.menu a:focus-visible {
+  outline-offset: -4px;
 }
 
 body > header:has(.subnavigation) a.active {
@@ -259,9 +375,22 @@ body > header:has(.subnavigation) a.active {
   font-weight: var(--font-weight-semibold);
 }
 
+.subnavigation a {
+  color: var(--black);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .2em;
+  transition: text-decoration-color 150ms ease;
+}
+
+/* Current section + hover/focus: thin underline. Stay black on orange. */
 .subnavigation a:hover,
-.subnavigation a:active {
-  color: var(--white);
+.subnavigation a:focus-visible,
+.subnavigation a:active,
+.subnavigation a.active {
+  color: var(--black);
+  text-decoration-color: currentColor;
 }
 
 
@@ -336,11 +465,38 @@ body > header:has(.subnavigation) a.active {
     border-bottom: var(--border-2px);
   }
 
+  #menu-button {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  #menu-button:focus {
+    outline: none;
+  }
+
+  #menu-button:focus-visible+label {
+    outline: 2px solid var(--black);
+    outline-offset: 3px;
+  }
+
   .menu a,
   .menu a.dbv-page,
   .menu a:hover,
+  .menu a:focus-visible,
   .menu a.dbv-page:hover,
+  .menu a.dbv-page:focus-visible,
   .menu a.active,
+  .menu a.active:hover,
+  .menu a.active:focus-visible,
   .menu a.dbv-page.active {
     border-bottom: 0;
     font-family: var(--display-font);
@@ -348,6 +504,7 @@ body > header:has(.subnavigation) a.active {
     color: unset;
     background-color: unset;
     border-right: unset;
+    outline-color: var(--black);
   }
 
   .navigation {
@@ -400,7 +557,8 @@ body > header:has(.subnavigation) a.active {
 footer {
   position: relative;
   z-index: 0;
-  margin-top: auto;
+  /* No margin-top:auto — that left a white band under short
+     sidebar pages (coaches / map) before the orange footer. */
   border-left: var(--border-2px);
   border-right: var(--border-2px);
   border-top: var(--border-2px);
@@ -452,9 +610,37 @@ footer p {
   font-size: var(--font-size-md);
 }
 
+/* Border underline so the → and label share one continuous hairline. */
+.arrowLinks a {
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.05em;
+  transition: border-color 150ms ease;
+}
+
 .arrowLinks a::before {
   content: "\2192";
   margin-right: .25em;
+}
+
+.arrowLinks a:hover,
+.arrowLinks a:focus-visible,
+.arrowLinks a:active {
+  border-bottom-color: currentColor;
+}
+
+footer section:last-of-type nav a {
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.05em;
+  transition: border-color 150ms ease;
+}
+
+footer section:last-of-type nav a:hover,
+footer section:last-of-type nav a:focus-visible,
+footer section:last-of-type nav a:active {
+  color: var(--black);
+  border-bottom-color: currentColor;
 }
 
 .kinderschutz {
@@ -535,29 +721,77 @@ footer p {
 }
 
 
-/* Layout: Flex Sidebar (SPIELPLAN)*/
+/* Layout: Flex Sidebar (SPIELPLAN)
+   Modes (set by bb-widgets.js from M / S / V):
+   layout-equal          — neither sticky
+   layout-sidebar-sticky — main taller (or no-hero shrink) → sidebar matches / sticks
+   layout-main-sticky    — with hero, sidebar taller → main sticks, sidebar scrolls */
 
 .with-sidebar {
+  --sidebar-sticky-top: var(--header-height, 0px);
+  --sidebar-sticky-height: calc(100vh - var(--sidebar-sticky-top));
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
   border-bottom: none;
+  width: 100%;
+  min-height: 0;
 }
 
 .with-sidebar .main-content {
   border-bottom: none;
-  flex-basis: 500px;
-  flex-grow: 2;
+  flex: 2 1 500px;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+.with-sidebar .main-sticky-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
 }
 
 .with-sidebar .sidebar {
   border-left: var(--border-2px);
-  flex-basis: 500px;
-  text-align: center;
-  position: sticky;
-  top: var(--header-height, 0px);
+  flex: 0 0 clamp(280px, 36vw, 500px);
+  display: flex;
+  flex-direction: column;
   align-self: flex-start;
-  /* No max-height: let natural sticky release at the section bottom
-     so the full last spielplan stays visible above the footer. */
-  overflow: visible;
+  text-align: center;
+  background: var(--white);
+}
+
+/* Main taller: sidebar sticks and widgets fill the sticky box.
+   Also used when no-hero shrinks the sidebar to the coaches height. */
+.with-sidebar.layout-sidebar-sticky .sidebar {
+  position: sticky;
+  top: var(--sidebar-sticky-top);
+  max-height: var(--sidebar-sticky-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* With hero + sidebar taller than viewport: main sticks, sidebar scrolls. */
+.with-sidebar.layout-main-sticky .main-content {
+  align-self: stretch;
+}
+
+.with-sidebar.layout-main-sticky .main-sticky-panel {
+  position: sticky;
+  top: var(--sidebar-sticky-top);
+  height: var(--sidebar-sticky-height);
+  max-height: var(--sidebar-sticky-height);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.with-sidebar.layout-main-sticky .sidebar {
+  align-self: stretch;
 }
 
 .with-sidebar .hero-image {
@@ -646,61 +880,84 @@ article.hero {
 
 .sidebar .bb-widget {
   --bb-title-crop: 2.35rem;
+  flex: 1 1 auto;
   width: 100%;
+  height: var(--bb-iframe-height, 600px);
+  min-height: var(--bb-iframe-height, 600px);
+  position: relative;
   overflow: hidden;
   background: var(--black);
 }
 
 .sidebar .bb-widget iframe {
+  position: absolute;
+  left: 0;
+  top: calc(-1 * var(--bb-title-crop));
   width: 100% !important;
   max-width: 100%;
   display: block;
-  /* Crop redundant team-title row; keep filters / match list */
-  margin-top: calc(-1 * var(--bb-title-crop));
-  height: calc(var(--bb-iframe-height, 600px) + var(--bb-title-crop)) !important;
+  border: 0 !important;
+  /* Crop the widget's own title row; the rest fills the article. */
+  height: calc(100% + var(--bb-title-crop)) !important;
 }
 
+/* One schedule fills the sticky column; several stack at authored height. */
 .sidebar>article {
-  border-bottom: var(--border-2px);
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  min-height: 0;
   margin-top: 0;
+  border-bottom: var(--border-2px);
+}
+
+.sidebar>article:last-of-type {
+  border-bottom: 0;
+}
+
+.sidebar>article:only-of-type {
+  flex: 1 1 auto;
+  height: 100%;
+}
+
+.sidebar>article>h2 {
+  flex: 0 0 auto;
 }
 
 .sidebar>article div {
   margin-top: 0;
 }
 
-
-
-
-.decoration {
-  height: 100%;
-  border-radius: 100vw 100vw 0 0;
-  outline: var(--border-2px);
-}
-
-.sidebar:not(:has(.decoration))>article:last-of-type {
-  border-bottom: 0;
-}
-
 @media screen and (max-width: 800px) {
+  body > main.with-sidebar {
+    flex-direction: column;
+  }
+
   .with-sidebar {
     flex-direction: column;
   }
 
-  .with-sidebar .sidebar {
+  .with-sidebar .main-content,
+  .with-sidebar .sidebar,
+  .with-sidebar.layout-sidebar-sticky .sidebar,
+  .with-sidebar.layout-main-sticky .main-content,
+  .with-sidebar.layout-main-sticky .main-sticky-panel {
     position: static;
     top: auto;
+    height: auto;
+    max-height: none;
     overflow: visible;
+    align-self: stretch;
+  }
+
+  .with-sidebar .sidebar {
     border-left: none;
-    flex-basis: unset;
+    flex: 1 1 auto;
+    width: 100%;
   }
 
-  .decoration {
-    display: none;
-  }
-
-  .sidebar>article:last-of-type {
-    border-bottom: 0;
+  .sidebar>article:only-of-type {
+    height: auto;
   }
 }
 
@@ -794,6 +1051,166 @@ article.hero {
   aspect-ratio: 1/1;
 }
 
+/* Square gallery + lightbox (DBV, Tiger-Turnier, …) */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--padding-responsive-md);
+}
+
+@media screen and (max-width: 680px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gallery li {
+  list-style-type: none;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.gallery-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.gallery-thumb:hover img,
+.gallery-thumb:focus-visible img {
+  transform: scale(1.1);
+}
+
+.gallery-thumb:focus-visible {
+  outline-offset: -4px;
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  display: block;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: fixed;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: var(--white);
+  font-size: 2rem;
+  width: auto;
+  height: auto;
+  padding: 0.15em 0.35em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  line-height: 1;
+  transition: color 150ms ease;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover,
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible {
+  background: transparent;
+  border: none;
+  color: var(--tiger-orange);
+}
+
+.lightbox-close:active,
+.lightbox-prev:active,
+.lightbox-next:active {
+  color: var(--white);
+}
+
+.lightbox-close {
+  top: 20px;
+  right: 20px;
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.lightbox-prev {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-next {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media screen and (max-width: 680px) {
+  .lightbox-prev,
+  .lightbox-next {
+    font-size: 1.5rem;
+  }
+
+  .lightbox-close {
+    top: 10px;
+    right: 10px;
+    font-size: 2rem;
+  }
+}
+
 
 
 
@@ -871,5 +1288,226 @@ article.hero {
     left: -1rem;
 
 
+  }
+}
+
+/* – – – – – – */
+/* TEAM CARDS (overview slider + team pages) */
+/* – – – – – – */
+
+.team-card-inner {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  cursor: default;
+}
+
+.team-card.has-extras .team-card-inner {
+  cursor: pointer;
+}
+
+.team-card-front,
+.team-card-panel {
+  transition: transform 0.55s cubic-bezier(0.33, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.team-card-front {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  padding-bottom: var(--padding-md);
+  transform: translate3d(0, 0, 0);
+}
+
+.team-card-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  overflow: auto;
+  padding: calc(2.5rem + var(--padding-sm)) var(--padding-md) var(--padding-md);
+  transform: translate3d(0, 100%, 0);
+  pointer-events: none;
+}
+
+.team-card.is-open .team-card-front {
+  transform: translate3d(0, -100%, 0);
+  pointer-events: none;
+}
+
+.team-card.is-open .team-card-panel {
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
+}
+
+.team-card-media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin-bottom: var(--padding-sm);
+  outline: var(--border-2px);
+  border-radius: 0 0 100vw 100vw;
+}
+
+.team-card-media img,
+.team-card-media .img-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0 0 100vw 100vw;
+}
+
+.team-card-media .img-placeholder {
+  background: var(--light-gray);
+}
+
+.team-card-meta {
+  padding: var(--padding-sm) var(--padding-md) 0;
+}
+
+.team-card-name {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.team-card-role {
+  margin: 0.15rem 0 0;
+  color: var(--medium-gray);
+  font-weight: var(--font-weight-base);
+}
+
+.team-card-toggle {
+  position: absolute;
+  top: var(--padding-sm);
+  right: var(--padding-sm);
+  z-index: 4;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 100%;
+  border: var(--border-2px);
+  background: var(--tiger-orange);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition: background-color 0.2s ease;
+}
+
+.team-card.has-extras:hover .team-card-toggle,
+.team-card.has-extras:focus-within .team-card-toggle,
+.team-card-toggle:hover,
+.team-card-toggle:focus-visible {
+  background: var(--white);
+}
+
+.team-card-toggle:focus-visible {
+  outline-offset: -3px;
+}
+
+.team-card-toggle-icon {
+  position: relative;
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: transform 0.3s ease;
+}
+
+.team-card-toggle-icon::before,
+.team-card-toggle-icon::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+}
+
+.team-card-toggle-icon::before {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.team-card-toggle-icon::after {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+
+.team-card.is-open .team-card-toggle-icon {
+  transform: rotate(45deg);
+}
+
+.team-card-panel-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--padding-sm);
+  text-align: left;
+}
+
+.team-card-panel-body--contact {
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+}
+
+.team-mail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.team-mail-icon {
+  flex-shrink: 0;
+}
+
+.team-card-facts {
+  width: 100%;
+}
+
+.team-card-facts ul,
+.team-card-facts ol {
+  padding-left: 1.25em;
+  margin: 0;
+}
+
+.team-card-facts li {
+  list-style: disc;
+  margin-top: 0.35em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .button,
+  .menu a,
+  .subnavigation a,
+  .arrowLinks a,
+  .panel a,
+  .news-preview,
+  .news-preview img,
+  .video-container .video-play,
+  .video-container .video-poster::after,
+  .team-card-toggle,
+  .team-card-front,
+  .team-card-panel,
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    transition: none;
   }
 }

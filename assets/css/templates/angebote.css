@@ -72,15 +72,39 @@ h2 {
   transition: all 150ms ease-in;
 }
 
-.panel a:hover {
+.panel a:hover,
+.panel a:focus-visible {
   padding-left: var(--padding-sm);
   color: var(--tiger-orange);
 }
 
-/* Hide checkboxes and radio-buttons */
+.panel a:active {
+  color: var(--black);
+}
+
+/* Hide the radios, but keep them focusable so the groups are keyboardable. */
 .accordeon input[type="radio"],
 .accordeon input[type="checkbox"] {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.accordeon input:focus {
+  outline: none;
+}
+
+.accordeon li:has(input:focus-visible) label {
+  color: var(--black);
+  outline: 2px solid var(--black);
+  outline-offset: 3px;
 }
 
 /* Change .label corresponding to checked radio or checkbox */

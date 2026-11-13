@@ -8,7 +8,7 @@ section {
 }
 
 h2 {
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-xl);
   font-family: var(--display-font);
   text-align: center;
 }
@@ -42,12 +42,5 @@ h3 {
 
 .gallery {
   margin-top: var(--padding-responsive-lg);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-  gap: var(--padding-responsive-md);
-}
-
-.gallery li {
-  list-style-type: none;
-  margin-inline: auto;
+  padding-inline: var(--padding-responsive-lg);
 }
