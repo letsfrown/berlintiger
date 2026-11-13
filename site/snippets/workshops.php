@@ -3,8 +3,8 @@
 <?= $bgColor ?> 
 <?php endif ?>">
 
-  <?php if ($data->cover()->isNotEmpty()) :
-    $img = $data->cover()->toFile()->crop(800) ?>
+  <?php if ($coverFile = $data->cover()->toFile()) :
+    $img = $coverFile->crop(800) ?>
     <img src="<?= $img->url() ?>" alt="">
   <?php endif ?>
 

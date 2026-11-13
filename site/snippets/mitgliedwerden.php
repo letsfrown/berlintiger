@@ -11,8 +11,8 @@
 
   </article>
 
-  <?php if ($data->cover()->isNotEmpty()) :
-    $img = $data->cover()->toFile()->crop(900, 450) ?>
+  <?php if ($coverFile = $data->cover()->toFile()) :
+    $img = $coverFile->crop(900, 450) ?>
     <img src="<?= $img->url() ?>" alt="<?= $img->alt() ?>" class="rounded">
   <?php endif ?>
 

@@ -36,8 +36,8 @@
               </p>
 
             </article>
-            <?php if ($item = $article->image()->crop(300)) : ?>
-              <img src="<?= $item->url() ?>" alt="<?= $item->alt() ?>" class="rounded">
+            <?php if ($newsImage = $article->cover()->toFile() ?? $article->image()) : $item = $newsImage->crop(300) ?>
+              <img src="<?= $item->url() ?>" alt="<?= $newsImage->alt() ?>" class="rounded" loading="lazy">
             <?php endif ?>
 
           </a>

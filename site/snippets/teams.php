@@ -32,10 +32,6 @@
     <?php endforeach ?>
   </ul>
 
-      </li>
-    <?php endforeach ?>
-  </ul>
-
 
 
 
