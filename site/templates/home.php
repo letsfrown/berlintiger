@@ -81,9 +81,9 @@
     <aside class="sidebar" id="spielplan">
 
       <article>
-        <h2>Spielplan</h2>
+        <h2 class="spielplan-heading">Spielplan der Berlin Tiger</h2>
         <?php if ($widgetNumber = $page->widgetNumber()) : ?>
-          <?= snippet('spielplan-verein', [
+          <?php snippet('spielplan-verein', [
             'widgetNumber' => $widgetNumber,
             // Match team pages with two schedules (iframeHeight 600)
             'iframeHeight' => $hasDbvSpielplan ? 600 : 1200,
@@ -94,10 +94,10 @@
       <?php if ($hasDbvSpielplan) : ?>
         <?php foreach ($dbvSchedules as $schedule) : ?>
           <article class="dbv-spielplan">
-            <h2 class="padding-sm">Spielplan der <?= $dbv->title() ?> <?= $schedule->league() ?></h2>
-            <?= snippet('spielplan-mannschaft', [
+            <h2 class="spielplan-heading">Spielplan der <?= $dbv->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
+            <?php snippet('spielplan-mannschaft', [
               'schedule' => $schedule,
-              'titleBgColor' => '242c53',
+              'titleBgColor' => '000000',
               'tapBgColorActive' => '242c53',
               'tapBorderColorActive' => '242c53',
             ]); ?>

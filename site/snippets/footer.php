@@ -64,6 +64,7 @@
 
 
 <?= js('assets/js/index.js') ?>
+<?= js('assets/js/bb-widgets.js') ?>
 <?= js('@auto') ?>
 
 

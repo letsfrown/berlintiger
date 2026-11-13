@@ -137,11 +137,11 @@
   <?php if ($schedules->isNotEmpty()) : ?>
     <aside class="sidebar" id="spielplan">
       <?php foreach ($schedules as $schedule) : ?>
-        <article>
-          <h2 class="padding-sm">Spielplan der <?= $page->title() ?> <?= $schedule->league() ?></h2>
-          <?= snippet('spielplan-mannschaft', [
+        <article class="dbv-spielplan">
+          <h2 class="spielplan-heading">Spielplan der <?= $page->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
+          <?php snippet('spielplan-mannschaft', [
             'schedule' => $schedule,
-            'titleBgColor' => '242c53',
+            'titleBgColor' => '000000',
             'tapBgColorActive' => '242c53',
             'tapBorderColorActive' => '242c53',
           ]); ?>

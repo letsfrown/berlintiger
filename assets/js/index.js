@@ -1,20 +1,18 @@
 window.addEventListener('load', function() {
-  // Function to update scroll-margin-top
-  function updateScrollMarginTop() {
-      // Get the height of the navigation bar
-      var headerHeight = document.querySelector('header').offsetHeight;
-      // Set the scroll-margin-top property on the header, sections, and asides
-      var elementsToUpdate = document.querySelectorAll('header, section, aside');
-      elementsToUpdate.forEach(function(element) {
-          element.style.scrollMarginTop = headerHeight + 'px';
-      });
+  function updateHeaderOffset() {
+    var header = document.querySelector('body > header');
+    if (!header) return;
+
+    var headerHeight = header.offsetHeight;
+    document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+
+    document.querySelectorAll('header, section, aside').forEach(function(element) {
+      element.style.scrollMarginTop = headerHeight + 'px';
+    });
   }
 
-  // Call the function on page load
-  updateScrollMarginTop();
-
-  // Call the function whenever the window is resized
-  window.addEventListener('resize', updateScrollMarginTop);
+  updateHeaderOffset();
+  window.addEventListener('resize', updateHeaderOffset);
 });
 
 document.querySelectorAll('.video-container[data-youtube-id]').forEach(function(container) {

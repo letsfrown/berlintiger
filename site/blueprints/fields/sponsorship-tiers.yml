@@ -28,7 +28,7 @@ fields:
   benefits:
     type: textarea
     label: Vorteile
-    help: Jeder Vorteil in einer neuen Zeile
+    help: Jeder Vorteil in einer neuen Zeile. Höhere Stufen können die volle Liste enthalten — auf der Website werden nur die zusätzlichen Vorteile gegenüber der darunterliegenden Stufe gezeigt.
     buttons: false
     required: true
   supporters:

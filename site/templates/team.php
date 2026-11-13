@@ -63,8 +63,8 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
     foreach ($schedules as $schedule) : ?>
 
       <article>
-        <h2 class="padding-sm">Spielplan der <?= $page->title() ?> <?= $schedule->league() ?></h2>
-          <?= snippet('spielplan-mannschaft', ['schedule' => $schedule]); ?>
+        <h2 class="spielplan-heading">Spielplan der <?= $page->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
+          <?php snippet('spielplan-mannschaft', ['schedule' => $schedule]); ?>
       </article>
     <?php endforeach ?>
 

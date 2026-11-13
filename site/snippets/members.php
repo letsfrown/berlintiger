@@ -3,8 +3,25 @@
   <p class="subheadline"><?= $data->subheadline() ?></p>
 </section>
 
-<section class="team-cards-wrapper">
-    <?php foreach ($data->children()->listed() as $member) {
-      snippet(('member'), ['data' => $member]);
-    } ?>
+<?php $members = $data->children()->listed(); ?>
+<?php if ($members->isNotEmpty()) : ?>
+<section class="team-slider" aria-label="Team">
+  <div class="team-slider-chrome">
+    <button type="button" class="team-slider-btn team-slider-prev" aria-label="Vorherige Mitglieder">
+      <span aria-hidden="true">‹</span>
+    </button>
+
+    <div class="team-slider-viewport">
+      <ul class="team-slider-track">
+        <?php foreach ($members as $member) : ?>
+          <?php snippet('member', ['data' => $member]); ?>
+        <?php endforeach ?>
+      </ul>
+    </div>
+
+    <button type="button" class="team-slider-btn team-slider-next" aria-label="Nächste Mitglieder">
+      <span aria-hidden="true">›</span>
+    </button>
+  </div>
 </section>
+<?php endif ?>

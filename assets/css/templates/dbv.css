@@ -51,7 +51,7 @@ main section article:last-of-type {
   border-bottom: none;
 }
 
-.with-sidebar .sidebar h2 {
+.with-sidebar .sidebar h2:not(.spielplan-heading) {
   background-color: var(--blue);
   color: var(--white);
 }

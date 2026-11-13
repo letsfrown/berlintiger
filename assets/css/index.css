@@ -24,8 +24,8 @@
 
   --font-size-sm: clamp(0.83rem, -0.06vw + 0.85rem, 0.8rem);
   --font-size-base: clamp(1rem, 0.19vw + 0.96rem, 1.13rem);
-  --font-size-md: clamp(1.2rem, 0.58vw + 1.07rem, 1.59rem);
-  --font-size-lg: clamp(1.44rem, 1.2vw + 1.17rem, 2.25rem);
+  --font-size-md: clamp(1.25rem, 0.65vw + 1.1rem, 1.65rem);
+  --font-size-lg: clamp(1.5rem, 1.25vw + 1.2rem, 2.35rem);
   --font-size-xl: clamp(1.73rem, 2.15vw + 1.24rem, 3.18rem);
   --font-size-xxl: clamp(2.07rem, 3.59vw + 1.27rem, 4.5rem);
 
@@ -177,7 +177,7 @@ article li {
 /* NAVIGATION */
 /* – – – – – – */
 
-header {
+body > header {
   position: sticky;
   top: 0;
   z-index: 10;
@@ -224,7 +224,7 @@ header {
   color: var(--black);
 }
 
-header:has(.subnavigation) a.active {
+body > header:has(.subnavigation) a.active {
   border-bottom: 0;
 }
 
@@ -549,10 +549,15 @@ footer p {
 }
 
 .with-sidebar .sidebar {
-  overflow: hidden;
   border-left: var(--border-2px);
   flex-basis: 500px;
   text-align: center;
+  position: sticky;
+  top: var(--header-height, 0px);
+  align-self: flex-start;
+  /* No max-height: let natural sticky release at the section bottom
+     so the full last spielplan stays visible above the footer. */
+  overflow: visible;
 }
 
 .with-sidebar .hero-image {
@@ -607,6 +612,54 @@ article.hero {
   padding: var(--padding-responsive-md);
 }
 
+/* One black chrome block: brand headline + quiet widget chrome underneath */
+.sidebar h2.spielplan-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55em;
+  text-align: left;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--display-font);
+  font-size: clamp(1.05rem, 0.45vw + 0.95rem, 1.35rem);
+  font-weight: normal;
+  line-height: 1.25;
+  padding: 0.95rem var(--padding-sm);
+  white-space: normal;
+  overflow: visible;
+  text-wrap: balance;
+}
+
+.sidebar h2.spielplan-heading::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.55em;
+  height: 0.55em;
+  margin-top: 0.35em;
+  border-radius: 50%;
+  background: var(--tiger-orange);
+}
+
+.sidebar .dbv-spielplan h2.spielplan-heading::before {
+  background: var(--blue);
+}
+
+.sidebar .bb-widget {
+  --bb-title-crop: 2.35rem;
+  width: 100%;
+  overflow: hidden;
+  background: var(--black);
+}
+
+.sidebar .bb-widget iframe {
+  width: 100% !important;
+  max-width: 100%;
+  display: block;
+  /* Crop redundant team-title row; keep filters / match list */
+  margin-top: calc(-1 * var(--bb-title-crop));
+  height: calc(var(--bb-iframe-height, 600px) + var(--bb-title-crop)) !important;
+}
+
 .sidebar>article {
   border-bottom: var(--border-2px);
   margin-top: 0;
@@ -635,6 +688,9 @@ article.hero {
   }
 
   .with-sidebar .sidebar {
+    position: static;
+    top: auto;
+    overflow: visible;
     border-left: none;
     flex-basis: unset;
   }

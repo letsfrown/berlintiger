@@ -1,9 +1,11 @@
 main section,
-main section article:last-of-type {
+main section article:last-of-type,
+main section article.container {
   border-bottom: none;
 }
 
-main section article:not(.hero) {
+/* Bottom rule only between articles — never against the footer. */
+main section article:not(.hero):not(.container):not(:last-of-type) {
   border-bottom: var(--border-2px);
 }
 
@@ -53,6 +55,8 @@ main section article:not(.hero) {
   grid-template-columns: repeat(3, 1fr);
 }
 
+/* Line under the cards — not on the stretching article, so it
+   does not stack with footer border-top when the column is flush. */
 .container .team-card-grid {
   border-bottom: var(--border-2px);
 }
@@ -72,12 +76,6 @@ main section article:not(.hero) {
 
   .team-card:not(:nth-of-type(2)) {
     border-right: var(--border-2px);
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .team-card-grid {
-    border-bottom: var(--border-2px);
   }
 }
 

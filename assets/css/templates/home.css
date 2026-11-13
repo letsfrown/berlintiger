@@ -79,11 +79,7 @@ h1 {
 }
 
 
-/* DBV SPIELPLAN */
-.sidebar .dbv-spielplan h2 {
-  background-color: var(--blue);
-  color: var(--white);
-}
+/* DBV SPIELPLAN — same black chrome; blue category dot via ::before */
 
 /* VIDEO */
 
