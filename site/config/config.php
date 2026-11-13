@@ -36,7 +36,7 @@ return [
   ],
 
   // reCAPTCHA – Site-Key ist öffentlich, Secret kommt aus der Host-Config
-  'recaptcha.sitekey' => '6LcYoNMqAAAAAOBKkAOsb6GT2oBlItsYA1VmTwzS',
+  'recaptcha.sitekey' => '6LfnKB8uAAAAAEiMyBdsyavCz7tJGrIkBzhWexhy',
   'recaptcha.secret'  => null,
 
   // Anmeldeformular: Mindestabstand zwischen zwei Anfragen pro Session (Sekunden)
