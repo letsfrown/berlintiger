@@ -2,12 +2,12 @@
 
 
     <?php if ($success) : ?>
-      <div class="alert success">
+      <div class="alert success" role="status">
         <p><?= $success ?></p>
       </div>
     <?php else : ?>
       <?php if (isset($alert['error'])) : ?>
-        <p><?= $alert['error'] ?></p>
+        <p class="alert error" role="alert"><?= $alert['error'] ?></p>
       <?php endif ?>
 
 
@@ -22,19 +22,19 @@
 
         <div class="field">
           <label for="name">Name<abbr title="required">*</abbr></label>
-          <input type="text" id="name" name="name" placeholder="Vor- und Nachname" value="<?= esc($data['name'] ?? '', 'attr') ?>" required<?= isset($alert['name']) ? ' aria-invalid="true"' : '' ?>>
+          <input type="text" id="name" name="name" autocomplete="name" placeholder="Vor- und Nachname" value="<?= esc($data['name'] ?? '', 'attr') ?>" required<?= isset($alert['name']) ? ' aria-invalid="true"' : '' ?>>
           <?= isset($alert['name']) ? '<span class="alert error">' . esc($alert['name']) . '</span>' : '' ?>
         </div>
 
         <div class="field">
           <label for="email">Email<abbr title="required">*</abbr></label>
-          <input type="email" id="email" name="email" placeholder="name@beispiel.de" value="<?= esc($data['email'] ?? '', 'attr') ?>" required<?= isset($alert['email']) ? ' aria-invalid="true"' : '' ?>>
+          <input type="email" id="email" name="email" autocomplete="email" placeholder="name@beispiel.de" value="<?= esc($data['email'] ?? '', 'attr') ?>" required<?= isset($alert['email']) ? ' aria-invalid="true"' : '' ?>>
           <?= isset($alert['email']) ? '<span class="alert error">' . esc($alert['email']) . '</span>' : '' ?>
         </div>
 
         <div class="field">
           <label for="birthday">Geburtstag<abbr title="required">*</abbr></label>
-          <input type="date" id="birthday" name="birthday" min="1900-01-01" max="2100-01-01" placeholder="TT.MM.JJJJ" value="<?= esc($data['birthday'] ?? '', 'attr') ?>" required<?= isset($alert['birthday']) ? ' aria-invalid="true"' : '' ?>>
+          <input type="date" id="birthday" name="birthday" autocomplete="bday" min="1900-01-01" max="2100-01-01" placeholder="TT.MM.JJJJ" value="<?= esc($data['birthday'] ?? '', 'attr') ?>" required<?= isset($alert['birthday']) ? ' aria-invalid="true"' : '' ?>>
           <?= isset($alert['birthday']) ? '<span class="alert error">' . esc($alert['birthday']) . '</span>' : '' ?>
         </div>
 
@@ -58,10 +58,34 @@
 
 
 
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-        <div class="g-recaptcha" data-sitekey="6LcYoNMqAAAAAOBKkAOsb6GT2oBlItsYA1VmTwzS"></div>
+        <!-- reCAPTCHA lädt erst, wenn jemand mit dem Formular interagiert -->
+        <div class="g-recaptcha" data-sitekey="<?= esc(option('recaptcha.sitekey'), 'attr') ?>"></div>
+        <script>
+          (function () {
+            var form = document.currentScript.closest('form');
+            if (!form) return;
+            var loaded = false;
+            function loadRecaptcha() {
+              if (loaded) return;
+              loaded = true;
+              var s = document.createElement('script');
+              s.src = 'https://www.google.com/recaptcha/api.js';
+              s.async = true;
+              s.defer = true;
+              document.head.appendChild(s);
+            }
+            form.addEventListener('focusin', loadRecaptcha, { once: true });
+            form.addEventListener('pointerdown', loadRecaptcha, { once: true });
+            <?php if (!empty($alert)) : ?>loadRecaptcha();<?php endif ?>
+          })();
+        </script>
 
         <input type="submit" name="submit" value="Anmelden" class="button">
+
+        <div class="form-next">
+          <p><strong>Wie geht's weiter?</strong> Nach dem Absenden melden wir uns per E-Mail bei dir und schlagen dir einen Termin für ein kostenloses Probetraining in einer passenden Trainingsgruppe vor.</p>
+          <p>Geburtstag, Körpergröße und Schule helfen uns, dich der richtigen Altersklasse und einem Trainingsort in deiner Nähe zuzuordnen. Größe und Schule sind freiwillig.</p>
+        </div>
         <p class="disclaimer"><?= $parent->text()->kirbytags() ?></p>
 
       </form>

@@ -37,8 +37,30 @@ section img {
 .mitglied-form .disclaimer,
 .mitglied-form .g-recaptcha,
 .mitglied-form .field:has(textarea),
-.mitglied-form .field.school {
+.mitglied-form .field.school,
+.mitglied-form .form-next {
   grid-column: 1 / -1;
+}
+
+/* Mobil: alle Felder untereinander, kein horizontales Scrollen */
+@media (max-width: 680px) {
+  .mitglied-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mitglied-form .g-recaptcha {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
+
+.form-next {
+  font-size: var(--font-size-sm);
+  color: var(--medium-gray);
+}
+
+.form-next p + p {
+  margin-top: 0.5em;
 }
 
 .mitglied-form .button {
