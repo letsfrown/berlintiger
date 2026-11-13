@@ -1,10 +1,17 @@
 <?php
 
+use Kirby\Cms\App as Kirby;
+use Kirby\Cms\Response;
+
 Kirby::plugin('medienbaecker/autofavicon', [
 	'options' => [
+		'text' => kirby()->site()->title()->value()[0] ?? 'K',
+		// Light mode
 		'color' => '#000000',
+		'text_color' => '#ffffff',
+		// Dark mode
 		'color_dark' => '#ffffff',
-		'text' => kirby()->site()->title()->value()[0] ?? 'K'
+		'text_color_dark' => '#000000',
 	],
 	'snippets' => [
 		'autofavicon' => __DIR__ . '/snippets/autofavicon.php'
@@ -14,25 +21,36 @@ Kirby::plugin('medienbaecker/autofavicon', [
 			'pattern' => 'favicon.svg',
 			'language' => '*',
 			'action' => function () {
-				return new Response(
-					'<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<style>
-							circle {
-								fill: ' . option('medienbaecker.autofavicon.color') . ';
+				$bgLight = option('medienbaecker.autofavicon.color');
+				$bgDark = option('medienbaecker.autofavicon.color_dark');
+				$text = option('medienbaecker.autofavicon.text');
+				$textColor = option('medienbaecker.autofavicon.text_color');
+				$textColorDark = option('medienbaecker.autofavicon.text_color_dark');
+
+				$svg = <<<SVG
+				<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+					<style>
+						.bg {
+							fill: {$bgLight};
+						}
+						.text {
+							fill: {$textColor};
+						}
+						@media (prefers-color-scheme: dark) {
+							.bg {
+								fill: {$bgDark};
 							}
-							@media (prefers-color-scheme: dark) {
-								circle {
-									fill: ' . option('medienbaecker.autofavicon.color_dark') . ';
-								}
+							.text {
+								fill: {$textColorDark};
 							}
-						</style>
-						<mask id="text">
-							<rect x="0" y="0" width="100" height="100" fill="white" />
-							<text font-weight="bold" x="50" y="55" fill="black" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="60">' . option('medienbaecker.autofavicon.text') . '</text>
-						</mask>
-						<circle mask="url(#text)" cx="50" cy="50" r="50"/>
-					</svg>', 'image/svg+xml'
-				);
+						}
+					</style>
+					<circle class="bg" cx="50" cy="50" r="50"/>
+					<text class="text" x="50" y="55" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-weight="bold" font-size="60">{$text}</text>
+				</svg>
+				SVG;
+
+				return new Response($svg, 'image/svg+xml');
 			}
 		]
 	]

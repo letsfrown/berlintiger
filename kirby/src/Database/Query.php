@@ -24,11 +24,6 @@ class Query
 	public const ERROR_INVALID_QUERY_METHOD = 0;
 
 	/**
-	 * Parent Database object
-	 */
-	protected Database|null $database = null;
-
-	/**
 	 * The object which should be fetched for each row
 	 * or function to call for each row
 	 */
@@ -43,11 +38,6 @@ class Query
 	 * An array of bindings for the final query
 	 */
 	protected array $bindings = [];
-
-	/**
-	 * The table name
-	 */
-	protected string $table;
 
 	/**
 	 * The name of the primary key column
@@ -82,7 +72,7 @@ class Query
 	/**
 	 * WHERE clause
 	 */
-	protected $where = null;
+	protected string|null $where = null;
 
 	/**
 	 * GROUP BY clause
@@ -92,12 +82,12 @@ class Query
 	/**
 	 * HAVING clause
 	 */
-	protected $having = null;
+	protected string|null $having = null;
 
 	/**
 	 * ORDER BY clause
 	 */
-	protected $order = null;
+	protected string|null $order = null;
 
 	/**
 	 * The offset, which should be applied to the select query
@@ -115,14 +105,12 @@ class Query
 	protected bool $debug = false;
 
 	/**
-	 * Constructor
-	 *
-	 * @param \Kirby\Database\Database $database Database object
-	 * @param string $table Optional name of the table, which should be queried
+	 * @param string $table name of the table, which should be queried
 	 */
-	public function __construct(Database $database, string $table)
-	{
-		$this->database = $database;
+	public function __construct(
+		protected Database $database,
+		protected string $table
+	) {
 		$this->table($table);
 	}
 
@@ -220,7 +208,9 @@ class Query
 	public function table(string $table): static
 	{
 		if ($this->database->validateTable($table) === false) {
-			throw new InvalidArgumentException('Invalid table: ' . $table);
+			throw new InvalidArgumentException(
+				message: 'Invalid table: ' . $table
+			);
 		}
 
 		$this->table = $table;
@@ -335,7 +325,7 @@ class Query
 	public function bindings(array|null $bindings = null): array|static
 	{
 		if (is_array($bindings) === true) {
-			$this->bindings = array_merge($this->bindings, $bindings);
+			$this->bindings = [...$this->bindings, ...$bindings];
 			return $this;
 		}
 
@@ -418,10 +408,9 @@ class Query
 	/**
 	 * Attaches an order clause
 	 *
-	 * @param string|null $order
 	 * @return $this
 	 */
-	public function order(string $order = null)
+	public function order(string|null $order = null)
 	{
 		$this->order = $order;
 		return $this;
@@ -496,10 +485,41 @@ class Query
 
 	/**
 	 * Builds a count query
+	 *
+	 * Distinct and grouped queries are counted in a subquery, where
+	 * MySQL fails on repeated column names (e.g. `users.*, roles.*`
+	 * with a join), so alias those columns to count such queries.
 	 */
 	public function count(): int
 	{
-		return (int)$this->aggregate('COUNT');
+		// `DISTINCT *` compares full rows, which a primary key keeps
+		// unique, so only a select list makes `DISTINCT` change the count
+		$all      = $this->database->sql()->selected($this->table, $this->select) === '*';
+		$distinct = $this->distinct === true && $all === false;
+
+		if ($this->group === null && $distinct === false) {
+			return (int)$this->aggregate('COUNT');
+		}
+
+		// without a select list there are no aliases to keep, and `*` can fail
+		// MySQL's `ONLY_FULL_GROUP_BY` or repeat column names of joined tables
+		if ($all === true) {
+			$this->distinct(false)->select('1');
+		}
+
+		// `COUNT(*)` would only count the first group and ignore
+		// `DISTINCT`, so count the rows of the full query instead
+		$sql = $this->order(null)->offset(0)->limit(null)->build('select');
+		$row = $this->query([
+			'query'    => 'SELECT COUNT(*) AS aggregation FROM (' . $sql['query'] . ') AS counted',
+			'bindings' => $sql['bindings']
+		], [
+			'fetch'    => Obj::class,
+			'iterator' => 'array',
+			'method'   => 'fetch'
+		]);
+
+		return $row instanceof Obj ? (int)$row->get('aggregation') : 0;
 	}
 
 	/**
@@ -540,8 +560,11 @@ class Query
 	 *
 	 * @param int $default An optional default value, which should be returned if the query fails
 	 */
-	public function aggregate(string $method, string $column = '*', int $default = 0)
-	{
+	public function aggregate(
+		string $method,
+		string $column = '*',
+		int $default = 0
+	) {
 		// reset the sorting to avoid counting issues
 		$this->order = null;
 
@@ -589,7 +612,11 @@ class Query
 			$this->database->fail();
 		}
 
-		$result = $this->database->query($sql['query'], $sql['bindings'], $params);
+		$result = $this->database->query(
+			$sql['query'],
+			$sql['bindings'],
+			$params
+		);
 
 		$this->reset();
 
@@ -720,10 +747,10 @@ class Query
 		// if there isn't already an explicit order, order by the primary key
 		// instead of the column that was requested (which would be implied otherwise)
 		if ($this->order === null) {
-			$sql        = $this->database->sql();
-			$primaryKey = $sql->combineIdentifier($this->table, $this->primaryKeyName);
+			$sql = $this->database->sql();
+			$key = $sql->combineIdentifier($this->table, $this->primaryKeyName);
 
-			$this->order($primaryKey . ' ASC');
+			$this->order($key . ' ASC');
 		}
 
 		$results = $this->query($this->select([$column])->build('select'), [
@@ -770,7 +797,9 @@ class Query
 	 */
 	public function insert($values = null)
 	{
-		$query = $this->execute($this->values($values)->build('insert'));
+		$query = $this->execute(
+			$this->values($values)->build('insert')
+		);
 
 		if ($this->debug === true) {
 			return $query;
@@ -787,7 +816,9 @@ class Query
 	 */
 	public function update($values = null, $where = null): bool
 	{
-		return $this->execute($this->values($values)->where($where)->build('update'));
+		return $this->execute(
+			$this->values($values)->where($where)->build('update')
+		);
 	}
 
 	/**
@@ -797,7 +828,9 @@ class Query
 	 */
 	public function delete($where = null): bool
 	{
-		return $this->execute($this->where($where)->build('delete'));
+		return $this->execute(
+			$this->where($where)->build('delete')
+		);
 	}
 
 	/**
@@ -809,7 +842,11 @@ class Query
 			$column = Str::lower($match[1]);
 			return $this->findBy($column, $arguments[0]);
 		}
-		throw new InvalidArgumentException('Invalid query method: ' . $method, static::ERROR_INVALID_QUERY_METHOD);
+
+		throw new InvalidArgumentException(
+			message: 'Invalid query method: ' . $method,
+			code: static::ERROR_INVALID_QUERY_METHOD
+		);
 	}
 
 	/**
@@ -818,8 +855,11 @@ class Query
 	 * @param array $args Arguments, see where() description
 	 * @param mixed $current Current value (like $this->where)
 	 */
-	protected function filterQuery(array $args, $current, string $mode = 'AND')
-	{
+	protected function filterQuery(
+		array $args,
+		$current,
+		string $mode = 'AND'
+	) {
 		$result = '';
 
 		switch (count($args)) {
@@ -827,21 +867,37 @@ class Query
 
 				if ($args[0] === null) {
 					return $current;
+				}
 
 				// ->where('username like "myuser"');
-				} elseif (is_string($args[0]) === true) {
+				if (is_string($args[0]) === true) {
 					// simply add the entire string to the where clause
-					// escaping or using bindings has to be done before calling this method
+					// escaping or using bindings has to be done
+					// before calling this method
 					$result = $args[0];
 
 				// ->where(['username' => 'myuser']);
 				} elseif (is_array($args[0]) === true) {
 					// simple array mode (AND operator)
-					$sql = $this->database->sql()->values($this->table, $args[0], ' AND ', true, true);
+					$sql = $this->database->sql();
 
-					$result = $sql['query'];
+					// every column in the array must be a valid column;
+					// otherwise the condition would be silently dropped
+					// (in Sql::valueSet()) and the clause could collapse to
+					// nothing, turning a scoped update/delete into a
+					// full-table operation
+					foreach (array_keys($args[0]) as $column) {
+						if ($sql->columnName($this->table, $column) === null) {
+							throw new InvalidArgumentException(
+								message: 'Invalid column "' . $column . '" in clause'
+							);
+						}
+					}
 
-					$this->bindings($sql['bindings']);
+					$values = $sql->values($this->table, $args[0], ' AND ', true, true);
+					$result = $values['query'];
+
+					$this->bindings($values['bindings']);
 				} elseif (is_callable($args[0]) === true) {
 					$query = clone $this;
 
@@ -852,7 +908,7 @@ class Query
 					call_user_func($args[0], $query);
 
 					// copy over the bindings from the nested query
-					$this->bindings = array_merge($this->bindings, $query->bindings);
+					$this->bindings = [...$this->bindings, ...$query->bindings];
 
 					$result = '(' . $query->where . ')';
 				}
@@ -861,7 +917,10 @@ class Query
 			case 2:
 
 				// ->where('username like :username', ['username' => 'myuser'])
-				if (is_string($args[0]) === true && is_array($args[1]) === true) {
+				if (
+					is_string($args[0]) === true &&
+					is_array($args[1]) === true
+				) {
 					// prepared where clause
 					$result = $args[0];
 
@@ -869,7 +928,10 @@ class Query
 					$this->bindings($args[1]);
 
 				// ->where('username like ?', 'myuser')
-				} elseif (is_string($args[0]) === true && is_string($args[1]) === true) {
+				} elseif (
+					is_string($args[0]) === true &&
+					is_scalar($args[1]) === true
+				) {
 					// prepared where clause
 					$result = $args[0];
 
@@ -881,16 +943,28 @@ class Query
 			case 3:
 
 				// ->where('username', 'like', 'myuser');
-				if (is_string($args[0]) === true && is_string($args[1]) === true) {
+				if (
+					is_string($args[0]) === true &&
+					is_string($args[1]) === true
+				) {
 					// validate column
 					$sql = $this->database->sql();
 					$key = $sql->columnName($this->table, $args[0]);
 
+					if ($key === null) {
+						throw new InvalidArgumentException(
+							message: 'Invalid column "' . $args[0] . '" in clause'
+						);
+					}
+
 					// ->where('username', 'in', ['myuser', 'myotheruser']);
+					// ->where('quantity', 'between', [10, 50]);
 					$predicate = trim(strtoupper($args[1]));
 					if (is_array($args[2]) === true) {
-						if (in_array($predicate, ['IN', 'NOT IN']) === false) {
-							throw new InvalidArgumentException('Invalid predicate ' . $predicate);
+						if (in_array($predicate, ['IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN'], true) === false) {
+							throw new InvalidArgumentException(
+								message: 'Invalid predicate ' . $predicate
+							);
 						}
 
 						// build a list of bound values
@@ -903,22 +977,29 @@ class Query
 							$values[] = $valueBinding;
 						}
 
-						// add that to the where clause in parenthesis
-						$result = $key . ' ' . $predicate . ' (' . implode(', ', $values) . ')';
+						// add that to the where clause in parenthesis or seperated by AND
+						$values = match ($predicate) {
+							'IN',
+							'NOT IN'      => '(' . implode(', ', $values) . ')',
+							'BETWEEN',
+							'NOT BETWEEN' => $values[0] . ' AND ' . $values[1]
+						};
+						$result = $key . ' ' . $predicate . ' ' . $values;
 
 					// ->where('username', 'like', 'myuser');
 					} else {
 						$predicates = [
 							'=', '>=', '>', '<=', '<', '<>', '!=', '<=>',
 							'IS', 'IS NOT',
-							'BETWEEN', 'NOT BETWEEN',
 							'LIKE', 'NOT LIKE',
 							'SOUNDS LIKE',
 							'REGEXP', 'NOT REGEXP'
 						];
 
-						if (in_array($predicate, $predicates) === false) {
-							throw new InvalidArgumentException('Invalid predicate/operator ' . $predicate);
+						if (in_array($predicate, $predicates, true) === false) {
+							throw new InvalidArgumentException(
+								message: 'Invalid predicate/operator ' . $predicate
+							);
 						}
 
 						$valueBinding = $sql->bindingName('value');

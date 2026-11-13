@@ -2,6 +2,8 @@
 
 namespace Kirby\Cms;
 
+use Kirby\Filesystem\Asset;
+use Kirby\Filesystem\F;
 use Kirby\Filesystem\IsFile;
 
 /**
@@ -18,7 +20,7 @@ class FileVersion
 	use IsFile;
 
 	protected array $modifications;
-	protected $original;
+	protected File|Asset $original;
 
 	public function __construct(array $props)
 	{
@@ -50,7 +52,7 @@ class FileVersion
 
 		// content fields
 		if ($this->original() instanceof File) {
-			return $this->original()->content()->get($method, $arguments);
+			return $this->original()->content()->get($method);
 		}
 	}
 
@@ -99,6 +101,10 @@ class FileVersion
 			$this->root(),
 			$this->modifications()
 		);
+
+		// like `Media::thumb()`, as the job is done
+		F::remove(dirname($this->root()) . '/.jobs/' . basename($this->root()) . '.json');
+
 		return $this;
 	}
 
@@ -108,10 +114,10 @@ class FileVersion
 	 */
 	public function toArray(): array
 	{
-		$array = array_merge(
-			$this->asset()->toArray(),
-			['modifications' => $this->modifications()]
-		);
+		$array = [
+			...$this->asset()->toArray(),
+			'modifications' => $this->modifications()
+		];
 
 		ksort($array);
 

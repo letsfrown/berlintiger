@@ -4,6 +4,7 @@ namespace Kirby\Cms;
 
 use Kirby\Api\Api as BaseApi;
 use Kirby\Exception\NotFoundException;
+use Kirby\Exception\PermissionException;
 use Kirby\Form\Form;
 use Kirby\Session\Session;
 
@@ -55,9 +56,10 @@ class Api extends BaseApi
 	 */
 	public function clone(array $props = []): static
 	{
-		return parent::clone(array_merge([
-			'kirby' => $this->kirby
-		], $props));
+		return parent::clone([
+			'kirby' => $this->kirby,
+			...$props
+		]);
 	}
 
 	/**
@@ -71,7 +73,7 @@ class Api extends BaseApi
 		$field = Form::for($model)->field($name);
 
 		$fieldApi = $this->clone([
-			'data'   => array_merge($this->data(), ['field' => $field]),
+			'data'   => [...$this->data(), 'field' => $field],
 			'routes' => $field->api(),
 		]);
 
@@ -104,7 +106,7 @@ class Api extends BaseApi
 	 */
 	public function files(string $path): Files
 	{
-		return $this->parent($path)->files()->filter('isAccessible', true);
+		return $this->parent($path)->files()->filter('isListable', true);
 	}
 
 	/**
@@ -167,7 +169,7 @@ class Api extends BaseApi
 			default           => $parent->children()
 		};
 
-		return $pages->filter('isAccessible', true);
+		return $pages->filter('isListable', true);
 	}
 
 	/**
@@ -182,7 +184,38 @@ class Api extends BaseApi
 			return $pages->search($this->requestQuery('q'));
 		}
 
-		return $pages->query($this->requestBody());
+		return $pages->query(array_filter([
+			'limit'    => $this->requestBody('limit'),
+			'offset'   => $this->requestBody('offset'),
+			'paginate' => $this->requestBody('paginate'),
+			'search'   => $this->requestBody('search'),
+		], fn ($value) => $value !== null));
+	}
+
+	/**
+	 * @throws \Kirby\Exception\NotFoundException if the section type cannot be found or the section cannot be loaded
+	 */
+	public function sectionApi(
+		ModelWithContent $model,
+		string $name,
+		string|null $path = null
+	): mixed {
+		if (!$section = $model->blueprint()?->section($name)) {
+			throw new NotFoundException(
+				message: 'The section "' . $name . '" could not be found'
+			);
+		}
+
+		$sectionApi = $this->clone([
+			'data'   => [...$this->data(), 'section' => $section],
+			'routes' => $section->api(),
+		]);
+
+		return $sectionApi->call(
+			$path,
+			$this->requestMethod(),
+			$this->requestData()
+		);
 	}
 
 	/**
@@ -192,17 +225,18 @@ class Api extends BaseApi
 	 */
 	public function session(array $options = []): Session
 	{
-		return $this->kirby->session(array_merge([
-			'detect' => true
-		], $options));
+		return $this->kirby->session(['detect' => true, ...$options]);
 	}
 
 	/**
 	 * Returns the site object
+	 *
+	 * @throws \Kirby\Exception\NotFoundException if the site cannot be accessed
+	 * @since 5.4.0
 	 */
 	public function site(): Site
 	{
-		return $this->kirby->site();
+		return Find::site();
 	}
 
 	/**
@@ -210,7 +244,6 @@ class Api extends BaseApi
 	 * returns the current authenticated user if no
 	 * id is passed
 	 *
-	 * @param string|null $id User's id
 	 * @throws \Kirby\Exception\NotFoundException if the user for the given id cannot be found
 	 */
 	public function user(string|null $id = null): User|null
@@ -231,6 +264,18 @@ class Api extends BaseApi
 	 */
 	public function users(): Users
 	{
-		return $this->kirby->users();
+		return Find::users();
+	}
+
+	/**
+	 * Validates that the acting user has access to the given area.
+	 *
+	 * @throws \Kirby\Exception\PermissionException
+	 */
+	public function validateAreaAccess(string $area): void
+	{
+		if ($this->kirby->user()?->role()->permissions()->for('access', $area) !== true) {
+			throw new PermissionException('No access');
+		}
 	}
 }

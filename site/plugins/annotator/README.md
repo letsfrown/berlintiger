@@ -1,13 +1,14 @@
 # Kirby – Annotator
 
 This plugin allows you to add notes to images by pinning them to specific coordinates / areas.
-Compatible with Kirby 3 and 4.
+
+> Compatible with Kirby 5 (latest release) as well as Kirby 3 and 4 (use v1.0.6 of this plugin). If you are looking to use this field with Kirby 2, please switch to the `kirby-2` branch.
 
 ![screenshot-lemons](https://user-images.githubusercontent.com/14079751/46471969-e9424600-c7db-11e8-93e3-9f2596423ad9.jpg)
 
 ## Overview
 
-> This plugin is completely free and published under the MIT license. However, if you are using it in a commercial project and want to help me keep up with maintenance, please consider [making a donation of your choice](https://www.paypal.me/sylvainjl) or purchasing your license(s) through [my affiliate link](https://a.paddle.com/v2/click/1129/36369?link=1170).
+> This plugin is completely free and published under the MIT license. However, if you are using it in a commercial project and want to help me keep up with maintenance, you can consider [making a donation of your choice](https://www.paypal.me/sylvainjl).
 
 - [1. Installation](#1-installation)
 - [2. Blueprint usage](#2-blueprint-usage)
@@ -18,8 +19,9 @@ Compatible with Kirby 3 and 4.
   * [4.1. How are the informations stored?](#41-how-are-the-informations-stored)
   * [4.2. Methods and functions](#42-methods-and-functions)
   * [4.3. Basic usage example](#43-basic-usage-example)
-- [5. License](#5-license)
-- [6. Crédits](#6-credits)
+- [5. Known issues](#5-known-issues)
+- [6. License](#6-license)
+- [7. Crédits](#7-credits)
 
 
 #### TLDR – Just get me started 👀
@@ -30,8 +32,6 @@ Compatible with Kirby 3 and 4.
 <br/>
 
 ## 1. Installation
-
-> If you are looking to use this field with Kirby 2, please switch to the `kirby-2` branch.
 
 Download and copy this repository to ```/site/plugins/annotator```
 
@@ -173,7 +173,9 @@ When set to `true`, mouse coordinates will be shown in real-time in the toolbar.
 
 ##### • Image file
 
-The section needs to be synced with a field returning an image url to work with.
+###### 1. From blueprint
+
+The section can be synced with a field on the same page / tab, returning an image url to work with.
 
 In theory, using a ```select``` field might work, but I strongly recommend using a ```files``` field and limiting it to a single file. Not only does it look nicer, but most importantly it returns an absolute url of the file:
 
@@ -189,6 +191,22 @@ src:
 ```
 
 > Note: You don’t need to explicitly set a ```max``` value, though it may look clearer. When confronted to a files field containing multiple files, the plugin will always use the first one.
+
+###### 2. From query
+
+You can also use Kirby's built-in [query language](https://getkirby.com/docs/guide/blueprints/query-language) or an absolute url to an image.
+When using a query, make sure it returns either an absolute url or a [$file](https://getkirby.com/docs/reference/objects/cms/file) object.
+
+```yaml
+storage:
+  src: page.fieldname.toFile
+  src: page.parent.fieldname.toFile
+  src: page.images.first
+  src: page('page://...').fieldname.toFile
+  src: https://your.website/path/to/image.jpg
+  src: ...
+```
+
 
 ##### • Markers structure
 
@@ -443,12 +461,17 @@ In your CSS:
 
 <br/>
 
-## 5. License
+## 5. Known issues
+
+- `.svg` files should have explicit dimensions in order to be displayed correctly (see [#18](https://github.com/sylvainjule/kirby-annotator/issues/18))
+
+
+## 6. License
 
 MIT
 
 <br/>
 
-## 6. Credits
+## 7. Credits
 
 - The fields synchronization has been taken from [@rasteiner](https://github.com/rasteiner/kn-map-section)'s map section. 🙏

@@ -2,7 +2,7 @@
 
 namespace Kirby\Image;
 
-use Kirby\Toolkit\Str;
+use Stringable;
 
 /**
  * The Dimension class is used to provide additional
@@ -16,7 +16,7 @@ use Kirby\Toolkit\Str;
  * @copyright Bastian Allgeier
  * @license   https://opensource.org/licenses/MIT
  */
-class Dimensions
+class Dimensions implements Stringable
 {
 	public function __construct(
 		public int $width,
@@ -69,8 +69,7 @@ class Dimensions
 	/**
 	 * Recalculates the width and height to fit into the given box.
 	 *
-	 * <code>
-	 *
+	 * ```php
 	 * $dimensions = new Dimensions(1200, 768);
 	 * $dimensions->fit(500);
 	 *
@@ -79,8 +78,7 @@ class Dimensions
 	 *
 	 * echo $dimensions->height();
 	 * // output: 320
-	 *
-	 * </code>
+	 * ```
 	 *
 	 * @param int $box the max width and/or height
 	 * @param bool $force If true, the dimensions will be
@@ -121,8 +119,7 @@ class Dimensions
 	/**
 	 * Recalculates the width and height to fit the given height
 	 *
-	 * <code>
-	 *
+	 * ```php
 	 * $dimensions = new Dimensions(1200, 768);
 	 * $dimensions->fitHeight(500);
 	 *
@@ -131,8 +128,7 @@ class Dimensions
 	 *
 	 * echo $dimensions->height();
 	 * // output: 500
-	 *
-	 * </code>
+	 * ```
 	 *
 	 * @param int|null $fit the max height
 	 * @param bool $force If true, the dimensions will be
@@ -179,8 +175,7 @@ class Dimensions
 	/**
 	 * Recalculates the width and height to fit the given width
 	 *
-	 * <code>
-	 *
+	 * ```php
 	 * $dimensions = new Dimensions(1200, 768);
 	 * $dimensions->fitWidth(500);
 	 *
@@ -189,8 +184,7 @@ class Dimensions
 	 *
 	 * echo $dimensions->height();
 	 * // output: 320
-	 *
-	 * </code>
+	 * ```
 	 *
 	 * @param int|null $fit the max width
 	 * @param bool $force If true, the dimensions will be
@@ -238,14 +232,26 @@ class Dimensions
 	/**
 	 * Detect the dimensions for an image file
 	 */
-	public static function forImage(string $root): static
+	public static function forImage(Image $image): static
 	{
-		if (file_exists($root) === false) {
+		if ($image->exists() === false) {
 			return new static(0, 0);
 		}
 
-		$size = getimagesize($root);
-		return new static($size[0] ?? 0, $size[1] ?? 1);
+		$orientation = $image->exif()->orientation();
+		$size        = $image->imagesize();
+
+		// handle invalid or corrupted images that bypass mime type validation
+		if ($size === false) {
+			return new static(0, 0);
+		}
+
+		return match ($orientation) {
+			// 5-8 = rotated
+			5, 6, 7, 8 => new static($size[1] ?? 1, $size[0] ?? 0),
+			// 1 = normal; 2-4 = flipped
+			default    => new static($size[0] ?? 0, $size[1] ?? 1)
+		};
 	}
 
 	/**
@@ -253,41 +259,12 @@ class Dimensions
 	 */
 	public static function forSvg(string $root): static
 	{
-		// avoid xml errors
-		libxml_use_internal_errors(true);
+		$svg = Svg::from($root);
 
-		$content = file_get_contents($root);
-		$height  = 0;
-		$width   = 0;
-		$xml     = simplexml_load_string($content);
-
-		if ($xml !== false) {
-			$attr      = $xml->attributes();
-			$rawWidth  = $attr->width;
-			$width     = (int)$rawWidth;
-			$rawHeight = $attr->height;
-			$height    = (int)$rawHeight;
-
-			// use viewbox values if direct attributes are 0
-			// or based on percentages
-			if (empty($attr->viewBox) === false) {
-				$box = explode(' ', $attr->viewBox);
-
-				// when using viewbox values, make sure to subtract
-				// first two box values from last two box values
-				// to retrieve the absolute dimensions
-
-				if (Str::endsWith($rawWidth, '%') === true || $width === 0) {
-					$width = (int)($box[2] ?? 0) - (int)($box[0] ?? 0);
-				}
-
-				if (Str::endsWith($rawHeight, '%') === true || $height === 0) {
-					$height = (int)($box[3] ?? 0) - (int)($box[1] ?? 0);
-				}
-			}
-		}
-
-		return new static($width, $height);
+		return new static(
+			(int)round($svg->width() ?? 0),
+			(int)round($svg->height() ?? 0)
+		);
 	}
 
 	/**
@@ -329,13 +306,11 @@ class Dimensions
 	/**
 	 * Calculates and returns the ratio
 	 *
-	 * <code>
-	 *
+	 * ```php
 	 * $dimensions = new Dimensions(1200, 768);
 	 * echo $dimensions->ratio();
 	 * // output: 1.5625
-	 *
-	 * </code>
+	 * ```
 	 */
 	public function ratio(): float
 	{

@@ -1,6 +1,5 @@
 <?php
 
-use Kirby\Cms\Url;
 use Kirby\Toolkit\Html;
 
 /**
@@ -18,8 +17,15 @@ use Kirby\Toolkit\Html;
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <meta name="referrer" content="same-origin">
+  <meta name="robots" content="noindex, nofollow">
 
   <title>Kirby Panel</title>
+
+	<script type="importmap" nonce="<?= $nonce ?>">
+	{
+	  "imports": <?= json_encode($assets['import-maps'] ?? []) ?>
+	}
+	</script>
 
   <script nonce="<?= $nonce ?>">
     if (
@@ -35,8 +41,8 @@ use Kirby\Toolkit\Html;
   <link nonce="<?= $nonce ?>" rel="stylesheet" href="<?= $css ?>">
   <?php endforeach ?>
 
-  <?php foreach ($assets['icons'] as $rel => $icon): ?>
-  <link nonce="<?= $nonce ?>" rel="<?= $rel ?>" href="<?= Url::to($icon['url']) ?>" type="<?= $icon['type'] ?>">
+  <?php foreach ($assets['icons'] as $icon): ?>
+  <?= Html::tag('link', null, $icon) ?>
   <?php endforeach ?>
 
   <?php foreach ($assets['js'] as $js): ?>
@@ -61,16 +67,16 @@ use Kirby\Toolkit\Html;
     window.fiber = <?= json_encode($fiber) ?>;
   </script>
 
-  <?php foreach ($assets['js'] as $key => $js): ?>
-  <?php if ($key === 'index'): ?>
-  <script type="module" nonce="<?= $nonce ?>">
-    <?= $assets['plugin-imports'] ?>
-    import('<?= $js['src'] ?>')
-  </script>
-  <?php else: ?>
-  <?= Html::tag('script', '', $js) . PHP_EOL ?>
-  <?php endif ?>
-  <?php endforeach ?>
+	<?php foreach ($assets['js'] as $key => $js): ?>
+		<?php if ($key === 'index'): ?>
+			<script type="module" nonce="<?= $nonce ?>" defer>
+				<?= $assets['plugin-imports'] ?>
+    		import('<?= $js['src'] ?>')
+			</script>
+		<?php else: ?>
+			<?= Html::tag('script', '', $js) . PHP_EOL ?>
+		<?php endif ?>
+	<?php endforeach ?>
 
 </body>
 </html>

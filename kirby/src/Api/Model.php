@@ -49,7 +49,7 @@ class Model
 
 		if ($data === null) {
 			if (($schema['default'] ?? null) instanceof Closure === false) {
-				throw new Exception('Missing model data');
+				throw new Exception(message: 'Missing model data');
 			}
 
 			$this->data = $schema['default']->call($this->api);
@@ -59,7 +59,11 @@ class Model
 			isset($schema['type']) === true &&
 			$this->data instanceof $schema['type'] === false
 		) {
-			throw new Exception(sprintf('Invalid model type "%s" expected: "%s"', get_class($this->data), $schema['type']));
+			$class = match ($this->data) {
+				null    => 'null',
+				default => $this->data::class,
+			};
+			throw new Exception(sprintf('Invalid model type "%s" expected: "%s"', $class, $schema['type']));
 		}
 	}
 
@@ -78,7 +82,7 @@ class Model
 		}
 
 		if ($keys !== null && is_array($keys) === false) {
-			throw new Exception('Invalid select keys');
+			throw new Exception(message: 'Invalid select keys');
 		}
 
 		$this->select = $keys;
@@ -105,7 +109,7 @@ class Model
 
 			if (is_string($value) === true) {
 				if ($value === 'any') {
-					throw new Exception('Invalid sub view: "any"');
+					throw new Exception(message: 'Invalid sub view: "any"');
 				}
 
 				$selection[$key] = [
@@ -210,12 +214,12 @@ class Model
 		}
 
 		if (isset($this->views[$name]) === false) {
-			$name = 'default';
-
 			// try to fall back to the default view at least
-			if (isset($this->views[$name]) === false) {
+			if (isset($this->views['default']) === false) {
 				throw new Exception(sprintf('The view "%s" does not exist', $name));
 			}
+
+			$name = 'default';
 		}
 
 		return $this->select($this->views[$name]);

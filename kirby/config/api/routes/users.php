@@ -1,23 +1,26 @@
 <?php
 
+use Kirby\Cms\Find;
+use Kirby\Exception\PermissionException;
 use Kirby\Filesystem\F;
 
 /**
  * User Routes
  */
 return [
+	// @codeCoverageIgnoreStart
 	[
 		'pattern' => 'users',
 		'method'  => 'GET',
 		'action'  => function () {
-			return $this->users()->sort('username', 'asc', 'email', 'asc');
+			return Find::users()->sort('username', 'asc', 'email', 'asc');
 		}
 	],
 	[
 		'pattern' => 'users',
 		'method'  => 'POST',
 		'action'  => function () {
-			return $this->users()->create($this->requestBody());
+			return Find::users()->create($this->requestBody());
 		}
 	],
 	[
@@ -25,10 +28,15 @@ return [
 		'method'  => 'GET|POST',
 		'action'  => function () {
 			if ($this->requestMethod() === 'GET') {
-				return $this->users()->search($this->requestQuery('q'));
+				return Find::users()->search($this->requestQuery('q'));
 			}
 
-			return $this->users()->query($this->requestBody());
+			return Find::users()->query(array_filter([
+				'limit'    => $this->requestBody('limit'),
+				'offset'   => $this->requestBody('offset'),
+				'paginate' => $this->requestBody('paginate'),
+				'search'   => $this->requestBody('search'),
+			], fn ($value) => $value !== null));
 		}
 	],
 	[
@@ -38,7 +46,7 @@ return [
 		],
 		'method'  => 'GET',
 		'action'  => function (string $id) {
-			return $this->user($id);
+			return Find::user($id);
 		}
 	],
 	[
@@ -48,7 +56,7 @@ return [
 		],
 		'method'  => 'PATCH',
 		'action'  => function (string $id) {
-			return $this->user($id)->update($this->requestBody(), $this->language(), true);
+			return Find::user($id)->update($this->requestBody(), $this->language(), true);
 		}
 	],
 	[
@@ -58,7 +66,7 @@ return [
 		],
 		'method'  => 'DELETE',
 		'action'  => function (string $id) {
-			return $this->user($id)->delete();
+			return Find::user($id)->delete();
 		}
 	],
 	[
@@ -68,7 +76,7 @@ return [
 		],
 		'method'  => 'GET',
 		'action'  => function (string $id) {
-			return $this->user($id)->avatar();
+			return Find::user($id)->avatar();
 		}
 	],
 	// @codeCoverageIgnoreStart
@@ -79,20 +87,28 @@ return [
 		],
 		'method'  => 'POST',
 		'action'  => function (string $id) {
-			$this->user($id)->avatar()?->delete();
-
 			return $this->upload(
-				function ($source, $filename) use ($id) {
-					$props = [
-						'filename' => 'profile.' . F::extension($filename),
-						'template' => 'avatar',
-						'source'   => $source
-					];
+				single: true,
+				callback: function ($source, $filename) use ($id) {
+					$user   = Find::user($id);
+					$method = $user->avatar() === null ? 'createAvatar' : 'replaceAvatar';
 
-					// move the source file from the temp dir
-					return $this->user($id)->createFile($props, true);
+					return $user->$method(
+						source: $source,
+						extension: F::extension($filename),
+						move: true
+					)->avatar();
 				},
-				single: true
+				preflight: function () use ($id) {
+					$user = Find::user($id);
+
+					if ($user->permissions()->can('update') !== true) {
+						throw new PermissionException(
+							key: 'user.update.permission',
+							data: ['name' => $user->username()]
+						);
+					}
+				},
 			);
 		}
 	],
@@ -104,7 +120,7 @@ return [
 		],
 		'method'  => 'DELETE',
 		'action'  => function (string $id) {
-			return $this->user($id)->avatar()->delete();
+			return Find::user($id)->deleteAvatar();
 		}
 	],
 	[
@@ -114,7 +130,7 @@ return [
 		],
 		'method'  => 'GET',
 		'action'  => function (string $id) {
-			return $this->user($id)->blueprint();
+			return Find::user($id)->blueprint();
 		}
 	],
 	[
@@ -124,7 +140,7 @@ return [
 		],
 		'method'  => 'GET',
 		'action'  => function (string $id) {
-			return $this->user($id)->blueprints($this->requestQuery('section'));
+			return Find::user($id)->blueprints($this->requestQuery('section'));
 		}
 	],
 	[
@@ -134,7 +150,7 @@ return [
 		],
 		'method'  => 'PATCH',
 		'action'  => function (string $id) {
-			return $this->user($id)->changeEmail($this->requestBody('email'));
+			return Find::user($id)->changeEmail($this->requestBody('email'));
 		}
 	],
 	[
@@ -144,7 +160,7 @@ return [
 		],
 		'method'  => 'PATCH',
 		'action'  => function (string $id) {
-			return $this->user($id)->changeLanguage($this->requestBody('language'));
+			return Find::user($id)->changeLanguage($this->requestBody('language'));
 		}
 	],
 	[
@@ -154,7 +170,7 @@ return [
 		],
 		'method'  => 'PATCH',
 		'action'  => function (string $id) {
-			return $this->user($id)->changeName($this->requestBody('name'));
+			return Find::user($id)->changeName($this->requestBody('name'));
 		}
 	],
 	[
@@ -164,7 +180,27 @@ return [
 		],
 		'method'  => 'PATCH',
 		'action'  => function (string $id) {
-			return $this->user($id)->changePassword($this->requestBody('password'));
+			$user        = Find::user($id);
+			$currentUser = $this->kirby()->user();
+
+			// validate password of acting user unless they have logged in to reset it;
+			// always validate password of acting user when changing password of other users
+			if (
+				$this->kirby()->auth()->isResettingPassword($this->session()) !== true ||
+				$user->is($currentUser) !== true
+			) {
+				$currentUser->validatePassword($this->requestBody('currentPassword'));
+			}
+
+			$result = $user->changePassword($this->requestBody('password'));
+
+			// if we changed the password of the current user…
+			if ($user->isLoggedIn() === true) {
+				// …don't allow additional resets (now the password is known again)
+				$this->session()->remove('kirby.resetPassword');
+			}
+
+			return $result;
 		}
 	],
 	[
@@ -174,7 +210,7 @@ return [
 		],
 		'method'  => 'PATCH',
 		'action'  => function (string $id) {
-			return $this->user($id)->changeRole($this->requestBody('role'));
+			return Find::user($id)->changeRole($this->requestBody('role'));
 		}
 	],
 	[
@@ -183,7 +219,17 @@ return [
 			'users/(:any)/roles',
 		],
 		'action'  => function (string $id) {
-			return $this->user($id)->roles();
+			return Find::user($id)->roles();
+		}
+	],
+	[
+		'pattern' => [
+			'(account)/fields/(:any)/(:all?)',
+			'users/(:any)/fields/(:any)/(:all?)',
+		],
+		'method'  => 'ALL',
+		'action'  => function (string $id, string $fieldName, string|null $path = null) {
+			return $this->fieldApi(Find::user($id), $fieldName, $path);
 		}
 	],
 	[
@@ -193,19 +239,20 @@ return [
 		],
 		'method'  => 'GET',
 		'action'  => function (string $id, string $sectionName) {
-			if ($section = $this->user($id)->blueprint()->section($sectionName)) {
+			if ($section = Find::user($id)->blueprint()->section($sectionName)) {
 				return $section->toResponse();
 			}
 		}
 	],
 	[
 		'pattern' => [
-			'(account)/fields/(:any)/(:all?)',
-			'users/(:any)/fields/(:any)/(:all?)',
+			'(account)/sections/(:any)/(:all?)',
+			'users/(:any)/sections/(:any)/(:all?)',
 		],
 		'method'  => 'ALL',
-		'action'  => function (string $id, string $fieldName, string $path = null) {
-			return $this->fieldApi($this->user($id), $fieldName, $path);
+		'action'  => function (string $id, string $sectionName, string|null $path = null) {
+			return $this->sectionApi(Find::user($id), $sectionName, $path);
 		}
 	],
+	// @codeCoverageIgnoreEnd
 ];
