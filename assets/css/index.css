@@ -1221,6 +1221,7 @@ main .annotated img,
 main .video-poster img,
 main .video-container img,
 main .kinderschutz,
+main img.cover.ellipse,
 main .turnier-logo,
 main .supporter-list img,
 /* Gallery: border lives on the thumb (below), not the img. */
