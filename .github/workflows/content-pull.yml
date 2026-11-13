@@ -1,0 +1,88 @@
+name: Content pull
+
+# Holt den Live-Content (content/) per FTPS und committet Änderungen.
+# NUR LESEND: lftp "mirror" ohne --reverse lädt ausschließlich herunter.
+# Auf dem Server wird nichts hochgeladen, überschrieben oder gelöscht.
+
+on:
+  schedule:
+    - cron: '17 2 * * *'   # täglich ca. 03:17 / 04:17 Uhr Berlin
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: content-pull
+  cancel-in-progress: false
+
+jobs:
+  pull:
+    name: Pull live content
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+
+      - name: Download live content (read-only)
+        env:
+          FTPS_HOST: ${{ secrets.FTPS_HOST }}
+          FTPS_PORT: ${{ secrets.FTPS_PORT }}
+          FTPS_USER: ${{ secrets.FTPS_USER }}
+          FTPS_PASS: ${{ secrets.FTPS_PASS }}
+          FTPS_REMOTE_ROOT: ${{ secrets.FTPS_REMOTE_ROOT }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "${FTPS_HOST}" || -z "${FTPS_USER}" || -z "${FTPS_PASS}" ]]; then
+            echo "::error::FTPS_HOST / FTPS_USER / FTPS_PASS secrets fehlen."
+            exit 1
+          fi
+          PORT="${FTPS_PORT:-21}"
+          BASE="${FTPS_REMOTE_ROOT#/}"; BASE="${BASE%/}"
+          REMOTE="${BASE:+${BASE}/}content"
+          TMP="$(mktemp -d)"
+
+          # mirror (ohne --reverse) = nur Download. --delete wirkt nur auf die lokale Kopie im Runner.
+          lftp -u "${FTPS_USER},${FTPS_PASS}" "ftp://${FTPS_HOST}:${PORT}" -e "
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set ftp:ssl-auth TLS
+          set ssl:verify-certificate no
+          set ftp:passive-mode true
+          set net:timeout 30
+          set net:max-retries 5
+          set mirror:parallel-transfer-count 4
+          mirror --delete --exclude-glob .lock --exclude-glob .DS_Store ${REMOTE} ${TMP}/content
+          bye
+          "
+
+          TXT_COUNT="$(find "${TMP}/content" -name '*.txt' | wc -l | tr -d ' ')"
+          echo "Pulled ${TXT_COUNT} .txt files"
+          # Schutz: niemals ein (fast) leeres Ergebnis committen
+          if [[ "${TXT_COUNT}" -lt 50 ]]; then
+            echo "::error::Live-Content wirkt unvollständig (${TXT_COUNT} .txt) – Abbruch, nichts committet."
+            exit 1
+          fi
+
+          rm -rf content
+          mv "${TMP}/content" content
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -A content
+          if git diff --cached --quiet; then
+            echo "Keine Content-Änderungen."
+            exit 0
+          fi
+          git -c user.name="berlintiger-content-bot" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Content-Sync vom Live-Server ($(date -u +%Y-%m-%d))"
+          git push origin HEAD:main
