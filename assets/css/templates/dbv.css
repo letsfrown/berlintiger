@@ -2,9 +2,8 @@
 /* COLOR */
 /* – – – – – – */
 
-main,
-.subheadline {
-  /* background-color: var(--blue); */
+/* Blue is a headline signal only — body copy stays black. */
+main :is(h1, h2, h3, .subheadline) {
   color: var(--blue);
 }
 
@@ -55,11 +54,6 @@ main section article:last-of-type {
   border-bottom: none;
 }
 
-.with-sidebar .sidebar h2:not(.spielplan-heading) {
-  background-color: var(--blue);
-  color: var(--white);
-}
-
 /* Hero */
 .hero-title .button {
   flex-shrink: 0;
@@ -74,7 +68,8 @@ main section article:last-of-type {
   color: var(--white);
 }
 
-@media screen and (min-width: 800px) {
+/* Spielplan jump CTA: mobile only (shared --bp-mobile 680). */
+@media screen and (min-width: 680px) {
   .hero-title .button {
     display: none;
   }
@@ -94,6 +89,3 @@ main section article:last-of-type {
   font-size: var(--font-size-sm);
 }
 
-.gallery-block {
-  padding: var(--padding-lg) var(--padding-responsive-lg);
-}

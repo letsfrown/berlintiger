@@ -28,8 +28,11 @@ h3 {
 }
 
 .turnier-logo {
+  width: 200px;
+  height: auto;
   margin-top: var(--padding-responsive-md);
   margin-inline: auto;
+  object-fit: contain;
 }
 
 .turnier-logo.placeholder {
@@ -40,7 +43,4 @@ h3 {
 }
 
 
-.gallery {
-  margin-top: var(--padding-responsive-lg);
-  padding-inline: var(--padding-responsive-lg);
-}
+/* Outer padding comes from shared .gallery-block */

@@ -1,7 +1,6 @@
 (function () {
   var EQUAL_PX = 16;
-  // When several schedules stack without stretching, keep each short enough
-  // that the next heading (and a bit of list) can peek into the viewport.
+  // Several schedules stack at a capped height so the next heading can peek.
   var MULTI_WIDGET_MAX = 380;
   var LAYOUT_CLASSES = [
     'layout-equal',
@@ -24,7 +23,7 @@
   function titleCropPx(el) {
     var value = window.getComputedStyle(el).getPropertyValue('--bb-title-crop').trim();
     var amount = parseFloat(value);
-    if (!amount) return 38;
+    if (!amount) return 48;
     if (value.indexOf('rem') !== -1) {
       return Math.round(amount * parseFloat(window.getComputedStyle(document.documentElement).fontSize));
     }
@@ -35,12 +34,18 @@
     return parseInt(el.dataset.bbHeight || '600', 10);
   }
 
+  function visibleArticles(sidebar) {
+    return Array.prototype.filter.call(
+      sidebar.querySelectorAll(':scope > article'),
+      function (article) {
+        return window.getComputedStyle(article).display !== 'none';
+      }
+    );
+  }
+
   function naturalHeight(el, sidebar) {
     var configured = configuredHeight(el);
-    var articles = sidebar
-      ? sidebar.querySelectorAll(':scope > article').length
-      : 1;
-    if (articles > 1) {
+    if (visibleArticles(sidebar).length > 1) {
       return Math.min(configured, MULTI_WIDGET_MAX);
     }
     return configured;
@@ -59,7 +64,8 @@
   }
 
   function isDesktop() {
-    return window.innerWidth > 800;
+    // Matches CSS --bp-mobile (680): sticky/fill modes only above mobile.
+    return window.matchMedia('(min-width: 681px)').matches;
   }
 
   function contentBottomSpan(container) {
@@ -90,19 +96,26 @@
     return panel;
   }
 
+  function clearInlineBox(el) {
+    if (!el) return;
+    el.style.removeProperty('height');
+    el.style.removeProperty('max-height');
+    el.style.removeProperty('min-height');
+    el.style.removeProperty('top');
+    el.style.removeProperty('position');
+    el.style.removeProperty('overflow');
+  }
+
   function clearLayout(row) {
     LAYOUT_CLASSES.forEach(function (name) {
       row.classList.remove(name);
     });
     var main = row.querySelector('.main-content');
     var sidebar = row.querySelector('.sidebar');
+    clearInlineBox(main);
+    clearInlineBox(sidebar);
     if (main) {
-      main.style.removeProperty('height');
-      main.style.removeProperty('max-height');
-    }
-    if (sidebar) {
-      sidebar.style.removeProperty('height');
-      sidebar.style.removeProperty('max-height');
+      clearInlineBox(main.querySelector(':scope > .main-sticky-panel'));
     }
   }
 
@@ -118,16 +131,23 @@
     var id = el.id;
     if (!id) return false;
 
+    // BB vereinswidget paints the checked home/away switch from titleBgColor
+    // (not tapBgColorActive). Keep titleBgColor on the brand accent so the
+    // active thumb stays visible on black tap chrome; the title row itself is
+    // cropped via --bb-title-crop.
+    var accent = el.dataset.bbTapActive || 'FE5000';
+    var accentBorder = el.dataset.bbTapBorder || accent;
+
     var options = {
       iframeWidth: containerWidth(el),
       iframeHeight: iframeHeight,
       showRefreshButton: false,
-      titleColor: 'AAAAAA',
-      titleBgColor: '000000',
-      tapColor: 'AAAAAA',
+      titleColor: el.dataset.bbTitleColor || 'FFFFFF',
+      titleBgColor: accent,
+      tapColor: 'FFFFFF',
       tapBgColor: '000000',
-      tapBgColorActive: el.dataset.bbTapActive || 'FE5000',
-      tapBorderColorActive: el.dataset.bbTapBorder || 'FE5000',
+      tapBgColorActive: accent,
+      tapBorderColorActive: accentBorder,
       colorMatchGroup: '000000',
       bgColorMatchGroup: 'F5F1F0',
       colorMatchListItem: '000000',
@@ -178,13 +198,9 @@
     });
   }
 
+  // Single schedule: stretch the one widget so the sticky column has no gap.
   function sizeWidgetsToFill(sidebar, targetH) {
-    var articles = Array.prototype.filter.call(
-      sidebar.querySelectorAll(':scope > article'),
-      function (article) {
-        return window.getComputedStyle(article).display !== 'none';
-      }
-    );
+    var articles = visibleArticles(sidebar);
     if (!articles.length) return;
 
     var reserved = 0;
@@ -224,12 +240,22 @@
     return !!main.querySelector('.hero-image');
   }
 
-  function matchSidebarToMain(row, sidebar, mainH, viewportH) {
-    var height = Math.min(mainH, viewportH);
+  /**
+   * Stick the sidebar in the viewport.
+   * - single widget + fill: lock height and stretch the widget (no gap under coaches)
+   * - 2+ widgets: keep natural stack, cap with max-height, scroll inside the column
+   *   so the lower part of later schedules stays reachable
+   */
+  function stickSidebar(row, sidebar, budgetH, fill) {
     setLayout(row, 'layout-sidebar-sticky');
-    sidebar.style.height = height + 'px';
-    sidebar.style.maxHeight = viewportH + 'px';
-    sizeWidgetsToFill(sidebar, height);
+    sidebar.style.maxHeight = budgetH + 'px';
+    if (fill) {
+      sidebar.style.height = budgetH + 'px';
+      sizeWidgetsToFill(sidebar, budgetH);
+      return;
+    }
+    sidebar.style.removeProperty('height');
+    sizeWidgetsNatural(sidebar);
   }
 
   function layoutRow(row) {
@@ -250,6 +276,7 @@
     var V = stickyBudget();
     var M = measureMain(main);
     var S = contentBottomSpan(sidebar);
+    var multi = visibleArticles(sidebar).length > 1;
     var noHero = !hasHeroImage(main);
 
     if (M < 80 || S < 80) {
@@ -257,25 +284,26 @@
       return;
     }
 
-    // No hero image: coaches column defines the height — shrink/match sidebar.
+    // No hero: coaches/main define the sticky budget.
+    // Multi → scroll; single → fill the column.
     if (noHero) {
-      matchSidebarToMain(row, sidebar, M, V);
+      stickSidebar(row, sidebar, Math.min(M, V), !multi);
       return;
     }
 
-    // 1a / 1b — roughly equal, no sticky
+    // Roughly equal → no sticky
     if (Math.abs(M - S) <= EQUAL_PX) {
       setLayout(row, 'layout-equal');
       return;
     }
 
-    // 2 — main taller: sidebar sticks, widgets fill
+    // Main taller → sidebar sticks (fill only when one schedule)
     if (M > S) {
-      matchSidebarToMain(row, sidebar, M, V);
+      stickSidebar(row, sidebar, Math.min(M, V), !multi);
       return;
     }
 
-    // 3 — with hero, sidebar taller: main sticky, sidebar keeps natural height
+    // Sidebar taller + hero → main sticks; sidebar keeps natural height (page scrolls)
     setLayout(row, 'layout-main-sticky');
   }
 

@@ -14,7 +14,7 @@
     <?php if ($quote) : ?>
       <img src="<?= $quote->url() ?>" alt="<?= $quote->alt()->escape() ?>" style="width:<?= $quote->width() ?>px; height:<?= $quote->height() ?>px">
     <?php endif ?>
-    <a class="button mobileVisible" href="#spielplan">↓ zum Spielplan </a>
+    <a class="button button--down mobileVisible" href="#spielplan">zum Spielplan</a>
   </section>
 
   <!-- MAIN CONTENT -->
@@ -32,7 +32,7 @@
               <p>
                 <?= $article->intro()
                   ->or($article->text()->excerpt(160, false, '…')) ?>
-                <span class="readmore">&rarr;&nbsp;mehr&nbsp;lesen</span>
+                <span class="readmore">mehr&nbsp;lesen</span>
               </p>
 
             </article>
@@ -97,7 +97,7 @@
             <h2 class="spielplan-heading">Spielplan der <?= $dbv->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
             <?php snippet('spielplan-mannschaft', [
               'schedule' => $schedule,
-              'titleBgColor' => '000000',
+              'titleBgColor' => '242c53',
               'tapBgColorActive' => '242c53',
               'tapBorderColorActive' => '242c53',
             ]); ?>

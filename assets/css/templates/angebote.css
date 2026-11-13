@@ -18,7 +18,6 @@ h2 {
 .grid-2clm.nopadding img {
   aspect-ratio: 1/1;
   border-radius: 0 100vw 100vw 0;
-  outline: var(--border-2px);
 }
 
 .grid-2clm.nopadding.reverse img {
@@ -26,7 +25,7 @@ h2 {
 }
 
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 680px) {
 
   .grid-2clm.nopadding img,
   .grid-2clm.nopadding.reverse img {
@@ -62,14 +61,18 @@ h2 {
   max-height: 0px;
   overflow: hidden;
   opacity: 0;
-  transition: all 300ms ease-out;
+  transition:
+    max-height var(--duration-slow) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
 }
 
 .panel a {
   display: block;
   padding-bottom: var(--padding-sm);
   font-weight: var(--font-weight-semibold);
-  transition: all 150ms ease-in;
+  transition:
+    padding-left var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
 .panel a:hover,
@@ -123,6 +126,5 @@ h2 {
 .accordeon input[type="checkbox"]:checked+.panel {
   max-height: 50vh;
   opacity: 1;
-  transition: all 150ms ease-in;
 }
 

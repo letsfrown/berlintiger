@@ -26,7 +26,7 @@
         <label for="schiri">Schiedsrichter:in</label>
       </div>
 
-      <a id="emailLink" class="button" href="mailto:<?= $tigerEmail ?>">Bewerben</a>
+      <a id="emailLink" class="button button--mail" href="mailto:<?= $tigerEmail ?>">Bewerben</a>
 
     </form>
 

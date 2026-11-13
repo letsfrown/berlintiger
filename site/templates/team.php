@@ -14,7 +14,7 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
     <article class="hero">
       <div class="hero-title">
         <h1><?= $page->headline()->or($page->title()) ?></h1>
-        <a class="button" href="#spielplan">↓ zum Spielplan</a>
+        <a class="button button--down" href="#spielplan">zum Spielplan</a>
       </div>
 
       <?php if ($cover || $banner) : ?>

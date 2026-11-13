@@ -2,28 +2,28 @@
 /**
  * Square image gallery with shared lightbox.
  *
- * @var \Kirby\Cms\Files|\Kirby\Cms\Field|null $images
- * @var string|null $wrapperClass Optional wrapper element class (e.g. gallery-block)
+ * @var \Kirby\Cms\Files|\Kirby\Content\Field|null $images
+ * @var string|null $wrapperClass Optional wrapper element class (default: gallery-block)
  */
 $files = $images ?? null;
 
-if (is_object($files) && method_exists($files, 'toFiles')) {
+// Field::toFiles() is registered via __call — method_exists() is always false.
+// Accept either a Field or an already-resolved Files collection (Kirby 4).
+if ($files instanceof \Kirby\Content\Field) {
   $files = $files->toFiles();
 }
 
-if (!$files || $files->isEmpty()) {
+if (!$files instanceof \Kirby\Cms\Files || $files->isEmpty()) {
   return;
 }
 
-$wrapperClass = $wrapperClass ?? null;
+$wrapperClass = $wrapperClass ?? 'gallery-block';
 ?>
 
-<?php if ($wrapperClass) : ?>
-  <article class="<?= esc($wrapperClass, 'attr') ?>">
-<?php endif ?>
-
+<article class="<?= esc($wrapperClass, 'attr') ?>">
   <ul class="gallery">
     <?php foreach ($files as $image) : ?>
+      <?php if ($image instanceof \Kirby\Cms\File === false) continue ?>
       <li>
         <button
           type="button"
@@ -39,10 +39,7 @@ $wrapperClass = $wrapperClass ?? null;
       </li>
     <?php endforeach ?>
   </ul>
-
-<?php if ($wrapperClass) : ?>
-  </article>
-<?php endif ?>
+</article>
 
 <?php if (!defined('GALLERY_LIGHTBOX')) : define('GALLERY_LIGHTBOX', true); ?>
   <div id="lightbox" class="lightbox" aria-hidden="true">

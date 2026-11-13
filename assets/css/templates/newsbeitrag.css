@@ -6,9 +6,7 @@ section {
   color: var(--medium-gray);
 }
 
-.readmore {
-  color: var(--tiger-orange);
-}
+/* Color comes from shared .readmore in index.css */
 
 h1 {
   margin-top: .5em;

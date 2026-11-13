@@ -10,7 +10,7 @@
   </article>
 
   <?php if ($img = $data->cover()->toFile()) : ?>
-    <img class="cover ellipse" src="<?= $img->url() ?>" alt="<?= $img->alt() ?>">
+    <img class="cover ellipse sticky-copy" src="<?= $img->url() ?>" alt="<?= $img->alt() ?>">
   <?php endif ?>
 
 </section>

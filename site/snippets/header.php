@@ -26,7 +26,7 @@
         <menu class="menu">
 
             <!-- HOME-BUTTON / LOGO -->
-            <a href="<?= $site->url() ?>" <?php e($site->homePage()->isOpen(), 'class="home-link active"') ?> name="Home" class="home-link">
+            <a href="<?= $site->url() ?>" name="Home" class="home-link<?= $site->homePage()->isOpen() ? ' active' : '' ?>">
                 <?php if ($page->template()->name() === 'dbv') : ?>
                     <img src="/assets/logo/berlintiger-logo_dbv.svg" alt="Berlin Tiger DBV Logo">
                 <?php else : ?>

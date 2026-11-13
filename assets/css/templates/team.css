@@ -38,7 +38,8 @@ main section article:not(.hero):not(.container):not(:last-of-type) {
   color: var(--white);
 }
 
-@media screen and (min-width: 800px) {
+/* Spielplan jump CTA: mobile only (shared --bp-mobile 680). */
+@media screen and (min-width: 680px) {
   .hero-title .button {
     display: none;
   }

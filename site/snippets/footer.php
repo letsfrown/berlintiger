@@ -6,10 +6,10 @@
       <p>Kontakt</p>
       <nav>
         <?php if ($email = $site->email()) : ?>
-          <a href="mailto:<?= $email ?>" class="button"><?= $email ?></a>
+          <a href="mailto:<?= $email ?>" class="button button--mail"><?= $email ?></a>
         <?php endif ?>
         <?php if ($ig = $site->instagram()) : ?>
-          <a href="<?= $ig ?>" target="_blank" rel="noopener noreferrer" class="button">Instagram</a>
+          <a href="<?= $ig ?>" target="_blank" rel="noopener noreferrer" class="button button--ig">Instagram</a>
         <?php endif ?>
       </nav>
     </article>

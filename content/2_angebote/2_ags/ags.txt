@@ -16,9 +16,7 @@ Ihr habt Interesse am Basketball, aber seid unsicher, ob die Teams unseres Verei
 
 Mit mittlerweile 13 Basketball- und Ballsport-AGs an fünf Schulen in Kreuzberg, Neukölln, Schöneberg und Mitte bieten wir Grundschülern über die Grenzen unserer Vereinsteams hinaus die Möglichkeit, unseren Sport spielerisch in ihrem Alltagsumfeld kennenzulernen. Qualifizierte und erfahrene Vereinstrainer kommen dafür direkt an die Schulen und bieten Basketballtrainings direkt in der Schulturnhalle an. 
 
-<div class="button">
-(link: mailto:info@berlintiger.de text: → Kontakt)
-</div>
+(link: mailto:info@berlintiger.de text: Kontakt class: button button--mail)
 
 ----
 

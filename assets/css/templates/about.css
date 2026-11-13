@@ -34,7 +34,7 @@ section:has(+ .team-slider) {
 
 .team-slider-chrome {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 3.75rem minmax(0, 1fr) 3.75rem;
   align-items: stretch;
   border-block: 2px solid var(--black);
 }
@@ -43,52 +43,81 @@ main > .team-slider:last-of-type .team-slider-chrome {
   border-bottom: 0;
 }
 
-.team-slider-btn {
-  width: 3rem;
-  min-height: 100%;
-  border: none;
-  border-radius: 0;
+/* Dedicated side rails — circular buttons sit in their own chrome,
+   not on the card border. */
+.team-slider-rail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: var(--white);
-  color: var(--black);
   border-right: 2px solid var(--black);
-  font-size: var(--font-size-xl);
+}
+
+.team-slider-rail:last-child {
+  border-right: 0;
+  border-left: 2px solid var(--black);
+}
+
+/* Circular icon chrome — same language as .team-card-toggle / lightbox */
+.team-slider-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border: var(--border-2px);
+  border-radius: 100%;
+  background: var(--tiger-orange);
+  color: var(--black);
+  font-size: 1.35rem;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
-}
-
-/* Outer edges use main’s border-inline — no extra side borders. */
-.team-slider-next {
-  border-right: none;
-  border-left: 2px solid var(--black);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
 .team-slider-btn:hover:not(:disabled),
 .team-slider-btn:focus-visible:not(:disabled) {
-  background: var(--tiger-orange);
-  outline-offset: -4px;
+  background: var(--white);
+  color: var(--black);
+  outline-offset: -3px;
+  transform: scale(1.06);
+}
+
+.team-slider-btn:active:not(:disabled),
+.team-slider-btn:hover:active:not(:disabled) {
+  background: var(--black);
+  color: var(--white);
+  transform: scale(0.96);
 }
 
 .team-slider-btn:disabled,
 .team-slider-btn:disabled:hover {
   cursor: default;
-  background: var(--white);
+  background: var(--light-gray);
+  color: var(--medium-gray);
+  border-color: var(--medium-gray);
   opacity: 1;
-  color: var(--black);
-  border-color: var(--black);
+  transform: none;
 }
 
 .team-slider-btn:disabled span {
-  opacity: 0.35;
+  opacity: 0.55;
 }
 
 .team-slider-viewport {
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
+  /* Buttons own paging on desktop — hide the chunky native bar. */
+  scrollbar-width: none;
+}
+
+.team-slider-viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .team-slider-track {
@@ -119,8 +148,17 @@ main > .team-slider:last-of-type .team-slider-chrome {
     grid-template-columns: 1fr;
   }
 
-  .team-slider-btn {
+  .team-slider-rail {
     display: none;
+  }
+
+  .team-slider-viewport {
+    scrollbar-width: thin;
+  }
+
+  .team-slider-viewport::-webkit-scrollbar {
+    display: block;
+    height: 6px;
   }
 
   .team-slider .team-card {
