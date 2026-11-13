@@ -1482,7 +1482,8 @@ main .gallery-thumb img,
 }
 
 .annotated .dot:hover,
-.annotated .dot.hover {
+.annotated .dot.hover,
+.annotated .dot:focus-visible {
   z-index: 5;
   outline: var(--border-tiger-orange-2px);
   outline-offset: .125rem;
@@ -1490,7 +1491,8 @@ main .gallery-thumb img,
 }
 
 .annotated .dot:hover p,
-.annotated .dot.hover p {
+.annotated .dot.hover p,
+.annotated .dot:focus-visible p {
   z-index: 5;
   display: block;
 }

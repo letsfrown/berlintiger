@@ -117,3 +117,19 @@
 .news-grid > a:focus-visible .news-preview img {
   border-radius: 0;
 }
+
+/* „Mehr laden“ / Pagination – spannt über alle Spalten */
+.news-more {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: var(--padding-sm);
+  padding: var(--padding-md) var(--padding-sm);
+  border-right: var(--border-2px);
+  border-bottom: var(--border-2px);
+}
+
+.news-more [aria-busy="true"] {
+  opacity: 0.6;
+  pointer-events: none;
+}

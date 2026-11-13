@@ -24,6 +24,12 @@ h1 {
   margin-right: auto;
 }
 
+/* Handschrift-Zitat skaliert mit, statt auf Mobil abgeschnitten zu werden */
+.hero .hero-quote {
+  max-width: 100%;
+  height: auto;
+}
+
 .hero .button {
   margin-top: auto;
   margin-right: var(--padding-md);

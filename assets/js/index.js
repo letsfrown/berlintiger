@@ -231,31 +231,37 @@ document.querySelectorAll('.video-container[data-youtube-id]').forEach(function(
 
 
 
-// Get all elements with class "dot"
-const dots = document.querySelectorAll('.dot');
+// Karten-Marker: per Klick, Tap oder Tastatur (Enter/Leertaste) öffnen.
+(function () {
+  var dots = Array.prototype.slice.call(document.querySelectorAll('.annotated .dot'));
+  if (!dots.length) return;
 
-// Function to handle tap event
-const handleTap = (event) => {
-  // Toggle the "hover" class on the tapped element
-  event.target.classList.toggle('hover');
-  // Remove the "hover" class from other elements
-  dots.forEach(dot => {
-    if(dot !== event.target) {
-      dot.classList.remove('hover');
-    }
-  });
-};
-
-// Add tap event listener to each dot
-dots.forEach(dot => {
-  dot.addEventListener('touchstart', handleTap);
-});
-
-// Add tap event listener to document to remove hover effect
-document.addEventListener('touchstart', (event) => {
-  if (!event.target.classList.contains('dot')) {
-    dots.forEach(dot => {
-      dot.classList.remove('hover');
-    });
+  function setOpen(dot, open) {
+    dot.classList.toggle('hover', open);
+    dot.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
-});
+
+  function toggle(dot) {
+    var open = !dot.classList.contains('hover');
+    dots.forEach(function (other) { setOpen(other, other === dot ? open : false); });
+  }
+
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function (event) {
+      event.stopPropagation();
+      toggle(dot);
+    });
+    dot.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggle(dot);
+      } else if (event.key === 'Escape') {
+        setOpen(dot, false);
+      }
+    });
+  });
+
+  document.addEventListener('click', function () {
+    dots.forEach(function (dot) { setOpen(dot, false); });
+  });
+})();

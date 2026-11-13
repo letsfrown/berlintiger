@@ -1,7 +1,8 @@
 <a href="<?= $data->url() ?>">
     <article class="news-preview">
         <?php if ($cover = $data->cover()->toFile()) : ?>
-            <img src="<?= $cover->crop(480, 480)->url() ?>" alt="<?= $cover->alt() ?>">
+            <?php $thumb = $cover->crop(480, 480) ?>
+            <img src="<?= $thumb->url() ?>" alt="<?= $cover->alt() ?>" width="<?= $thumb->width() ?>" height="<?= $thumb->height() ?>" loading="lazy" decoding="async">
         <?php endif ?>
 
         <p class="date"><?= $data->date()->toDate('d.m.Y') ?></p>

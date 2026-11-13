@@ -9,10 +9,10 @@
       } ?>
    )">
     <h1><?= $page->headline() ?></h1>
-    <p class=" subheadline"><?= $page->subheadline() ?></p>
+    <p class="subheadline"><?= $page->subheadline() ?></p>
 
     <?php if ($quote) : ?>
-      <img src="<?= $quote->url() ?>" alt="<?= $quote->alt()->escape() ?>" style="width:<?= $quote->width() ?>px; height:<?= $quote->height() ?>px">
+      <img class="hero-quote" src="<?= $quote->url() ?>" alt="<?= $quote->alt()->or('Handgeschriebenes Zitat eines Kindes')->escape() ?>" width="<?= $quote->width() ?>" height="<?= $quote->height() ?>">
     <?php endif ?>
     <a class="button button--down mobileVisible" href="#spielplan">zum Spielplan</a>
   </section>
