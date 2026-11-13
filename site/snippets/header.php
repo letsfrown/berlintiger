@@ -11,12 +11,14 @@
         <title><?= $page->title() ?> | <?= $site->title() ?></title>
     <?php endif ?>
 
+    <?php snippet('seo') ?>
     <?php snippet('autofavicon') ?>
     <?= css('/assets/css/reset.css') ?>
     <?= css('/assets/css/index.css') ?>
     <?= css('@auto') ?>
 
-    <script type="text/javascript" src="//www.basketball-bund.net/rest/widget/widgetjs"></script>
+    <!-- Spielplan-Widgets (basketball-bund.net), blockiert das Rendern nicht -->
+    <script src="https://www.basketball-bund.net/rest/widget/widgetjs" defer></script>
 
 </head>
 
@@ -26,7 +28,7 @@
         <menu class="menu">
 
             <!-- HOME-BUTTON / LOGO -->
-            <a href="<?= $site->url() ?>" name="Home" class="home-link<?= $site->homePage()->isOpen() ? ' active' : '' ?>">
+            <a href="<?= $site->url() ?>" class="home-link<?= $site->homePage()->isOpen() ? ' active' : '' ?>">
                 <?php if ($page->template()->name() === 'dbv') : ?>
                     <img src="/assets/logo/berlintiger-logo_dbv.svg" alt="Berlin Tiger DBV Logo">
                 <?php else : ?>
@@ -37,16 +39,13 @@
 
 
             <!-- MENU BUTTON (MOBILE) -->
-            <input type="checkbox" id="menu-button">
-            <label for="menu-button">
-                <i class="hamburger-line"></i>
+            <input type="checkbox" id="menu-button" aria-label="Menü öffnen" aria-controls="main-navigation">
+            <label for="menu-button" title="Menü">
+                <i class="hamburger-line" aria-hidden="true"></i>
             </label>
 
             <!-- NAV LINKS -->
-            <nav class="navigation">
-                <a href="<?= $site->url() ?>" name="Home" class="mobileVisible">
-                    <span><?= $site->title() ?></span>
-                </a>
+            <nav class="navigation" id="main-navigation" aria-label="Hauptmenü">
 
                 <?php foreach ($site->children()->listed() as $item) : ?>
                     <?php
@@ -55,13 +54,13 @@
                     if ($item->template()->name() === 'dbv') $classes[] = 'dbv-page';
                     ?>
                     <a href="<?= $item->url() ?>"
-                        name="<?= $item->title() ?>"
+                        <?= $item->isOpen() ? 'aria-current="page"' : '' ?>
                         <?= !empty($classes) ? 'class="' . implode(' ', $classes) . '"' : '' ?>>
                         <span><?= $item->title() ?></span>
                     </a>
                 <?php endforeach ?>
 
-                <a href="<?= $site->shop()->url() ?>" target="blank">
+                <a href="<?= $site->shop()->url() ?>" target="_blank" rel="noopener noreferrer">
                     <span>Shop</span>
                 </a>
             </nav>
@@ -69,9 +68,9 @@
 
         <!-- SUBMENU -->
         <?php if ($page->hasChildren() && $page->isListed()) : ?>
-            <nav class="subnavigation">
+            <nav class="subnavigation" aria-label="Abschnitte">
                 <?php foreach ($page->children()->listed() as $item) : ?>
-                    <a href="#<?= $item->title()->lower() ?>"><?= $item->title() ?></a>
+                    <a href="#<?= $item->slug() ?>"><?= $item->title() ?></a>
                 <?php endforeach ?>
             </nav>
         <?php endif ?>

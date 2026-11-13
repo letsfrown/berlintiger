@@ -236,33 +236,31 @@ section img {
   font-weight: var(--font-weight-medium);
 }
 
-.job-form,
-.job-form .button {
+.job-apply {
   margin-top: 2em;
 }
 
-.job-form div {
-  display: flex;
-  align-items: center;
-  gap: .5em;
-}
-
-.job-form label {
-  cursor: pointer;
-  margin-top: 0;
+.job-apply .cta {
+  color: var(--tiger-orange);
   font-size: var(--font-size-md);
-  color: var(--medium-gray);
   font-weight: var(--font-weight-semibold);
 }
 
-.job-form input[type='radio'] {
-  cursor: pointer;
-  width: initial;
+.job-apply-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--padding-sm);
+  margin-top: 1em;
 }
 
-.job-form input[type='radio']:checked+label,
-label.cta {
-  color: var(--tiger-orange);
+.job-apply-mail {
+  margin-top: 1em;
+  color: var(--medium-gray);
+}
+
+.job-apply-mail a {
+  color: inherit;
+  text-decoration: underline;
 }
 
 

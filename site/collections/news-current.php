@@ -2,8 +2,7 @@
 
 return function ($kirby) {
 
-    $today = new DateTime();
-    $oneWeekAgo = $today->modify('-4 week');
+    $fourWeeksAgo = (new DateTime())->modify('-4 weeks');
 
-    return $kirby->collection("news")->filterBy('date', '>', $oneWeekAgo->format('Y-m-d'));
+    return $kirby->collection('news')->filterBy('date', '>', $fourWeeksAgo->format('Y-m-d'));
 };

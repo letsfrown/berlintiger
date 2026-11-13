@@ -1,4 +1,4 @@
-<section id="<?= $data->title()->lower() ?>" <?php if ($bgColor = $data->bgColor()->lower()) : ?> class="geschichte <?= $bgColor ?>" <?php endif ?>>
+<section id="<?= $data->slug() ?>" <?php if ($bgColor = $data->bgColor()->lower()) : ?> class="geschichte <?= $bgColor ?>" <?php endif ?>>
 
 
 

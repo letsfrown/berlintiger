@@ -16,8 +16,7 @@ return function ($page, $site) {
     }
 
     return [
-        'quote' => $quoteFile ? $quoteFile->resize(null, 300) : null,
-        'map'   => $site->find("angebote")->find("ags")->cover()->toFile()->resize(800),
+        'quote'    => $quoteFile ? $quoteFile->resize(null, 300) : null,
         'homeNews' => $news->limit(1),
     ];
 };

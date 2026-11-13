@@ -17,7 +17,7 @@
     <article>
       <p>Mitmachen</p>
       <nav class="arrowLinks">
-        <a href="/anmeldung#mitglied%20werden">Anmelden</a>
+        <a href="/anmeldung#mitgliedwerden">Anmelden</a>
         <a href="/anmeldung#jobs">Bewerben</a>
         <a href="/about#spenden">Unterstützen</a>
       </nav>
@@ -28,7 +28,7 @@
       <nav class="arrowLinks">
         <a href="/news">News</a>
         <a href="/angebote#teams">Teams</a>
-        <a href="/angebote#schul-ags">Schul-AGs</a>
+        <a href="/angebote#ags">Schul-AGs</a>
       </nav>
     </article>
 
@@ -40,7 +40,7 @@
 
   <!-- IMPRINT, PRIVACY -->
   <section>
-    <a href="<?= $site ?>">
+    <a href="<?= $site->url() ?>" aria-label="Zur Startseite">
       <img src="<?= url('/assets/logo/berlintiger-logo.svg') ?>" class="logo" alt="Berlin Tiger Logo">
     </a>
 

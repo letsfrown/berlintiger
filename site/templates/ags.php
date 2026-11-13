@@ -1,1 +1,1 @@
-<?php go('angebote/#schul-ags') ?>
+<?php go('angebote/#ags') ?>

@@ -1,1 +1,1 @@
-<?php go('about/#team') ?>
+<?php go('about/#members') ?>

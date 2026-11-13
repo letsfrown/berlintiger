@@ -10,13 +10,10 @@ RewriteEngine On
 
 # Your existing rewrite rules here...
 
-# Redirect URLs with consistent naming
-RewriteRule ^teams/([^/]+)/$ /angebote/teams/$1 [R=301,L]
-RewriteRule ^teaminfo/([^/]+)/$ /angebote/teams/$1 [R=301,L]
-
-# Redirect URLs with dead slugs
-RewriteRule ^teams/[^/]+/$ /angebote#teams [R=301,L]
-RewriteRule ^teaminfo/[^/]+/$ /angebote#teams [R=301,L]
+# Alte Team-URLs (/teams/<slug>, /teaminfo/<slug>) auf die neue Struktur umleiten.
+# Existiert das Team nicht mehr, landet man über Kirbys Fehlerseite – siehe
+# Route in site/config/config.php, die unbekannte Teams auf /angebote#teams schickt.
+RewriteRule ^(?:teams|teaminfo)/([^/]+)/?$ /angebote/teams/$1 [R=301,L]
 
 
 # Redirect all other dead slugs to the homepage

@@ -1,4 +1,4 @@
-<section id="<?= $data->title()->lower() ?>">
+<section id="<?= $data->slug() ?>">
   <article class="max-width">
 
     <div class="turnier-header">

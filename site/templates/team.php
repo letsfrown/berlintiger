@@ -56,8 +56,7 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
   <!-- SIDEBAR SPIELPLÄNE -->
   <aside class="sidebar" id="spielplan">
 
-    <?php if ($schedules->isNotEmpty());
-    foreach ($schedules as $schedule) : ?>
+    <?php foreach ($schedules as $schedule) : ?>
 
       <article>
         <h2 class="spielplan-heading">Spielplan der <?= $page->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>

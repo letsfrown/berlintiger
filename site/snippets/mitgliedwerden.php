@@ -1,4 +1,4 @@
-<section id="<?= $data->title()->lower() ?>" class="grid-2clm align-top
+<section id="<?= $data->slug() ?>" class="grid-2clm align-top
 <?php if ($bgColor = $data->bgColor()->lower()) : ?> 
 <?= $bgColor ?> 
 <?php endif ?>">

@@ -66,4 +66,5 @@ tabs:
   uploads:
     extends: layouts/uploads
 
-
+  # Tab SEO / Teilen
+  seo: tabs/seo

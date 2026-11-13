@@ -22,6 +22,19 @@ return [
   'medienbaecker.autofavicon.color' => '#FE5000',
   'medienbaecker.autofavicon.color_dark' => '#FE5000',
 
+  // Unbekannte Team-Slugs (z. B. aus alten Links) zur Teamübersicht leiten
+  'routes' => [
+    [
+      'pattern' => 'angebote/teams/(:any)',
+      'action'  => function (string $slug) {
+        if ($team = page('angebote/teams/' . $slug)) {
+          return $team;
+        }
+        return go('angebote#teams', 301);
+      }
+    ],
+  ],
+
   // reCAPTCHA – Site-Key ist öffentlich, Secret kommt aus der Host-Config
   'recaptcha.sitekey' => '6LcYoNMqAAAAAOBKkAOsb6GT2oBlItsYA1VmTwzS',
   'recaptcha.secret'  => null,

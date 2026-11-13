@@ -6,7 +6,7 @@
     <article class="max-width">
       <p class="date"><?= $page->date()->toDate('d.m.Y') ?></p>
 
-      <h1 name="<?= $page->title() ?>"><?= $page->title() ?></h1>
+      <h1><?= $page->title() ?></h1>
       <p class="subheadline"><?= $page->intro() ?></p>
 
       <?php if ($cover = $page->cover()->toFile()) :
@@ -18,9 +18,9 @@
 
     <nav class="pagination">
       <?php if ($prev = $page->prev(collection('news'))) : ?>
-        <a href="<?= $prev->url() ?>">&larr; vorherhiger Beitrag</a>
+        <a href="<?= $prev->url() ?>">&larr; vorheriger Beitrag</a>
       <?php else : ?>
-        <span>&larr; vorherhiger Beitrag</span>
+        <span>&larr; vorheriger Beitrag</span>
       <?php endif ?>
 
       <a href="<?= $page->parent()->url() ?>">News</a>
