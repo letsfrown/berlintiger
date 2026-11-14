@@ -11,6 +11,13 @@ section img {
   margin: auto;
 }
 
+/* Mitmachen cover: fill the grid column so .rounded’s 1/1 aspect-ratio
+   can reserve height before the image file arrives (avoids CLS jump). */
+#mitgliedwerden > img.rounded {
+  width: 100%;
+  height: auto;
+}
+
 /* – – – – – – */
 /* FORMULARE */
 /* – – – – – – */

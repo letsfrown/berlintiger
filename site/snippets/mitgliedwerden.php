@@ -12,8 +12,9 @@
   </article>
 
   <?php if ($coverFile = $data->cover()->toFile()) :
-    $img = $coverFile->crop(900, 450) ?>
-    <img src="<?= $img->url() ?>" alt="<?= $img->alt() ?>" class="rounded">
+    // Square crop matches .rounded 1/1; width/height reserve layout space (CLS).
+    $img = $coverFile->crop(900, 900) ?>
+    <img src="<?= $img->url() ?>" alt="<?= $img->alt() ?>" width="<?= $img->width() ?>" height="<?= $img->height() ?>" class="rounded">
   <?php endif ?>
 
 </section>
