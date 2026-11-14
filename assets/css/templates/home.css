@@ -24,24 +24,25 @@
   pointer-events: none;
 }
 
+/* Linke Striche werden vom linken Rand nach innen „gemalt“, rechte vom rechten Rand */
 .hero::before {
   clip-path: inset(0 50% 0 0);
-  animation: hero-stroke-left 1.1s var(--ease-out) .05s both;
+  animation: hero-paint-left .9s cubic-bezier(.6, 0, .3, 1) 1.9s both;
 }
 
 .hero::after {
   clip-path: inset(0 0 0 50%);
-  animation: hero-stroke-right 1.1s var(--ease-out) .2s both;
+  animation: hero-paint-right .9s cubic-bezier(.6, 0, .3, 1) 2.15s both;
 }
 
-@keyframes hero-stroke-left {
-  from { opacity: 0; transform: translateX(-6%); }
-  to { opacity: 1; transform: none; }
+@keyframes hero-paint-left {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 50% 0 0); }
 }
 
-@keyframes hero-stroke-right {
-  from { opacity: 0; transform: translateX(6%); }
-  to { opacity: 1; transform: none; }
+@keyframes hero-paint-right {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 50%); }
 }
 
 h1 {
@@ -66,7 +67,7 @@ h1 {
   display: inline-block;
   transform: translateY(105%);
   animation: hero-word-up .9s var(--ease-out) both;
-  animation-delay: calc(.35s + var(--i, 0) * 70ms);
+  animation-delay: calc(.15s + var(--i, 0) * 70ms);
 }
 
 @keyframes hero-word-up {
@@ -79,11 +80,14 @@ h1 {
 }
 
 .hero .subheadline {
-  animation: hero-rise .8s var(--ease-out) .95s both;
+  animation: hero-rise .8s var(--ease-out) .7s both;
 }
 
 /* Kinder-Zitate: groß, wechseln per Überblendung (assets/js/templates/home.js) */
 .hero-quotes {
+  /* Multiply auf dem Container: Überblendungen bleiben immer „multipliziert“,
+     das Papierweiß der Scans blitzt nie auf */
+  mix-blend-mode: multiply;
   display: grid;
   align-items: center;
   min-height: clamp(7rem, 17vw, 15rem);
@@ -97,7 +101,6 @@ h1 {
   margin: 0;
   object-fit: contain;
   object-position: left center;
-  mix-blend-mode: multiply;
   /* Papiergrau der Scans Richtung Weiß, Schrift etwas kräftiger */
   filter: grayscale(1) contrast(1.35) brightness(1.08);
   transform: rotate(-1.2deg);
@@ -114,13 +117,7 @@ h1 {
   flex-wrap: wrap;
   align-items: center;
   gap: var(--padding-sm);
-  animation: hero-rise .8s var(--ease-out) 1.55s both;
-}
-
-.hero .hero-cta {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  padding: .7em 1.4em;
+  animation: hero-rise .8s var(--ease-out) 3s both;
 }
 
 .hero .hero-cta--secondary {
@@ -149,12 +146,7 @@ h1 {
   }
 
   .hero-actions {
-    gap: .75rem;
-  }
-
-  .hero .hero-cta {
-    width: 100%;
-    font-size: var(--font-size-base);
+    gap: var(--padding-xs);
   }
 }
 
