@@ -53,7 +53,5 @@
     load(quotes[1]);
   }, reduce ? 0 : 1300);
 
-  box.addEventListener('mouseenter', function () { clearInterval(timer); });
-  box.addEventListener('mouseleave', start);
   window.setTimeout(start, reduce ? 0 : 3500);
 })();
