@@ -83,7 +83,7 @@
         <input type="submit" name="submit" value="Anmelden" class="button">
 
         <div class="form-next">
-          <p><strong>Wie geht's weiter?</strong> Nach dem Absenden melden wir uns per E-Mail bei dir und schlagen dir einen Termin für ein kostenloses Probetraining in einer passenden Trainingsgruppe vor.</p>
+          <p><strong>Wie geht's weiter?</strong> Nach dem Absenden melden wir uns per E-Mail bei dir und schlagen dir einen Termin für ein Probetraining in einer passenden Trainingsgruppe vor.</p>
           <p>Geburtstag, Körpergröße und Schule helfen uns, dich der richtigen Altersklasse und einem Trainingsort in deiner Nähe zuzuordnen. Größe und Schule sind freiwillig.</p>
         </div>
         <p class="disclaimer"><?= $parent->text()->kirbytags() ?></p>

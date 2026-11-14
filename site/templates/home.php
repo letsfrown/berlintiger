@@ -31,7 +31,7 @@
     <?php endif ?>
 
     <div class="hero-actions">
-      <a class="button button--go hero-cta" href="<?= url('anmeldung') ?>#mitgliedwerden">Kostenloses Probetraining</a>
+      <a class="button button--go hero-cta" href="<?= url('anmeldung') ?>#mitgliedwerden">Zum Probetraining</a>
       <a class="button button--down hero-cta hero-cta--secondary mobileVisible" href="#spielplan">zum Spielplan</a>
     </div>
   </section>
