@@ -32,7 +32,7 @@
 
     <div class="hero-actions">
       <a class="button button--go hero-cta" href="<?= url('anmeldung') ?>#mitgliedwerden">Zum Probetraining</a>
-      <a class="button button--down hero-cta hero-cta--secondary mobileVisible" href="#spielplan">zum Spielplan</a>
+      <a class="button button--down hero-cta hero-cta--secondary mobileVisible" href="#spielplan">Zum Spielplan</a>
     </div>
   </section>
 
@@ -96,35 +96,49 @@
     $dbv = $showDbvSpielplan ? $site->find('dtb') : null;
     $dbvSchedules = $dbv ? $dbv->schedules()->toStructure() : null;
     $hasDbvSpielplan = $dbvSchedules && $dbvSchedules->isNotEmpty();
+    $widgetNumber = $page->widgetNumber();
+    $hasVereinSpielplan = $widgetNumber->isNotEmpty();
+
+    $panels = [];
+    if ($hasVereinSpielplan) {
+      $panels[] = [
+        'label'   => 'Berlin Tiger',
+        'variant' => 'tiger',
+        'html'    => snippet('spielplan-verein', [
+          'widgetNumber' => $widgetNumber,
+          'iframeHeight' => 1200,
+        ], true),
+      ];
+    }
+    if ($hasDbvSpielplan) {
+      foreach ($dbvSchedules as $schedule) {
+        $label = $schedule->league()->isNotEmpty()
+          ? $schedule->league()->value()
+          : $dbv->title()->value();
+        $panels[] = [
+          'label'   => $label,
+          'variant' => 'dbv',
+          'html'    => snippet('spielplan-mannschaft', [
+            'schedule' => $schedule,
+            'titleBgColor' => '242c53',
+            'tapBgColorActive' => '242c53',
+            'tapBorderColorActive' => '242c53',
+            'iframeHeight' => 1200,
+          ], true),
+        ];
+      }
+    }
     ?>
-    <aside class="sidebar" id="spielplan">
-
-      <article>
-        <h2 class="spielplan-heading">Spielplan der Berlin Tiger</h2>
-        <?php if ($widgetNumber = $page->widgetNumber()) : ?>
-          <?php snippet('spielplan-verein', [
-            'widgetNumber' => $widgetNumber,
-            // Match team pages with two schedules (iframeHeight 600)
-            'iframeHeight' => $hasDbvSpielplan ? 600 : 1200,
-          ]); ?>
-        <?php endif ?>
-      </article>
-
-      <?php if ($hasDbvSpielplan) : ?>
-        <?php foreach ($dbvSchedules as $schedule) : ?>
-          <article class="dbv-spielplan">
-            <h2 class="spielplan-heading">Spielplan der <?= $dbv->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
-            <?php snippet('spielplan-mannschaft', [
-              'schedule' => $schedule,
-              'titleBgColor' => '242c53',
-              'tapBgColorActive' => '242c53',
-              'tapBorderColorActive' => '242c53',
-            ]); ?>
-          </article>
-        <?php endforeach ?>
-      <?php endif ?>
-
-    </aside>
+    <?php if (count($panels) > 0) : ?>
+      <aside class="sidebar" id="spielplan">
+        <?php snippet('spielplan-tabs', [
+          'heading'   => 'Spielplan',
+          'ariaLabel' => 'Spielpläne',
+          'variant'   => $hasVereinSpielplan ? 'tiger' : 'dbv',
+          'panels'    => $panels,
+        ]); ?>
+      </aside>
+    <?php endif ?>
 
 
   </section>

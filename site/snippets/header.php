@@ -30,7 +30,7 @@
             <!-- HOME-BUTTON / LOGO -->
             <a href="<?= $site->url() ?>" class="home-link<?= $site->homePage()->isOpen() ? ' active' : '' ?>">
                 <?php if ($page->template()->name() === 'dbv') : ?>
-                    <img src="/assets/logo/berlintiger-logo_dbv.svg" alt="Berlin Tiger DBV Logo">
+                    <img src="/assets/logo/berlintiger-logo_dbv_3.svg" alt="Berlin Tiger DBV Logo">
                 <?php else : ?>
                     <img src="/assets/logo/berlintiger-logo.svg" alt="Berlin Tiger Logo">
                 <?php endif ?>

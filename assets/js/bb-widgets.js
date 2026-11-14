@@ -1,7 +1,5 @@
 (function () {
   var EQUAL_PX = 16;
-  // Several schedules stack at a capped height so the next heading can peek.
-  var MULTI_WIDGET_MAX = 380;
   var LAYOUT_CLASSES = [
     'layout-equal',
     'layout-sidebar-sticky',
@@ -34,6 +32,13 @@
     return parseInt(el.dataset.bbHeight || '600', 10);
   }
 
+  function isPainted(el) {
+    if (!el) return false;
+    var panel = el.closest('[data-spielplan-panel]');
+    if (panel && panel.hasAttribute('hidden')) return false;
+    return window.getComputedStyle(el).display !== 'none';
+  }
+
   function visibleArticles(sidebar) {
     return Array.prototype.filter.call(
       sidebar.querySelectorAll(':scope > article'),
@@ -43,12 +48,22 @@
     );
   }
 
-  function naturalHeight(el, sidebar) {
-    var configured = configuredHeight(el);
-    if (visibleArticles(sidebar).length > 1) {
-      return Math.min(configured, MULTI_WIDGET_MAX);
+  function articleChromeHeight(article) {
+    var height = 0;
+    var heading = article.querySelector(':scope > h2');
+    var list = article.querySelector(':scope > .spielplan-tabs__list');
+    if (heading) height += Math.round(heading.getBoundingClientRect().height);
+    if (list && window.getComputedStyle(list).display !== 'none') {
+      height += Math.round(list.getBoundingClientRect().height);
     }
-    return configured;
+    return height;
+  }
+
+  function visibleWidgetIn(article) {
+    return Array.prototype.find.call(
+      article.querySelectorAll('.bb-widget[data-bb-type]'),
+      isPainted
+    );
   }
 
   function headerOffset() {
@@ -74,6 +89,7 @@
     var bottom = 0;
     var found = false;
     Array.prototype.forEach.call(container.children, function (child) {
+      if (child.hasAttribute && child.hasAttribute('hidden')) return;
       if (window.getComputedStyle(child).display === 'none') return;
       var rect = child.getBoundingClientRect();
       if (rect.height <= 0 && rect.width <= 0) return;
@@ -202,12 +218,12 @@
 
   function sizeWidgetsNatural(sidebar) {
     sidebar.querySelectorAll('.bb-widget[data-bb-type]').forEach(function (el) {
-      if (window.getComputedStyle(el).display === 'none') return;
-      applyWidgetHeight(el, naturalHeight(el, sidebar));
+      if (!isPainted(el)) return;
+      applyWidgetHeight(el, configuredHeight(el));
     });
   }
 
-  // Single schedule: stretch the one widget so the sticky column has no gap.
+  // Stretch the visible widget so the sticky column has no gap under coaches.
   function sizeWidgetsToFill(sidebar, targetH) {
     var articles = visibleArticles(sidebar);
     if (!articles.length) return;
@@ -215,22 +231,21 @@
     var reserved = 0;
     var widgets = [];
     articles.forEach(function (article, index) {
-      var heading = article.querySelector('h2');
-      var widget = article.querySelector('.bb-widget[data-bb-type]');
-      var headingH = heading ? Math.round(heading.getBoundingClientRect().height) : 0;
+      var chromeH = articleChromeHeight(article);
+      var widget = visibleWidgetIn(article);
       var isLast = index === articles.length - 1;
-      if (!widget || window.getComputedStyle(widget).display === 'none') {
-        reserved += headingH;
+      if (!widget) {
+        reserved += chromeH;
         return;
       }
       if (!isLast) {
-        var natural = naturalHeight(widget, sidebar);
-        reserved += headingH + natural;
+        var natural = configuredHeight(widget);
+        reserved += chromeH + natural;
         widgets.push({ el: widget, visible: natural });
       } else {
         widgets.push({
           el: widget,
-          visible: Math.max(200, targetH - reserved - headingH)
+          visible: Math.max(200, targetH - reserved - chromeH)
         });
       }
     });
@@ -250,10 +265,8 @@
   }
 
   /**
-   * Stick the sidebar in the viewport.
-   * - single widget + fill: lock height and stretch the widget (no gap under coaches)
-   * - 2+ widgets: natural stack; if taller than budget, lock height + overflow-y so
-   *   the column scrolls instead of painting into the footer
+   * Stick the sidebar in the viewport and fill the single visible schedule
+   * (tabs keep multi-schedule sidebars as one article).
    */
   function stickSidebar(row, sidebar, budgetH, fill) {
     setLayout(row, 'layout-sidebar-sticky');
@@ -264,8 +277,6 @@
       return;
     }
     sizeWidgetsNatural(sidebar);
-    // max-height alone is not always a definite flex size — lock height when
-    // content exceeds the sticky budget so overflow-y:auto forms a scrollport.
     if (contentBottomSpan(sidebar) > budgetH) {
       sidebar.style.height = budgetH + 'px';
     } else {
@@ -306,20 +317,17 @@
       return;
     }
 
-    // No hero: coaches/main define the sticky budget.
-    // Multi → scroll; single → fill the column.
+    // No hero: coaches/main define the sticky budget — fill when one article.
     if (noHero) {
       stickSidebar(row, sidebar, Math.min(M, V), !multi);
       return;
     }
 
-    // Roughly equal → no sticky
     if (Math.abs(M - S) <= EQUAL_PX) {
       setLayout(row, 'layout-equal');
       return;
     }
 
-    // Main taller → sidebar sticks (fill only when one schedule)
     if (M > S) {
       stickSidebar(row, sidebar, Math.min(M, V), !multi);
       return;
@@ -333,7 +341,74 @@
     document.querySelectorAll('.with-sidebar').forEach(layoutRow);
   }
 
+  function activateTab(root, tab) {
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-spielplan-tab]'));
+    var panels = Array.prototype.slice.call(root.querySelectorAll('[data-spielplan-panel]'));
+    var index = tabs.indexOf(tab);
+    if (index < 0) return;
+
+    tabs.forEach(function (item, i) {
+      var selected = i === index;
+      item.setAttribute('aria-selected', selected ? 'true' : 'false');
+      item.tabIndex = selected ? 0 : -1;
+    });
+
+    panels.forEach(function (panel, i) {
+      if (i === index) {
+        panel.removeAttribute('hidden');
+      } else {
+        panel.setAttribute('hidden', '');
+      }
+    });
+
+    tab.focus({ preventScroll: true });
+
+    var row = root.closest('.with-sidebar');
+    if (row) layoutRow(row);
+  }
+
+  function initSpielplanTabs() {
+    document.querySelectorAll('[data-spielplan-tabs]').forEach(function (root) {
+      if (root.dataset.tabsReady === '1') return;
+      root.dataset.tabsReady = '1';
+
+      var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-spielplan-tab]'));
+      if (tabs.length < 2) return;
+
+      root.addEventListener('click', function (event) {
+        var tab = event.target.closest('[data-spielplan-tab]');
+        if (!tab || !root.contains(tab)) return;
+        activateTab(root, tab);
+      });
+
+      root.addEventListener('keydown', function (event) {
+        var tab = event.target.closest('[data-spielplan-tab]');
+        if (!tab || !root.contains(tab)) return;
+
+        var current = tabs.indexOf(tab);
+        if (current < 0) return;
+
+        var next = current;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+          next = (current + 1) % tabs.length;
+        } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+          next = (current - 1 + tabs.length) % tabs.length;
+        } else if (event.key === 'Home') {
+          next = 0;
+        } else if (event.key === 'End') {
+          next = tabs.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        activateTab(root, tabs[next]);
+      });
+    });
+  }
+
   function boot() {
+    initSpielplanTabs();
     window.requestAnimationFrame(function () {
       window.requestAnimationFrame(initAll);
     });
@@ -345,7 +420,10 @@
     boot();
   }
 
-  window.addEventListener('load', initAll);
+  window.addEventListener('load', function () {
+    initSpielplanTabs();
+    initAll();
+  });
 
   var resizeTimer;
   window.addEventListener('resize', function () {

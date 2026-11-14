@@ -852,9 +852,11 @@ footer section:last-of-type nav a:active {
    Modes (bb-widgets.js from M / S / V):
    layout-equal          — neither sticky
    layout-sidebar-sticky — main taller / no-hero → sidebar sticks
-     · 1 widget: JS fills height (no gap)
-     · 2+ widgets: natural stack + overflow-y scroll inside max-height
-   layout-main-sticky    — hero + sidebar taller → main sticks, page scrolls sidebar */
+     · fills the sticky column (tabs keep multi-schedule as one article)
+   layout-main-sticky    — hero + sidebar taller → main sticks, page scrolls sidebar
+
+   Multiple schedules use .spielplan-tabs (one visible panel) so the sidebar
+   never stacks several iframe scrollports on top of each other. */
 
 .with-sidebar {
   --sidebar-sticky-top: var(--header-height, 0px);
@@ -980,11 +982,13 @@ article.hero {
   display: flex;
   align-items: flex-start;
   gap: 0.55em;
+  margin: 0;
+  border: 0;
   text-align: left;
   background: var(--black);
   color: var(--white);
   font-family: var(--display-font);
-  font-size: clamp(1.05rem, 0.45vw + 0.95rem, 1.35rem);
+  font-size: var(--font-size-md);
   font-weight: normal;
   line-height: 1.25;
   padding: 0.95rem var(--padding-sm);
@@ -1009,6 +1013,120 @@ article.hero {
   background: var(--blue);
 }
 
+/* Spielplan: black headline + optional pills (multi only) + one panel */
+.sidebar > article.spielplan-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  /* Black article fill kills subpixel white seams between heading / pills / widget. */
+  background: var(--black);
+}
+
+/* No category dot on the Spielplan title — active pill carries it. */
+.sidebar > article.spielplan-tabs > h2::before,
+.sidebar > article.spielplan-tabs > h2.spielplan-heading::before {
+  content: none;
+  display: none;
+}
+
+.spielplan-tabs__list {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.15rem var(--padding-sm) 0.65rem;
+  overflow: hidden;
+  background: var(--black);
+  border: 0;
+}
+
+/* Keep heading + pills as one continuous black block (no hairline gap). */
+.sidebar > article.spielplan-tabs > h2.spielplan-heading {
+  padding-bottom: 0.85rem;
+}
+
+.spielplan-tabs__tab {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0.5em 1.5em;
+  border: var(--border-white-2px);
+  border-radius: 4rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--body-font);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.spielplan-tabs__tab:hover,
+.spielplan-tabs__tab:focus-visible {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.spielplan-tabs__tab:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+.spielplan-tabs__tab[aria-selected="true"] {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--white);
+}
+
+.spielplan-tabs__dot {
+  flex-shrink: 0;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.spielplan-tabs__tab--tiger[aria-selected="true"] .spielplan-tabs__dot {
+  background: var(--tiger-orange);
+}
+
+.spielplan-tabs__tab--dbv[aria-selected="true"] .spielplan-tabs__dot {
+  background: var(--blue);
+}
+
+.spielplan-tabs__panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  background: var(--black);
+}
+
+.spielplan-tabs__panel[hidden] {
+  display: none !important;
+}
+
+.spielplan-tabs__panel .bb-widget {
+  flex: 1 1 auto;
+}
+
 .sidebar .bb-widget {
   /* BB title row is 48px; crop fully so accent titleBg (switch thumb) stays hidden. */
   --bb-title-crop: 3rem;
@@ -1018,6 +1136,12 @@ article.hero {
   min-height: var(--bb-iframe-height, 600px);
   position: relative;
   overflow: hidden;
+  margin: 0;
+  background: var(--black);
+}
+
+/* Single-schedule articles: same black fill so h2 → widget has no white seam. */
+.sidebar > article:not(.spielplan-tabs) {
   background: var(--black);
 }
 
@@ -1115,7 +1239,8 @@ article.hero {
   }
 
   .sidebar>article,
-  .sidebar>article:only-of-type {
+  .sidebar>article:only-of-type,
+  .sidebar > article.spielplan-tabs {
     flex: 0 0 auto;
     height: auto;
   }

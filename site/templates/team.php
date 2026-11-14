@@ -14,7 +14,7 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
     <article class="hero">
       <div class="hero-title">
         <h1><?= $page->headline()->or($page->title()) ?></h1>
-        <a class="button button--down" href="#spielplan">zum Spielplan</a>
+        <a class="button button--down" href="#spielplan">Zum Spielplan</a>
       </div>
 
       <?php if ($cover || $banner) : ?>
@@ -54,17 +54,29 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
 
 
   <!-- SIDEBAR SPIELPLÄNE -->
-  <aside class="sidebar" id="spielplan">
-
-    <?php foreach ($schedules as $schedule) : ?>
-
-      <article>
-        <h2 class="spielplan-heading">Spielplan der <?= $page->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
-          <?php snippet('spielplan-mannschaft', ['schedule' => $schedule]); ?>
-      </article>
-    <?php endforeach ?>
-
-  </aside>
+  <?php if ($schedules->isNotEmpty()) : ?>
+    <aside class="sidebar" id="spielplan">
+      <?php
+      $panels = [];
+      foreach ($schedules as $schedule) {
+        $label = $schedule->league()->isNotEmpty()
+          ? $schedule->league()->value()
+          : $page->title()->value();
+        $panels[] = [
+          'label'   => $label,
+          'variant' => 'tiger',
+          'html'    => snippet('spielplan-mannschaft', ['schedule' => $schedule], true),
+        ];
+      }
+      snippet('spielplan-tabs', [
+        'heading'   => 'Spielplan',
+        'ariaLabel' => 'Spielpläne der ' . $page->title(),
+        'variant'   => 'tiger',
+        'panels'    => $panels,
+      ]);
+      ?>
+    </aside>
+  <?php endif ?>
 
 
 </main>

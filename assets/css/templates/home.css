@@ -8,7 +8,8 @@
   grid-template-rows: auto 1fr auto;
   gap: clamp(1.5rem, 4vw, 3rem);
   min-height: calc(100svh - var(--header-height, 0px));
-  padding: var(--padding-lg) var(--padding-responsive-lg) var(--padding-responsive-md);
+  /* Equal top/bottom so CTA row breathes the same as the headline. */
+  padding: var(--padding-lg) var(--padding-responsive-lg);
   background-color: var(--light-gray);
 }
 
@@ -127,8 +128,42 @@ h1 {
 
 @media screen and (max-width: 680px) {
   .hero {
-    min-height: auto;
+    position: relative;
+    min-height: calc(100svh - var(--header-height, 0px));
     gap: 1.75rem;
+  }
+
+  /*
+   * Stripe art lives on the left/right edges of a square asset. Mobile
+   * cover-crop would hide them — split into two half-width panels that
+   * each pin their edge of the source image (height-based size so the
+   * brushstrokes keep horizontal length instead of collapsing to stubs).
+   */
+  .hero::before,
+  .hero::after {
+    inset: auto;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background-size: auto 72%;
+    background-position-y: center;
+    background-repeat: no-repeat;
+  }
+
+  .hero::before {
+    left: 0;
+    right: auto;
+    background-position-x: left;
+    clip-path: inset(0 0 0 0);
+    animation-name: hero-paint-left-mobile;
+  }
+
+  .hero::after {
+    right: 0;
+    left: auto;
+    background-position-x: right;
+    clip-path: inset(0 0 0 0);
+    animation-name: hero-paint-right-mobile;
   }
 
   .hero-quotes {
@@ -144,6 +179,16 @@ h1 {
   .hero-actions {
     gap: var(--padding-xs);
   }
+}
+
+@keyframes hero-paint-left-mobile {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes hero-paint-right-mobile {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

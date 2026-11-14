@@ -9,7 +9,7 @@
       <div class="hero-title">
         <h1><?= $page->headline()->or($page->title()) ?></h1>
         <?php if ($schedules->isNotEmpty()) : ?>
-          <a class="button button--down" href="#spielplan">zum Spielplan</a>
+          <a class="button button--down" href="#spielplan">Zum Spielplan</a>
         <?php endif ?>
       </div>
 
@@ -45,17 +45,30 @@
 
   <?php if ($schedules->isNotEmpty()) : ?>
     <aside class="sidebar" id="spielplan">
-      <?php foreach ($schedules as $schedule) : ?>
-        <article class="dbv-spielplan">
-          <h2 class="spielplan-heading">Spielplan der <?= $page->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
-          <?php snippet('spielplan-mannschaft', [
+      <?php
+      $panels = [];
+      foreach ($schedules as $schedule) {
+        $label = $schedule->league()->isNotEmpty()
+          ? $schedule->league()->value()
+          : $page->title()->value();
+        $panels[] = [
+          'label'   => $label,
+          'variant' => 'dbv',
+          'html'    => snippet('spielplan-mannschaft', [
             'schedule' => $schedule,
             'titleBgColor' => '242c53',
             'tapBgColorActive' => '242c53',
             'tapBorderColorActive' => '242c53',
-          ]); ?>
-        </article>
-      <?php endforeach ?>
+          ], true),
+        ];
+      }
+      snippet('spielplan-tabs', [
+        'heading'   => 'Spielplan',
+        'ariaLabel' => 'Spielpläne der ' . $page->title(),
+        'variant'   => 'dbv',
+        'panels'    => $panels,
+      ]);
+      ?>
     </aside>
   <?php endif ?>
 </main>
