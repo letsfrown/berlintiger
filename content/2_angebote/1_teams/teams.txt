@@ -20,7 +20,9 @@ Vom ”Miniteam” über die Jugendfreizeittruppe bis hin zur eingespielten Leis
 
 Damit sich auch die älter werdenden Tiger keinen neuen Verein suchen müssen, haben wir auch zwei Herren Teams.
 
-(link: page://bXigy0Q1fxm9MXww text: Anmelden class: button button--go)
+<div class="button">
+(link: page://bXigy0Q1fxm9MXww text:→ Anmelden)
+</div>
 
 ----
 

@@ -18,7 +18,7 @@ Showdbvspielplan: true
 
 ----
 
-Newsmaxage: 
+Newsmaxage: 1 Monat
 
 ----
 
