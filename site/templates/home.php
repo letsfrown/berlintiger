@@ -2,19 +2,38 @@
 <main>
 
   <!-- HERO -->
-  <section class="hero" style="background-image: url(
-      <?php
-      if ($image = $page->cover()->toFile()) {
-        echo $image->resize(1440)->url();
-      } ?>
-   )">
-    <h1><?= $page->headline() ?></h1>
-    <p class="subheadline"><?= $page->subheadline() ?></p>
+  <?php $heroBg = $page->cover()->toFile(); ?>
+  <section class="hero" <?php if ($heroBg) : ?>style="--hero-bg: url('<?= $heroBg->resize(1440)->url() ?>')"<?php endif ?>>
+    <div class="hero-intro">
+      <h1 aria-label="<?= $page->headline()->escape() ?>">
+        <?php foreach (preg_split('/\s+/u', trim($page->headline()->value())) as $i => $word) : ?>
+          <span class="hero-word" aria-hidden="true"><span style="--i: <?= $i ?>"><?= esc($word) ?></span></span>
+        <?php endforeach ?>
+      </h1>
+      <p class="subheadline"><?= $page->subheadline() ?></p>
+    </div>
 
-    <?php if ($quote) : ?>
-      <img class="hero-quote" src="<?= $quote->url() ?>" alt="<?= $quote->alt()->or('Handgeschriebenes Zitat eines Kindes')->escape() ?>" width="<?= $quote->width() ?>" height="<?= $quote->height() ?>">
+    <?php if ($quotes->isNotEmpty()) : ?>
+      <div class="hero-quotes" data-hero-quotes>
+        <?php foreach ($quotes->values() as $i => $quoteFile) : ?>
+          <?php $quote = $quoteFile->resize(null, 500); ?>
+          <img
+            class="hero-quote"
+            <?= $i === 0 ? 'src' : 'data-src' ?>="<?= $quote->url() ?>"
+            alt="<?= $quoteFile->alt()->or('Handgeschriebenes Zitat eines Kindes')->escape() ?>"
+            width="<?= $quote->width() ?>"
+            height="<?= $quote->height() ?>"
+            decoding="async"
+            <?= $i === 0 ? '' : 'aria-hidden="true"' ?>>
+        <?php endforeach ?>
+      </div>
+      <noscript><style>.hero .hero-quote:first-child { opacity: 1; }</style></noscript>
     <?php endif ?>
-    <a class="button button--down mobileVisible" href="#spielplan">zum Spielplan</a>
+
+    <div class="hero-actions">
+      <a class="button button--go hero-cta" href="<?= url('anmeldung') ?>#mitgliedwerden">Kostenloses Probetraining</a>
+      <a class="button button--down hero-cta hero-cta--secondary mobileVisible" href="#spielplan">zum Spielplan</a>
+    </div>
   </section>
 
   <!-- MAIN CONTENT -->

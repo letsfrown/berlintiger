@@ -2,7 +2,8 @@
 
 return function ($page, $site) {
 
-    $quoteFile = $page->quotes()->toFiles()->shuffle()->first();
+    // Alle Kinder-Zitate in zufälliger Reihenfolge; der Hero blendet sie nacheinander ein
+    $quotes = $page->quotes()->toFiles()->shuffle();
 
     $news = collection('news');
     $maxAge = $page->newsMaxAge()->value();
@@ -16,7 +17,7 @@ return function ($page, $site) {
     }
 
     return [
-        'quote'    => $quoteFile ? $quoteFile->resize(null, 300) : null,
+        'quotes'   => $quotes,
         'homeNews' => $news->limit(1),
     ];
 };

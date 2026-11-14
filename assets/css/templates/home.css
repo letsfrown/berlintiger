@@ -1,42 +1,177 @@
 /* HERO */
 
 .hero {
-  padding: var(--padding-lg) var(--padding-responsive-lg) var(--padding-responsive-md);
-  background-size: cover;
-  background-position: 50% 70%;
-  background-repeat: no-repeat;
-  background-color: var(--light-gray);
-  background-blend-mode: multiply;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  min-height: 85vh;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  min-height: calc(100svh - var(--header-height, 0px));
+  padding: var(--padding-lg) var(--padding-responsive-lg) var(--padding-responsive-md);
+  background-color: var(--light-gray);
+}
+
+/* Pinselstriche: linke und rechte Bildhälfte fahren getrennt herein */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--hero-bg, none) 50% 70% / cover no-repeat;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.hero::before {
+  clip-path: inset(0 50% 0 0);
+  animation: hero-stroke-left 1.1s var(--ease-out) .05s both;
+}
+
+.hero::after {
+  clip-path: inset(0 0 0 50%);
+  animation: hero-stroke-right 1.1s var(--ease-out) .2s both;
+}
+
+@keyframes hero-stroke-left {
+  from { opacity: 0; transform: translateX(-6%); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hero-stroke-right {
+  from { opacity: 0; transform: translateX(6%); }
+  to { opacity: 1; transform: none; }
 }
 
 h1 {
   font-size: var(--font-size-xxl) !important;
 }
 
-.hero img {
-  margin-top: var(--padding-md);
-  mix-blend-mode: multiply;
-  margin-right: auto;
+.hero h1 {
+  max-width: 26ch;
+  line-height: 1.02;
 }
 
-/* Handschrift-Zitat skaliert mit, statt auf Mobil abgeschnitten zu werden */
+/* Headline: Wörter steigen nacheinander aus einer Maske auf */
+.hero-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 .06em .1em 0;
+  margin-bottom: -.1em;
+}
+
+.hero-word > span {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: hero-word-up .9s var(--ease-out) both;
+  animation-delay: calc(.35s + var(--i, 0) * 70ms);
+}
+
+@keyframes hero-word-up {
+  to { transform: none; }
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.hero .subheadline {
+  animation: hero-rise .8s var(--ease-out) .95s both;
+}
+
+/* Kinder-Zitate: groß, wechseln per Überblendung (assets/js/templates/home.js) */
+.hero-quotes {
+  display: grid;
+  align-items: center;
+  min-height: clamp(7rem, 17vw, 15rem);
+}
+
 .hero .hero-quote {
-  max-width: 100%;
-  height: auto;
+  grid-area: 1 / 1;
+  width: auto;
+  max-width: min(100%, 1100px);
+  height: clamp(6rem, 15vw, 14rem);
+  margin: 0;
+  object-fit: contain;
+  object-position: left center;
+  mix-blend-mode: multiply;
+  /* Papiergrau der Scans Richtung Weiß, Schrift etwas kräftiger */
+  filter: grayscale(1) contrast(1.35) brightness(1.08);
+  transform: rotate(-1.2deg);
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
 
-.hero .button {
-  margin-top: auto;
-  margin-right: var(--padding-md);
-  margin-left: auto;
-  position: relative;
-  z-index: 2;
+.hero .hero-quote.is-in {
+  opacity: 1;
+}
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--padding-sm);
+  animation: hero-rise .8s var(--ease-out) 1.55s both;
+}
+
+.hero .hero-cta {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  padding: .7em 1.4em;
+}
+
+.hero .hero-cta--secondary {
+  background-color: transparent;
+}
+
+.hero .hero-cta--secondary:hover,
+.hero .hero-cta--secondary:focus-visible {
+  background-color: var(--white);
+}
+
+@media screen and (max-width: 680px) {
+  .hero {
+    min-height: auto;
+    gap: 1.75rem;
+  }
+
+  .hero-quotes {
+    min-height: 0;
+  }
+
+  .hero .hero-quote {
+    width: 100%;
+    height: auto;
+    max-height: 9rem;
+  }
+
+  .hero-actions {
+    gap: .75rem;
+  }
+
+  .hero .hero-cta {
+    width: 100%;
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero::after,
+  .hero-word > span,
+  .hero .subheadline,
+  .hero-actions {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero .hero-quote {
+    transition-duration: .4s;
+  }
 }
 
 /* NEWS */
