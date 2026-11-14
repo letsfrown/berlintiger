@@ -16,10 +16,10 @@
     <?php if ($quotes->isNotEmpty()) : ?>
       <div class="hero-quotes" data-hero-quotes>
         <?php foreach ($quotes->values() as $i => $quoteFile) : ?>
-          <?php $quote = $quoteFile->resize(null, 500); ?>
+          <?php $quote = $quoteFile->resize(null, 500); /* nur für width/height */ ?>
           <img
             class="hero-quote"
-            <?= $i === 0 ? 'src' : 'data-src' ?>="<?= $quote->url() ?>"
+            <?= $i === 0 ? 'src' : 'data-src' ?>="<?= $quoteFile->inkUrl(500) ?>"
             alt="<?= $quoteFile->alt()->or('Handgeschriebenes Zitat eines Kindes')->escape() ?>"
             width="<?= $quote->width() ?>"
             height="<?= $quote->height() ?>"

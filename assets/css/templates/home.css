@@ -85,9 +85,6 @@ h1 {
 
 /* Kinder-Zitate: groß, wechseln per Überblendung (assets/js/templates/home.js) */
 .hero-quotes {
-  /* Multiply auf dem Container: Überblendungen bleiben immer „multipliziert“,
-     das Papierweiß der Scans blitzt nie auf */
-  mix-blend-mode: multiply;
   display: grid;
   align-items: center;
   min-height: clamp(7rem, 17vw, 15rem);
@@ -101,8 +98,7 @@ h1 {
   margin: 0;
   object-fit: contain;
   object-position: left center;
-  /* Papiergrau der Scans Richtung Weiß, Schrift etwas kräftiger */
-  filter: grayscale(1) contrast(1.35) brightness(1.08);
+  /* Bilder kommen als transparente PNGs (Plugin quote-ink), kein Blend-Modus nötig */
   transform: rotate(-1.2deg);
   opacity: 0;
   transition: opacity 1.2s ease;
