@@ -896,34 +896,38 @@ footer section:last-of-type nav a:active {
   min-height: 0;
 }
 
-/* Sticky sidebar column — scrollport when content exceeds max-height. */
-.with-sidebar.layout-sidebar-sticky .sidebar {
-  position: sticky;
-  top: var(--sidebar-sticky-top);
-  max-height: var(--sidebar-sticky-height);
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
+/* Desktop only: sticky columns + internal scroll when content exceeds budget.
+   Mobile (≤680) resets these below — keep overflow rules out of that query. */
+@media screen and (min-width: 681px) {
+  /* Sticky sidebar column — scrollport when content exceeds max-height. */
+  .with-sidebar.layout-sidebar-sticky .sidebar {
+    position: sticky;
+    top: var(--sidebar-sticky-top);
+    max-height: var(--sidebar-sticky-height);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
 
-/* Hero + sidebar taller: main sticks; sidebar stays in normal flow (page scroll). */
-.with-sidebar.layout-main-sticky .main-content {
-  align-self: stretch;
-}
+  /* Hero + sidebar taller: main sticks; sidebar stays in normal flow (page scroll). */
+  .with-sidebar.layout-main-sticky .main-content {
+    align-self: stretch;
+  }
 
-.with-sidebar.layout-main-sticky .main-sticky-panel {
-  position: sticky;
-  top: var(--sidebar-sticky-top);
-  height: var(--sidebar-sticky-height);
-  max-height: var(--sidebar-sticky-height);
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
+  .with-sidebar.layout-main-sticky .main-sticky-panel {
+    position: sticky;
+    top: var(--sidebar-sticky-top);
+    height: var(--sidebar-sticky-height);
+    max-height: var(--sidebar-sticky-height);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 
-.with-sidebar.layout-main-sticky .sidebar {
-  align-self: stretch;
+  .with-sidebar.layout-main-sticky .sidebar {
+    align-self: stretch;
+  }
 }
 
 .with-sidebar .hero-image {

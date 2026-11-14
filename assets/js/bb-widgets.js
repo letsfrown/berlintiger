@@ -104,6 +104,15 @@
     el.style.removeProperty('top');
     el.style.removeProperty('position');
     el.style.removeProperty('overflow');
+    el.style.removeProperty('overflow-x');
+    el.style.removeProperty('overflow-y');
+  }
+
+  function enableScrollport(el, budgetH) {
+    if (!el) return;
+    el.style.maxHeight = budgetH + 'px';
+    el.style.overflowX = 'hidden';
+    el.style.overflowY = 'auto';
   }
 
   function clearLayout(row) {
@@ -243,19 +252,32 @@
   /**
    * Stick the sidebar in the viewport.
    * - single widget + fill: lock height and stretch the widget (no gap under coaches)
-   * - 2+ widgets: keep natural stack, cap with max-height, scroll inside the column
-   *   so the lower part of later schedules stays reachable
+   * - 2+ widgets: natural stack; if taller than budget, lock height + overflow-y so
+   *   the column scrolls instead of painting into the footer
    */
   function stickSidebar(row, sidebar, budgetH, fill) {
     setLayout(row, 'layout-sidebar-sticky');
-    sidebar.style.maxHeight = budgetH + 'px';
+    enableScrollport(sidebar, budgetH);
     if (fill) {
       sidebar.style.height = budgetH + 'px';
       sizeWidgetsToFill(sidebar, budgetH);
       return;
     }
-    sidebar.style.removeProperty('height');
     sizeWidgetsNatural(sidebar);
+    // max-height alone is not always a definite flex size — lock height when
+    // content exceeds the sticky budget so overflow-y:auto forms a scrollport.
+    if (contentBottomSpan(sidebar) > budgetH) {
+      sidebar.style.height = budgetH + 'px';
+    } else {
+      sidebar.style.removeProperty('height');
+    }
+  }
+
+  function stickMainPanel(row, main, budgetH) {
+    setLayout(row, 'layout-main-sticky');
+    var panel = ensureMainPanel(main);
+    enableScrollport(panel, budgetH);
+    panel.style.height = budgetH + 'px';
   }
 
   function layoutRow(row) {
@@ -304,7 +326,7 @@
     }
 
     // Sidebar taller + hero → main sticks; sidebar keeps natural height (page scrolls)
-    setLayout(row, 'layout-main-sticky');
+    stickMainPanel(row, main, V);
   }
 
   function initAll() {
