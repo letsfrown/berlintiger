@@ -14,7 +14,11 @@ return [
 
   // PANEL STYLES
   'panel' => [
-    'css' => 'assets/css/custom-panel.css'
+    'css' => 'assets/css/custom-panel.css',
+    // Runtime Vue only – our Panel plugins are precompiled
+    'vue' => [
+      'compiler' => false,
+    ],
   ],
 
   // AUTOFAVICON
