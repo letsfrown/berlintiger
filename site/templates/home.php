@@ -75,7 +75,12 @@
     <?php
     $showDbvSpielplan = $page->showDbvSpielplan()->toBool();
     $dbv = $showDbvSpielplan ? $site->find('dtb') : null;
-    $dbvSchedules = $dbv ? $dbv->schedules()->toStructure() : null;
+    // Homepage only shows JBBL; Oberliga is already in the BT Vereinsspielplan.
+    $dbvSchedules = $dbv
+      ? $dbv->schedules()->toStructure()->filter(
+          fn ($schedule) => strcasecmp((string)$schedule->league()->value(), 'JBBL') === 0
+        )
+      : null;
     $hasDbvSpielplan = $dbvSchedules && $dbvSchedules->isNotEmpty();
     ?>
     <aside class="sidebar" id="spielplan">

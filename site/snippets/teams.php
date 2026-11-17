@@ -18,15 +18,18 @@
     <!-- Liste Trainingsgruppen, gruppiert nach Altersklasse -->
     <?php foreach ($groupedTeams as $ageGroup => $teamsPerAge) : ?>
 
+      <?php $groupId = 'team-group-' . $ageGroup; ?>
       <li>
         <!-- Altersklasse aus Array abrufen -->
-        <label for="<?= $ageGroups[$ageGroup] ?>">Trainingsgruppen der <?= $ageGroups[$ageGroup] ?></label>
-        <input id="<?= $ageGroups[$ageGroup] ?>" name="radio" type="radio" />
+        <label for="<?= esc($groupId, 'attr') ?>">Trainingsgruppen der <?= $ageGroups[$ageGroup] ?></label>
+        <input id="<?= esc($groupId, 'attr') ?>" name="teams-accordeon" type="radio" />
 
         <!-- Trainingsgruppen in Altersklasse -->
         <ul class="panel">
           <?php foreach ($teamsPerAge as $team) : ?>
-            <a href="<?= $team->url() ?>"><?= $team->title() ?></a>
+            <li>
+              <a href="<?= $team->url() ?>"><?= $team->title() ?></a>
+            </li>
           <?php endforeach ?>
         </ul>
 

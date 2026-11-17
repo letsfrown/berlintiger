@@ -49,6 +49,7 @@ Icon
 
 /site/config/.license
 /site/config/config.starterkit.test.php
+/site/config/config.berlintiger.de.php
 
 # FTPS secrets / local sync
 # ---------------
