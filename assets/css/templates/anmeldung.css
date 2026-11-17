@@ -262,7 +262,8 @@ section img {
 }
 
 .job-apply-buttons .button {
-  /* Same height in a row even when one label wraps */
+  /* Keep both pills one line – "Trainer:in" otherwise breaks after the colon */
+  white-space: nowrap;
   min-height: 2.75rem;
   box-sizing: border-box;
 }
