@@ -5,6 +5,8 @@ window.addEventListener('load', function() {
 
     var headerHeight = header.offsetHeight;
     document.documentElement.style.setProperty('--header-height', headerHeight + 'px');
+    // Keep in-page anchors (#teams etc.) from landing under the sticky header.
+    document.documentElement.style.scrollPaddingTop = headerHeight + 'px';
 
     document.querySelectorAll('header, section, aside').forEach(function(element) {
       element.style.scrollMarginTop = headerHeight + 'px';

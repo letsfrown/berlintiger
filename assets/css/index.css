@@ -313,6 +313,10 @@ footer .button:active {
 /* SECTIONS & INITIAL LAYOUT */
 /* – – – – – – */
 
+html {
+  scroll-padding-top: var(--header-height, 0px);
+}
+
 body {
   accent-color: var(--tiger-orange);
   min-height: 100vh;
@@ -389,6 +393,17 @@ body > header {
   border-right: var(--border-2px);
   border-left: var(--border-2px);
   border-top: var(--border-2px);
+  /* Let clicks pass through empty header chrome onto content beneath
+     (e.g. team accordion rows that scroll under the sticky subnav). */
+  pointer-events: none;
+}
+
+body > header a,
+body > header label,
+body > header input,
+body > header button,
+body > header summary {
+  pointer-events: auto;
 }
 
 .menu,
