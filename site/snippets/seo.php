@@ -21,9 +21,10 @@ if ($description === null || trim($description) === '') {
 
 $description = Str::short(trim(preg_replace('/\s+/u', ' ', (string)$description)), 160, '…');
 
-$shareImage = $page->ogImage()->toFile()
-  ?? $page->cover()->toFile()
-  ?? $site->ogImage()->toFile();
+// Startseite: Cover ist ein Deko-Hintergrund, daher direkt das Standard-Teilen-Bild nehmen
+$shareImage = $page->isHomePage()
+  ? ($page->ogImage()->toFile() ?? $site->ogImage()->toFile())
+  : ($page->ogImage()->toFile() ?? $page->cover()->toFile() ?? $site->ogImage()->toFile());
 
 $title = $page->isHomePage() ? $site->title()->value() : $page->title()->value() . ' | ' . $site->title()->value();
 ?>

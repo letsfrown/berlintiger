@@ -12,6 +12,12 @@ columns:
         extends: sections/pages
         headline: Publizierte Turniere
         status:  listed
+        layout: list
+        image:
+          query: page.cover.toFile ?? page.image
+          cover: true
+          ratio: 1/1
+          back: white
         template: turnier
         sortBy: title desc
 
@@ -21,8 +27,20 @@ columns:
         extends: sections/pages
         headline: Entwürfe
         status: drafts
+        layout: list
+        image:
+          query: page.cover.toFile ?? page.image
+          cover: true
+          ratio: 1/1
+          back: white
         template: turnier
       unlisted:
         extends: sections/pages
         headline: Versteckte Turniere
         status: unlisted
+        layout: list
+        image:
+          query: page.cover.toFile ?? page.image
+          cover: true
+          ratio: 1/1
+          back: white

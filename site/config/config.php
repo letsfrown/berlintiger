@@ -15,6 +15,52 @@ return [
   // PANEL STYLES
   'panel' => [
     'css' => 'assets/css/custom-panel.css',
+    // Sidebar: Inhalte direkt erreichbar, Technik nach unten
+    'menu' => function () {
+      // Aktiv-Status: Panel-Pfad der aktuellen Ansicht gegen den Seitenpfad prüfen
+      // (Kirby kodiert "/" im Panel-Pfad als "+", also zählen auch Unterseiten)
+      $path   = '/' . trim(kirby()->request()->path()->toString(), '/');
+      $isPage = fn (string $id) => preg_match(
+        '#/pages/' . preg_quote($id, '#') . '(\+|/|$)#',
+        $path
+      ) === 1;
+      $shortcuts = [
+        'news'      => ['News',       'text',      'news'],
+        'teams'     => ['Teams',      'users',     'angebote+teams'],
+        'members'   => ['Mitglieder', 'account',   'about+members'],
+        'turniere'  => ['Turniere',   'star',      'tiger-turnier'],
+        'anmeldung' => ['Anmeldung',  'edit-line', 'anmeldung'],
+      ];
+
+      $menu = [
+        'site' => [
+          'label'   => 'Dashboard',
+          'icon'    => 'dashboard',
+          'link'    => 'site',
+          // Dashboard nur aktiv, wenn keine Shortcut-Seite offen ist
+          'current' => function (string|null $area) use ($shortcuts, $isPage) {
+            foreach ($shortcuts as [, , $id]) {
+              if ($isPage($id)) {
+                return false;
+              }
+            }
+            return $area === 'site';
+          },
+        ],
+        '-',
+      ];
+
+      foreach ($shortcuts as $key => [$label, $icon, $id]) {
+        $menu[$key] = [
+          'label'   => $label,
+          'icon'    => $icon,
+          'link'    => 'pages/' . $id,
+          'current' => fn () => $isPage($id),
+        ];
+      }
+
+      return [...$menu, '-', 'users', 'system'];
+    },
     // Runtime Vue only – our Panel plugins are precompiled
     'vue' => [
       'compiler' => false,

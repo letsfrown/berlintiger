@@ -1,7 +1,9 @@
 label: Hintergrundfarbe
 type: radio
-options: query
-query: 
-  fetch: site.colors.toStructure.filterBy("background", true)
-  text: "{{ structureItem.name }}"
-  value: "{{ structureItem.name }}"
+# Die Namen werden im Frontend kleingeschrieben als CSS-Klasse genutzt
+# (.schwarz, .hellgrau, .weiß in assets/css/index.css). Die Farben selbst
+# werden nur dort definiert, nicht im Panel.
+options:
+  Schwarz: Schwarz
+  Hellgrau: Hellgrau
+  Weiß: Weiß

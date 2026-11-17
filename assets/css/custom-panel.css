@@ -30,3 +30,27 @@
 .k-header-title-text {
   font-family: var(--Rotonto-Bold-Italic);
 }
+
+/* Dashboard: Statistik-Kacheln in der Marken-Schrift */
+.k-stat-value {
+  font-family: var(--Rotonto-Bold-Italic);
+}
+
+/* Hintergrundfarbe: Farbfelder nur zur Orientierung (Farben werden in index.css definiert) */
+.k-field-name-bgcolor ul[data-variant="choices"] li::before {
+  content: '';
+  position: absolute;
+  inset-inline-end: var(--spacing-3);
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  translate: 0 -50%;
+  border-radius: 50%;
+  border: 1px solid rgb(255 255 255 / 0.35);
+}
+.k-field-name-bgcolor ul[data-variant="choices"] li {
+  position: relative;
+}
+.k-field-name-bgcolor ul[data-variant="choices"] li:nth-child(1)::before { background: #000000; }
+.k-field-name-bgcolor ul[data-variant="choices"] li:nth-child(2)::before { background: #f5f1f0; }
+.k-field-name-bgcolor ul[data-variant="choices"] li:nth-child(3)::before { background: #ffffff; }

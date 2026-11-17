@@ -6,6 +6,8 @@ empty: Noch keine Mitglieder
 info: "{{ page.jobs }}"
 layout: cardlets
 image:
+  # Das im Feld „Foto“ gewählte Bild (Fallback: erstes Bild der Seite)
+  query: page.headshot.toFile ?? page.image
   cover: true
   ratio: 1/1
   back: white

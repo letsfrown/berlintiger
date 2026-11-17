@@ -6,6 +6,7 @@ empty: Noch keine Turniere
 sortBy: title desc
 layout: list
 image:
+  query: page.cover.toFile ?? page.image
   cover: true
   ratio: 1/1
   back: white
