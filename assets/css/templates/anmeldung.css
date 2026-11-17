@@ -266,6 +266,8 @@ section img {
   white-space: nowrap;
   min-height: 2.75rem;
   box-sizing: border-box;
+  /* Override article * + * { margin-top: 1em } so the second pill stays aligned */
+  margin-top: 0;
 }
 
 .job-apply-mail {
