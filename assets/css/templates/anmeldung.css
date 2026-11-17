@@ -256,8 +256,15 @@ section img {
 .job-apply-buttons {
   display: flex;
   flex-wrap: wrap;
+  align-items: stretch;
   gap: var(--padding-sm);
   margin-top: 1em;
+}
+
+.job-apply-buttons .button {
+  /* Same height in a row even when one label wraps */
+  min-height: 2.75rem;
+  box-sizing: border-box;
 }
 
 .job-apply-mail {

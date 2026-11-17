@@ -39,7 +39,8 @@ return [
     ],
   ],
 
-  // reCAPTCHA – Site-Key ist öffentlich, Secret kommt aus der Host-Config
+  // reCAPTCHA site key is public by design (widget in the browser).
+  // The secret stays in config.berlintiger.de.php only (gitignored).
   'recaptcha.sitekey' => '6LfnKB8uAAAAAEiMyBdsyavCz7tJGrIkBzhWexhy',
   'recaptcha.secret'  => null,
 
