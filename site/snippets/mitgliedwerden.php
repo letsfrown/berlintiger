@@ -1,4 +1,4 @@
-<section id="<?= $data->title()->lower() ?>" class="grid-2clm align-top ratio-3-2
+<section id="<?= $data->slug() ?>" class="grid-2clm align-top
 <?php if ($bgColor = $data->bgColor()->lower()) : ?> 
 <?= $bgColor ?> 
 <?php endif ?>">
@@ -11,9 +11,10 @@
 
   </article>
 
-  <?php if ($data->cover()->isNotEmpty()) :
-    $img = $data->cover()->toFile()->crop(900, 450) ?>
-    <img src="<?= $img->url() ?>" alt="<?= $img->alt() ?>" class="rounded">
+  <?php if ($coverFile = $data->cover()->toFile()) :
+    // Square crop matches .rounded 1/1; width/height reserve layout space (CLS).
+    $img = $coverFile->crop(900, 900) ?>
+    <img src="<?= $img->url() ?>" alt="<?= $img->alt() ?>" width="<?= $img->width() ?>" height="<?= $img->height() ?>" class="rounded">
   <?php endif ?>
 
 </section>

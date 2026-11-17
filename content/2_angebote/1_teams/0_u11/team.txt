@@ -29,8 +29,8 @@ Schedules:
 
 - 
   league: Fortgeschrittene
-  widgetnumber: "1708590233338"
-  widgetid: "314094"
+  widgetnumber: "1794219138015"
+  widgetid: "313375"
 - 
   league: Anfänger
   widgetnumber: "1789586366939"

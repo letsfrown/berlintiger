@@ -1,39 +1,212 @@
 /* HERO */
 
 .hero {
-  padding: var(--padding-lg) var(--padding-responsive-lg) var(--padding-responsive-md);
-  background-size: cover;
-  background-position: 50% 70%;
-  background-repeat: no-repeat;
-  background-color: var(--light-gray);
-  background-blend-mode: multiply;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  min-height: 85vh;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  min-height: calc(100svh - var(--header-height, 0px));
+  /* Equal top/bottom so CTA row breathes the same as the headline. */
+  padding: var(--padding-lg) var(--padding-responsive-lg);
+  background-color: var(--light-gray);
+}
+
+/* Pinselstriche: linke und rechte Bildhälfte fahren getrennt herein */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--hero-bg, none) 50% 70% / cover no-repeat;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Linke Striche werden vom linken Rand nach innen „gemalt“, rechte vom rechten Rand */
+.hero::before {
+  clip-path: inset(0 50% 0 0);
+  animation: hero-paint-left .9s cubic-bezier(.6, 0, .3, 1) 1.9s both;
+}
+
+.hero::after {
+  clip-path: inset(0 0 0 50%);
+  animation: hero-paint-right .9s cubic-bezier(.6, 0, .3, 1) 2.15s both;
+}
+
+@keyframes hero-paint-left {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 50% 0 0); }
+}
+
+@keyframes hero-paint-right {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 50%); }
 }
 
 h1 {
   font-size: var(--font-size-xxl) !important;
 }
 
-.hero img {
-  margin-top: var(--padding-md);
-  mix-blend-mode: multiply;
-  margin-right: auto;
+.hero h1 {
+  max-width: 26ch;
+  line-height: 1.02;
 }
 
-.hero .button {
-  margin-top: auto;
-  margin-right: var(--padding-md);
-  margin-left: auto;
-  position: relative;
-  z-index: 2;
-
+/* Headline: Wörter steigen nacheinander aus einer Maske auf */
+.hero-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 .06em .1em 0;
+  margin-bottom: -.1em;
 }
 
-≈
+.hero-word > span {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: hero-word-up .9s var(--ease-out) both;
+  animation-delay: calc(.15s + var(--i, 0) * 70ms);
+}
+
+@keyframes hero-word-up {
+  to { transform: none; }
+}
+
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+.hero .subheadline {
+  animation: hero-rise .8s var(--ease-out) .7s both;
+}
+
+/* Kinder-Zitate: groß, wechseln per Überblendung (assets/js/templates/home.js) */
+.hero-quotes {
+  display: grid;
+  align-items: center;
+  min-height: clamp(7rem, 17vw, 15rem);
+}
+
+.hero .hero-quote {
+  grid-area: 1 / 1;
+  width: auto;
+  max-width: min(100%, 1100px);
+  height: clamp(6rem, 15vw, 14rem);
+  margin: 0;
+  object-fit: contain;
+  object-position: left center;
+  /* Bilder kommen als transparente PNGs (Plugin quote-ink), kein Blend-Modus nötig */
+  transform: rotate(-1.2deg);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.hero .hero-quote.is-in {
+  opacity: 1;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--padding-sm);
+  animation: hero-rise .8s var(--ease-out) 3s both;
+}
+
+.hero .hero-cta--secondary {
+  background-color: transparent;
+}
+
+.hero .hero-cta--secondary:hover,
+.hero .hero-cta--secondary:focus-visible {
+  background-color: var(--white);
+}
+
+@media screen and (max-width: 680px) {
+  .hero {
+    position: relative;
+    min-height: calc(100svh - var(--header-height, 0px));
+    gap: 1.75rem;
+  }
+
+  /*
+   * Stripe art lives on the left/right edges of a square asset. Mobile
+   * cover-crop would hide them — split into two half-width panels that
+   * each pin their edge of the source image (height-based size so the
+   * brushstrokes keep horizontal length instead of collapsing to stubs).
+   */
+  .hero::before,
+  .hero::after {
+    inset: auto;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background-size: auto 72%;
+    background-position-y: center;
+    background-repeat: no-repeat;
+  }
+
+  .hero::before {
+    left: 0;
+    right: auto;
+    background-position-x: left;
+    clip-path: inset(0 0 0 0);
+    animation-name: hero-paint-left-mobile;
+  }
+
+  .hero::after {
+    right: 0;
+    left: auto;
+    background-position-x: right;
+    clip-path: inset(0 0 0 0);
+    animation-name: hero-paint-right-mobile;
+  }
+
+  .hero-quotes {
+    min-height: 0;
+  }
+
+  .hero .hero-quote {
+    width: 100%;
+    height: auto;
+    max-height: 9rem;
+  }
+
+  .hero-actions {
+    gap: var(--padding-xs);
+  }
+}
+
+@keyframes hero-paint-left-mobile {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes hero-paint-right-mobile {
+  from { clip-path: inset(0 0 0 100%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::before,
+  .hero::after,
+  .hero-word > span,
+  .hero .subheadline,
+  .hero-actions {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero .hero-quote {
+    transition-duration: .4s;
+  }
+}
+
 /* NEWS */
 
 .news p:first-of-type,
@@ -44,11 +217,29 @@ h1 {
 .news,
 .map {
   padding: var(--padding-responsive-lg);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+/* Same card hover wash as .news-preview on the news index. */
+.news:has(> a:hover),
+.news:has(> a:focus-visible) {
+  background-color: var(--light-gray);
 }
 
 .news img,
 .map img {
   margin-top: unset;
+}
+
+/* Same news-thumb morph as .news-preview (50% ↔ 0 animates both ways). */
+.news a img.rounded {
+  border-radius: 50%;
+  transition: border-radius var(--duration-slow) var(--ease-out);
+}
+
+.news a:hover img.rounded,
+.news a:focus-visible img.rounded {
+  border-radius: 0;
 }
 
 .news h2,
@@ -62,6 +253,8 @@ h1 {
   gap: var(--padding-responsive-md);
   flex-wrap: wrap;
   align-items: flex-start;
+  color: inherit;
+  text-decoration: none;
 }
 
 .news a :first-child {
@@ -72,10 +265,6 @@ h1 {
 .news a :last-child {
   flex-grow: 0;
   margin-inline: auto;
-}
-
-.news a span {
-  color: var(--tiger-orange);
 }
 
 
@@ -126,22 +315,28 @@ h1 {
   inset: 0;
   background-color: rgb(0 0 0 / 30%);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--duration-fast) var(--ease-out);
   pointer-events: none;
 }
 
+/* Same circular icon-button language as .team-card-toggle */
 .video-container .video-play {
   position: absolute;
   top: 50%;
   left: 50%;
   z-index: 1;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
   transform: translate(-50%, -50%);
   border-radius: 100%;
-  background-color: var(--black);
+  border: var(--border-2px);
+  background-color: var(--tiger-orange);
+  color: var(--black);
   pointer-events: none;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
 .video-container .video-play::before {
@@ -151,8 +346,8 @@ h1 {
   left: 54%;
   transform: translate(-50%, -50%);
   border-style: solid;
-  border-width: 0.7rem 0 0.7rem 1.15rem;
-  border-color: transparent transparent transparent var(--white);
+  border-width: 0.4rem 0 0.4rem 0.65rem;
+  border-color: transparent transparent transparent currentColor;
 }
 
 .video-container .video-poster:hover::after,
@@ -160,9 +355,23 @@ h1 {
   opacity: 1;
 }
 
+.video-container .video-poster:focus-visible {
+  outline-offset: -4px;
+}
+
 .video-container .video-poster:hover .video-play,
 .video-container .video-poster:focus-visible .video-play {
-  background-color: var(--tiger-orange);
+  background-color: var(--white);
+  color: var(--black);
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+/* Same pressed invert as .button:active / .team-card-toggle:active */
+.video-container .video-poster:active .video-play,
+.video-container .video-poster:hover:active .video-play {
+  background-color: var(--black);
+  color: var(--white);
+  transform: translate(-50%, -50%) scale(0.96);
 }
 
 

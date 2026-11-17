@@ -64,6 +64,7 @@ tabs:
                 type: files
                 accept: image/jpeg, image/png
                 label: Zitate Kinder
+                help: Bitte bei jedem Bild im Feld „Alternativ-Text“ den Zitattext abtippen – so können ihn auch Screenreader und Google lesen.
                 image:
                   cover: true
 
@@ -81,3 +82,6 @@ tabs:
         sortBy: filename asc
         image:
           ratio: 5/3
+
+  # Tab SEO / Teilen
+  seo: tabs/seo

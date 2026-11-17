@@ -1,4 +1,4 @@
-<section id="<?= $data->title()->lower() ?>">
+<section id="<?= $data->slug() ?>">
   <article class="max-width">
 
     <div class="turnier-header">
@@ -14,10 +14,5 @@
 
   </article>
   
-  <?php if ($data->gallery()->isNotEmpty()) : ?>
-    <ul class="gallery">
-      <?php foreach ($data->gallery()->toFiles() as $image) : ?>
-        <li><img src="<?= $image->resize(800)->url() ?>" alt="<?= $image->alt() ?>"></li>
-      <?php endforeach ?>
-    </ul> <?php endif ?>
+  <?php snippet('gallery', ['images' => $data->gallery()]) ?>
 </section>

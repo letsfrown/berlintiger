@@ -1,9 +1,9 @@
-<section id="<?= $data->title()->lower() ?>" class="grid-2clm align-top
+<section id="<?= $data->slug() ?>" class="grid-2clm align-top
 <?php if ($bgColor = $data->bgColor()->lower()) : ?> 
 <?= $bgColor ?> 
 <?php endif ?>">
 
-  <article>
+  <article class="sticky-copy">
     <h2><?= $data->headline()->or($data->title()) ?></h2>
     <p class="subheadline"><?= $data->subheadline() ?></p>
     <?= $data->text()->kirbytext() ?>

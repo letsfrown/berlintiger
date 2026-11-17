@@ -53,3 +53,6 @@ tabs:
         sortBy: filename asc
         image:
           ratio: 1/1
+
+  # Tab SEO / Teilen
+  seo: tabs/seo

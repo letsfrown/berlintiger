@@ -6,10 +6,10 @@
       <p>Kontakt</p>
       <nav>
         <?php if ($email = $site->email()) : ?>
-          <a href="mailto:<?= $email ?>" class="button"><?= $email ?></a>
+          <a href="mailto:<?= $email ?>" class="button button--mail"><?= $email ?></a>
         <?php endif ?>
         <?php if ($ig = $site->instagram()) : ?>
-          <a href="<?= $ig ?>" target="_blank" rel="noopener noreferrer" class="button">Instagram</a>
+          <a href="<?= $ig ?>" target="_blank" rel="noopener noreferrer" class="button button--ig">Instagram</a>
         <?php endif ?>
       </nav>
     </article>
@@ -17,7 +17,7 @@
     <article>
       <p>Mitmachen</p>
       <nav class="arrowLinks">
-        <a href="/anmeldung#mitglied%20werden">Anmelden</a>
+        <a href="/anmeldung#mitgliedwerden">Anmelden</a>
         <a href="/anmeldung#jobs">Bewerben</a>
         <a href="/about#spenden">Unterstützen</a>
       </nav>
@@ -28,7 +28,7 @@
       <nav class="arrowLinks">
         <a href="/news">News</a>
         <a href="/angebote#teams">Teams</a>
-        <a href="/angebote#schul-ags">Schul-AGs</a>
+        <a href="/angebote#ags">Schul-AGs</a>
       </nav>
     </article>
 
@@ -40,7 +40,7 @@
 
   <!-- IMPRINT, PRIVACY -->
   <section>
-    <a href="<?= $site ?>">
+    <a href="<?= $site->url() ?>" aria-label="Zur Startseite">
       <img src="<?= url('/assets/logo/berlintiger-logo.svg') ?>" class="logo" alt="Berlin Tiger Logo">
     </a>
 

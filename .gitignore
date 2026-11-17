@@ -51,6 +51,9 @@ Icon
 /site/config/config.starterkit.test.php
 /site/config/config.berlintiger.de.php
 
+# Live-Config mit Secrets (Vorlage: config.berlintiger.de.example.php)
+/site/config/config.berlintiger.de.php
+
 # FTPS secrets / local sync
 # ---------------
 

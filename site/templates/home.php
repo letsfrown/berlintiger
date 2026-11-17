@@ -2,19 +2,38 @@
 <main>
 
   <!-- HERO -->
-  <section class="hero" style="background-image: url(
-      <?php
-      if ($image = $page->cover()->toFile()) {
-        echo $image->resize(1440)->url();
-      } ?>
-   )">
-    <h1><?= $page->headline() ?></h1>
-    <p class=" subheadline"><?= $page->subheadline() ?></p>
+  <?php $heroBg = $page->cover()->toFile(); ?>
+  <section class="hero" <?php if ($heroBg) : ?>style="--hero-bg: url('<?= $heroBg->resize(1440)->url() ?>')"<?php endif ?>>
+    <div class="hero-intro">
+      <h1 aria-label="<?= $page->headline()->escape() ?>">
+        <?php foreach (preg_split('/\s+/u', trim($page->headline()->value())) as $i => $word) : ?>
+          <span class="hero-word" aria-hidden="true"><span style="--i: <?= $i ?>"><?= esc($word) ?></span></span>
+        <?php endforeach ?>
+      </h1>
+      <p class="subheadline"><?= $page->subheadline() ?></p>
+    </div>
 
-    <?php if ($quote) : ?>
-      <img src="<?= $quote->url() ?>" alt="<?= $quote->alt()->escape() ?>" style="width:<?= $quote->width() ?>px; height:<?= $quote->height() ?>px">
+    <?php if ($quotes->isNotEmpty()) : ?>
+      <div class="hero-quotes" data-hero-quotes>
+        <?php foreach ($quotes->values() as $i => $quoteFile) : ?>
+          <?php $quote = $quoteFile->resize(null, 500); /* nur für width/height */ ?>
+          <img
+            class="hero-quote"
+            <?= $i === 0 ? 'src' : 'data-src' ?>="<?= $quoteFile->inkUrl(500) ?>"
+            alt="<?= $quoteFile->alt()->or('Handgeschriebenes Zitat eines Kindes')->escape() ?>"
+            width="<?= $quote->width() ?>"
+            height="<?= $quote->height() ?>"
+            decoding="async"
+            <?= $i === 0 ? '' : 'aria-hidden="true"' ?>>
+        <?php endforeach ?>
+      </div>
+      <noscript><style>.hero .hero-quote:first-child { opacity: 1; }</style></noscript>
     <?php endif ?>
-    <a class="button mobileVisible" href="#spielplan">↓ zum Spielplan </a>
+
+    <div class="hero-actions">
+      <a class="button button--go hero-cta" href="<?= url('anmeldung') ?>#mitgliedwerden">Zum Probetraining</a>
+      <a class="button button--down hero-cta hero-cta--secondary mobileVisible" href="#spielplan">Zum Spielplan</a>
+    </div>
   </section>
 
   <!-- MAIN CONTENT -->
@@ -32,12 +51,12 @@
               <p>
                 <?= $article->intro()
                   ->or($article->text()->excerpt(160, false, '…')) ?>
-                <span class="readmore">&rarr;&nbsp;mehr&nbsp;lesen</span>
+                <span class="readmore">mehr&nbsp;lesen</span>
               </p>
 
             </article>
-            <?php if ($item = $article->image()->crop(300)) : ?>
-              <img src="<?= $item->url() ?>" alt="<?= $item->alt() ?>" class="rounded">
+            <?php if ($newsImage = $article->cover()->toFile() ?? $article->image()) : $item = $newsImage->crop(300) ?>
+              <img src="<?= $item->url() ?>" alt="<?= $newsImage->alt() ?>" class="rounded" loading="lazy">
             <?php endif ?>
 
           </a>
@@ -82,35 +101,49 @@
         )
       : null;
     $hasDbvSpielplan = $dbvSchedules && $dbvSchedules->isNotEmpty();
+    $widgetNumber = $page->widgetNumber();
+    $hasVereinSpielplan = $widgetNumber->isNotEmpty();
+
+    $panels = [];
+    if ($hasVereinSpielplan) {
+      $panels[] = [
+        'label'   => 'Berlin Tiger',
+        'variant' => 'tiger',
+        'html'    => snippet('spielplan-verein', [
+          'widgetNumber' => $widgetNumber,
+          'iframeHeight' => 1200,
+        ], true),
+      ];
+    }
+    if ($hasDbvSpielplan) {
+      foreach ($dbvSchedules as $schedule) {
+        $label = $schedule->league()->isNotEmpty()
+          ? $schedule->league()->value()
+          : $dbv->title()->value();
+        $panels[] = [
+          'label'   => $label,
+          'variant' => 'dbv',
+          'html'    => snippet('spielplan-mannschaft', [
+            'schedule' => $schedule,
+            'titleBgColor' => '242c53',
+            'tapBgColorActive' => '242c53',
+            'tapBorderColorActive' => '242c53',
+            'iframeHeight' => 1200,
+          ], true),
+        ];
+      }
+    }
     ?>
-    <aside class="sidebar" id="spielplan">
-
-      <article>
-        <h2 class="spielplan-heading">Spielplan der Berlin Tiger</h2>
-        <?php if ($widgetNumber = $page->widgetNumber()) : ?>
-          <?php snippet('spielplan-verein', [
-            'widgetNumber' => $widgetNumber,
-            // Match team pages with two schedules (iframeHeight 600)
-            'iframeHeight' => $hasDbvSpielplan ? 600 : 1200,
-          ]); ?>
-        <?php endif ?>
-      </article>
-
-      <?php if ($hasDbvSpielplan) : ?>
-        <?php foreach ($dbvSchedules as $schedule) : ?>
-          <article class="dbv-spielplan">
-            <h2 class="spielplan-heading">Spielplan der <?= $dbv->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
-            <?php snippet('spielplan-mannschaft', [
-              'schedule' => $schedule,
-              'titleBgColor' => '000000',
-              'tapBgColorActive' => '242c53',
-              'tapBorderColorActive' => '242c53',
-            ]); ?>
-          </article>
-        <?php endforeach ?>
-      <?php endif ?>
-
-    </aside>
+    <?php if (count($panels) > 0) : ?>
+      <aside class="sidebar" id="spielplan">
+        <?php snippet('spielplan-tabs', [
+          'heading'   => 'Spielplan',
+          'ariaLabel' => 'Spielpläne',
+          'variant'   => $hasVereinSpielplan ? 'tiger' : 'dbv',
+          'panels'    => $panels,
+        ]); ?>
+      </aside>
+    <?php endif ?>
 
 
   </section>

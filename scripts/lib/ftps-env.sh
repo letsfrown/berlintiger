@@ -54,7 +54,16 @@ remote_path() {
   fi
 }
 
+# Passwort in jeder Ausgabe maskieren (lftp schreibt es im Dry-Run in die URLs).
+mask_secrets() {
+  MASK="${FTPS_PASS}" perl -pe 'BEGIN { $m = quotemeta($ENV{MASK}) } s/$m/***/g if length $ENV{MASK}'
+}
+
 run_lftp() {
+  _run_lftp_raw "$@" 2>&1 | mask_secrets
+}
+
+_run_lftp_raw() {
   lftp -u "${FTPS_USER},${FTPS_PASS}" "ftp://${FTPS_HOST}:${FTPS_PORT}" -e "
 set ftp:ssl-force true
 set ftp:ssl-protect-data true

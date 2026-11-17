@@ -14,7 +14,7 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
     <article class="hero">
       <div class="hero-title">
         <h1><?= $page->headline()->or($page->title()) ?></h1>
-        <a class="button" href="#spielplan">↓ zum Spielplan</a>
+        <a class="button button--down" href="#spielplan">Zum Spielplan</a>
       </div>
 
       <?php if ($cover || $banner) : ?>
@@ -36,45 +36,47 @@ $banner = $page->drawings()->isNotEmpty() ? $page->drawings()->toFiles()->shuffl
         <h2>Coaches der <?= $page->title() ?></h2>
         <div class="team-card-grid">
           <?php foreach ($page->coaches()->toStructure() as $coach) : ?>
-            <div class="team-card">
-              <?php if ($coach->coach()->toPage()->headshot()->isNotEmpty()) : ?>
-                <?= $coach->coach()->toPage()->headshot()->toFile()->crop(400) ?>
-              <?php else : ?>
-                <div class="placeholder"></div>
-              <?php endif ?>
-              <h3><?= $coach->coach()->toPage()->title() ?></h3>
-              <p><?= $coach->position() ?></p>
-            </div>
+            <?php if ($member = $coach->coach()->toPage()) : ?>
+              <?php snippet('member', [
+                'data' => $member,
+                'role' => $coach->position(),
+                'includeFacts' => false,
+                'tag' => 'div',
+              ]) ?>
+            <?php endif ?>
           <?php endforeach ?>
         </div>
 
       </article>
     <?php endif ?>
 
-
-
   </section>
 
 
   <!-- SIDEBAR SPIELPLÄNE -->
-  <aside class="sidebar" id="spielplan">
-
-    <?php if ($schedules->isNotEmpty());
-    foreach ($schedules as $schedule) : ?>
-
-      <article>
-        <h2 class="spielplan-heading">Spielplan der <?= $page->title() ?><?= $schedule->league()->isNotEmpty() ? ' ' . $schedule->league() : '' ?></h2>
-          <?php snippet('spielplan-mannschaft', ['schedule' => $schedule]); ?>
-      </article>
-    <?php endforeach ?>
-
-    <?php if ($schedules->count() < 2) :  ?>
-      <div class="decoration"></div>
-    <?php endif ?>
-
-
-
-  </aside>
+  <?php if ($schedules->isNotEmpty()) : ?>
+    <aside class="sidebar" id="spielplan">
+      <?php
+      $panels = [];
+      foreach ($schedules as $schedule) {
+        $label = $schedule->league()->isNotEmpty()
+          ? $schedule->league()->value()
+          : $page->title()->value();
+        $panels[] = [
+          'label'   => $label,
+          'variant' => 'tiger',
+          'html'    => snippet('spielplan-mannschaft', ['schedule' => $schedule], true),
+        ];
+      }
+      snippet('spielplan-tabs', [
+        'heading'   => 'Spielplan',
+        'ariaLabel' => 'Spielpläne der ' . $page->title(),
+        'variant'   => 'tiger',
+        'panels'    => $panels,
+      ]);
+      ?>
+    </aside>
+  <?php endif ?>
 
 
 </main>

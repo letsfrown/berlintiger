@@ -18,7 +18,6 @@ h2 {
 .grid-2clm.nopadding img {
   aspect-ratio: 1/1;
   border-radius: 0 100vw 100vw 0;
-  outline: var(--border-2px);
 }
 
 .grid-2clm.nopadding.reverse img {
@@ -26,7 +25,7 @@ h2 {
 }
 
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 680px) {
 
   .grid-2clm.nopadding img,
   .grid-2clm.nopadding.reverse img {
@@ -46,59 +45,71 @@ h2 {
   border-top: var(--border-light-gray-2px);
 }
 
-.accordeon label {
+.accordeon summary {
   color: var(--medium-gray);
   padding: var(--padding-sm) 0;
   font-family: var(--display-font);
   display: block;
   cursor: pointer;
+  list-style: none;
 }
 
-.accordeon label:hover {
+.accordeon summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordeon summary:hover,
+.accordeon details[open] > summary {
   color: var(--black);
 }
 
-.panel {
-  max-height: 0px;
-  overflow: hidden;
-  opacity: 0;
-  transition: all 300ms ease-out;
+.accordeon summary:focus {
+  outline: none;
+}
+
+.accordeon summary:focus-visible {
+  color: var(--black);
+  outline: 2px solid var(--black);
+  outline-offset: 3px;
+}
+
+.accordeon li:has(> details[open]) {
+  border-top: var(--border-2px);
+}
+
+.accordeon .panel li {
+  border-top: none;
+  font-size: inherit;
 }
 
 .panel a {
   display: block;
   padding-bottom: var(--padding-sm);
   font-weight: var(--font-weight-semibold);
-  transition: all 150ms ease-in;
+  transition:
+    padding-left var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
-.panel a:hover {
+.panel a:hover,
+.panel a:focus-visible {
   padding-left: var(--padding-sm);
   color: var(--tiger-orange);
 }
 
-/* Hide checkboxes and radio-buttons */
-.accordeon input[type="radio"],
-.accordeon input[type="checkbox"] {
-  display: none;
-}
-
-/* Change .label corresponding to checked radio or checkbox */
-.accordeon li:has(input[type="radio"]:checked),
-.accordeon li:has(input[type="checkbox"]:checked) {
-  border-top: var(--border-2px);
-}
-
-.accordeon li:has(input[type="radio"]:checked) label,
-.accordeon li:has(input[type="checkbox"]:checked) label {
+.panel a:active {
   color: var(--black);
 }
 
-/* Show .panel corresponding to checked radio or checkbox */
-.accordeon input[type="radio"]:checked+.panel,
-.accordeon input[type="checkbox"]:checked+.panel {
-  max-height: 50vh;
-  opacity: 1;
-  transition: all 150ms ease-in;
+/* Sanftes Aufklappen, wo unterstützt */
+@media (prefers-reduced-motion: no-preference) {
+  .accordeon details[open] .panel {
+    animation: accordeon-in var(--duration-base) var(--ease-out);
+  }
+}
+
+@keyframes accordeon-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
 }
 

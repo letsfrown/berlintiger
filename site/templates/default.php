@@ -8,9 +8,9 @@
       <?php if ($subheadline = $page->subheadline()) : ?>
         <h2><?= $subheadline ?></h2>
       <?php endif ?>
-      <p><?= $page->text()->kirbytext() ?></p>
+      <?= $page->text()->kirbytext() ?>
     </article>
-    </secion>
+  </section>
 </main>
 
 <?php snippet('footer') ?>

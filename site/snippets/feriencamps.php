@@ -1,4 +1,4 @@
-<section id="<?= $data->title()->lower() ?>" class="grid-2clm nopadding reverse
+<section id="<?= $data->slug() ?>" class="grid-2clm nopadding reverse
 <?php if ($bgColor = $data->bgColor()->lower()) : ?> 
 <?= $bgColor ?> 
 <?php endif ?>">
@@ -9,8 +9,8 @@
     <?= $data->text()->kirbytext() ?>
   </article>
   
-  <?php if ($data->cover()->isNotEmpty()) :
-    $img = $data->cover()->toFile()->crop(800) ?>
+  <?php if ($coverFile = $data->cover()->toFile()) :
+    $img = $coverFile->crop(800) ?>
     <img src="<?= $img->url() ?>" alt="">
   <?php endif ?>
 

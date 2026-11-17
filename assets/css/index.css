@@ -53,6 +53,19 @@
   --main-max-width: 1440px;
   --textpage-max-width: 840px;
 
+  /* Shared logo size — header mark + footer mark */
+  --logo-height: 2.5rem;
+
+  /* Motion — snappy start, soft settle (satisfying without bounce noise) */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 480ms;
+
+  /* Breakpoint tokens (document intent; media queries mirror these):
+     --bp-mobile: 680px  — nav hamburger, sidebar stack, spielplan CTA, grids
+     --bp-wide:   1000px — wide-only layout peeks (e.g. sponsorship) */
 }
 
 
@@ -66,17 +79,53 @@ p {
   font-size: var(--font-size-base);
 }
 
-p a {
-  text-decoration-style: solid;
-  text-decoration-line: underline;
-  text-decoration-skip: none;
-  text-decoration-color: var(--tiger-orange);
-  text-decoration-thickness: .15em;
-  text-underline-offset: .15em;
+/* Keyboard focus shares the 2px black stroke used everywhere else.
+   On orange, black, and the lightbox the ring flips to white. */
+:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 3px;
 }
 
-p a:hover {
-  text-decoration-color: inherit;
+footer :focus-visible,
+.subnavigation :focus-visible,
+.schwarz :focus-visible,
+.lightbox :focus-visible {
+  outline-color: var(--white);
+}
+
+/* Body copy only. Nav, cards, and pills keep their own treatments. */
+main :is(p, li) a:not(.button) {
+  text-decoration-line: underline;
+  text-decoration-color: var(--tiger-orange);
+  text-decoration-thickness: 2px;
+  text-underline-offset: .18em;
+  text-decoration-skip-ink: none;
+}
+
+main :is(p, li) a:not(.button):hover,
+main :is(p, li) a:not(.button):active {
+  text-decoration-color: currentColor;
+}
+
+main :is(p, li) a:not(.button):has(img),
+main li ul.panel a,
+main li ul.panel a:hover,
+main li ul.panel a:active {
+  text-decoration: none;
+}
+
+/* Continuous underline under label + arrow (text-decoration gaps on ::after). */
+.readmore {
+  display: inline-block;
+  color: var(--tiger-orange);
+  border-bottom: 2px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+a:hover .readmore,
+a:focus-visible .readmore {
+  border-bottom-color: currentColor;
+  text-decoration: none;
 }
 
 h1:not(:empty) {
@@ -113,22 +162,150 @@ h4 {
   margin-top: 0.5em;
 }
 
-button,
+button {
+  cursor: pointer;
+}
+
+/* Pill CTA. Icon buttons (slider, lightbox, video, card toggle)
+   are not .button, so they do not inherit this fill. */
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
   width: fit-content;
+  max-width: 100%;
   padding: 0.5em 1.5em;
   border: var(--border-2px);
-  cursor: pointer;
   border-radius: 4rem;
   background-color: var(--tiger-orange);
   color: var(--black);
   text-decoration: none;
   font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
-button:hover,
-.button:hover {
+.button:hover,
+.button:focus-visible {
   background-color: var(--white);
+  color: var(--black);
+}
+
+.button:active {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.button:disabled,
+.button:disabled:hover,
+.button[aria-disabled="true"] {
+  background-color: var(--light-gray);
+  color: var(--medium-gray);
+  border-color: var(--medium-gray);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Orange pill on the orange footer reads as a border only. Invert it. */
+footer .button {
+  background-color: var(--white);
+}
+
+footer .button:hover,
+footer .button:focus-visible {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+footer .button:active {
+  background-color: var(--black);
+  color: var(--tiger-orange);
+}
+
+/* Text-button icons (unicode / SVG).
+   Rules:
+   - Informative (mail, Instagram brand): BEFORE the label
+     (.button--mail, .button--ig, .team-mail)
+   - Directional (→ go-to, ↓/↑ jump, ↗ external): AFTER the label
+     (.button--go / --down / --up / --ext, .arrowLinks, .readmore)
+   - Instagram uses brand mark only — no trailing ↗
+   - Form submit: no icon
+   - Pagination: arrows on the outside (← prev / next →)
+   - Destructive / close / chrome: icon-only circular (not .button) */
+/* Keep glyph + label on one line; plain .button may still wrap (long emails). */
+.button--go,
+.button--down,
+.button--up,
+.button--ext,
+.button--mail,
+.button--ig,
+.button.team-mail {
+  flex-wrap: nowrap;
+}
+
+.button--go::after,
+.button--down::after,
+.button--up::after,
+.button--ext::after,
+.button--mail::before,
+.button--ig::before {
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.button--go::after {
+  content: "\2192"; /* → */
+}
+
+.button--down::after {
+  content: "\2193"; /* ↓ */
+}
+
+.button--up::after {
+  content: "\2191"; /* ↑ */
+}
+
+.button--ext::after {
+  content: "\2197"; /* ↗ */
+}
+
+/* Leading envelope — same path as .team-mail-icon; CSS so Kirbytext CTAs work too. */
+.button--mail::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M1.5 3.5A1.5 1.5 0 0 1 3 2h10a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 13 14H3a1.5 1.5 0 0 1-1.5-1.5v-9Zm1.5 0v.4l5 3.2 5-3.2V3.5H3Zm10 1.77-4.66 3a.75.75 0 0 1-.68 0L3 5.27V12.5h10V5.27Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23000' d='M1.5 3.5A1.5 1.5 0 0 1 3 2h10a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 13 14H3a1.5 1.5 0 0 1-1.5-1.5v-9Zm1.5 0v.4l5 3.2 5-3.2V3.5H3Zm10 1.77-4.66 3a.75.75 0 0 1-.68 0L3 5.27V12.5h10V5.27Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Leading Instagram brand mark — no trailing directional icon. */
+.button--ig::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='12.145' cy='3.892' r='0.96'/%3E%3Cpath d='M8 12c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4zm0-6C6.897 6 6 6.897 6 8s.897 2 2 2 2-.897 2-2-.897-2-2-2z'/%3E%3Cpath d='M12 16H4c-2.056 0-4-1.944-4-4V4c0-2.056 1.944-4 4-4h8c2.056 0 4 1.944 4 4v8c0 2.056-1.944 4-4 4zM4 2C3.065 2 2 3.065 2 4v8c0 .953 1.047 2 2 2h8c.935 0 2-1.065 2-2V4c0-.935-1.065-2-2-2H4z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='12.145' cy='3.892' r='0.96'/%3E%3Cpath d='M8 12c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4zm0-6C6.897 6 6 6.897 6 8s.897 2 2 2 2-.897 2-2-.897-2-2-2z'/%3E%3Cpath d='M12 16H4c-2.056 0-4-1.944-4-4V4c0-2.056 1.944-4 4-4h8c2.056 0 4 1.944 4 4v8c0 2.056-1.944 4-4 4zM4 2C3.065 2 2 3.065 2 4v8c0 .953 1.047 2 2 2h8c.935 0 2-1.065 2-2V4c0-.935-1.065-2-2-2H4z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Inline SVG icons (team-mail): don't inherit reset svg { max-width:100% }. */
+.button svg {
+  width: 1em;
+  height: 1em;
+  max-width: none;
+  flex-shrink: 0;
+}
+
+/* Inline “mehr lesen” cue — trailing arrow, same glyph as go-to. */
+.readmore::after {
+  content: "\2192";
+  margin-left: 0.3em;
 }
 
 
@@ -139,12 +316,37 @@ button:hover,
 body {
   accent-color: var(--tiger-orange);
   min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
+
+body > main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+/* Team / DBV: main itself is the two-column row.
+   Do not flex-grow — that leaves a white band above the footer
+   under short coach sections. */
+body > main.with-sidebar {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 0;
+}
+
+/* Home keeps a normal document flow under the hero. */
 
 main {
   border-inline: var(--border-2px);
   max-width: var(--main-max-width);
   margin-inline: auto;
+}
+
+main:not(.with-sidebar) {
   min-height: 60vh;
 }
 
@@ -202,26 +404,45 @@ body > header {
   border-right: var(--border-2px);
   border-bottom: var(--border-2px);
   padding: var(--padding-sm) var(--padding-xs);
-  background-color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.menu a.dbv-page:hover {
-  color: var(--white);
-  background-color: var(--blue);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
 }
 
 .menu a:hover,
+.menu a:focus-visible {
+  color: var(--white);
+  background-color: var(--black);
+  outline-color: var(--tiger-orange);
+}
+
 .menu a:active {
   color: var(--white);
   background-color: var(--black);
 }
 
-.menu a.active {
+.menu a.dbv-page:hover,
+.menu a.dbv-page:focus-visible {
+  color: var(--white);
+  background-color: var(--blue);
+  outline-color: var(--white);
+}
+
+/* Current page keeps its color when hovered or focused. */
+.menu a.active,
+.menu a.active:hover,
+.menu a.active:focus-visible,
+.menu a.active:active {
   background-color: var(--tiger-orange);
   color: var(--black);
+  outline-color: var(--black);
+}
+
+.menu a:focus-visible {
+  outline-offset: -4px;
 }
 
 body > header:has(.subnavigation) a.active {
@@ -234,7 +455,8 @@ body > header:has(.subnavigation) a.active {
 
 .home-link img {
   display: block;
-  height: 40px;
+  height: var(--logo-height);
+  width: auto;
 }
 
 .home-link span {
@@ -259,9 +481,22 @@ body > header:has(.subnavigation) a.active {
   font-weight: var(--font-weight-semibold);
 }
 
+.subnavigation a {
+  color: var(--black);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .2em;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
+}
+
+/* Current section + hover/focus: thin underline. Stay black on orange. */
 .subnavigation a:hover,
-.subnavigation a:active {
-  color: var(--white);
+.subnavigation a:focus-visible,
+.subnavigation a:active,
+.subnavigation a.active {
+  color: var(--black);
+  text-decoration-color: currentColor;
 }
 
 
@@ -286,7 +521,7 @@ body > header:has(.subnavigation) a.active {
     margin-left: auto;
     overflow: hidden;
     cursor: pointer;
-    transition: transform 300ms ease-out;
+    transition: transform var(--duration-base) var(--ease-out);
   }
 
   .hamburger-line {
@@ -336,11 +571,38 @@ body > header:has(.subnavigation) a.active {
     border-bottom: var(--border-2px);
   }
 
+  #menu-button {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  #menu-button:focus {
+    outline: none;
+  }
+
+  #menu-button:focus-visible+label {
+    outline: 2px solid var(--black);
+    outline-offset: 3px;
+  }
+
   .menu a,
   .menu a.dbv-page,
   .menu a:hover,
+  .menu a:focus-visible,
   .menu a.dbv-page:hover,
+  .menu a.dbv-page:focus-visible,
   .menu a.active,
+  .menu a.active:hover,
+  .menu a.active:focus-visible,
   .menu a.dbv-page.active {
     border-bottom: 0;
     font-family: var(--display-font);
@@ -348,6 +610,7 @@ body > header:has(.subnavigation) a.active {
     color: unset;
     background-color: unset;
     border-right: unset;
+    outline-color: var(--black);
   }
 
   .navigation {
@@ -358,7 +621,9 @@ body > header:has(.subnavigation) a.active {
     flex-wrap: nowrap;
     align-items: stretch;
     justify-content: start;
-    transition: all 150ms ease-out;
+    transition:
+      height var(--duration-slow) var(--ease-out),
+      padding-bottom var(--duration-slow) var(--ease-out);
   }
 
   .navigation a {
@@ -400,7 +665,8 @@ body > header:has(.subnavigation) a.active {
 footer {
   position: relative;
   z-index: 0;
-  margin-top: auto;
+  /* No margin-top:auto — that left a white band under short
+     sidebar pages (coaches / map) before the orange footer. */
   border-left: var(--border-2px);
   border-right: var(--border-2px);
   border-top: var(--border-2px);
@@ -448,13 +714,51 @@ footer section:last-of-type nav {
   margin-left: auto;
 }
 
+/* Quiet column labels — pills carry the weight, not the headings. */
+footer section:first-of-type > article > p {
+  margin: 0 0 0.35em;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
 footer p {
   font-size: var(--font-size-md);
 }
 
-.arrowLinks a::before {
-  content: "\2192";
-  margin-right: .25em;
+/* Text go-to links (not pills): trailing →, same glyph as .button--go. */
+.arrowLinks a {
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.05em;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.arrowLinks a::after {
+  content: "\2192"; /* → */
+  margin-left: .25em;
+}
+
+.arrowLinks a:hover,
+.arrowLinks a:focus-visible,
+.arrowLinks a:active {
+  border-bottom-color: currentColor;
+}
+
+footer section:last-of-type nav a {
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.05em;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+footer section:last-of-type nav a:hover,
+footer section:last-of-type nav a:focus-visible,
+footer section:last-of-type nav a:active {
+  color: var(--black);
+  border-bottom-color: currentColor;
 }
 
 .kinderschutz {
@@ -463,7 +767,8 @@ footer p {
 }
 
 .logo {
-  height: var(--font-size-lg);
+  height: var(--logo-height);
+  width: auto;
 }
 
 
@@ -497,7 +802,15 @@ footer p {
   }
 }
 
-
+/* Sticky column / media: keep the same gap under the header as
+   section padding-top (--padding-lg) when at rest. */
+@media screen and (min-width: 681px) {
+  .sticky-copy {
+    position: sticky;
+    top: calc(var(--header-height, 0px) + var(--padding-lg));
+    align-self: start;
+  }
+}
 
 /* Layout: Grid Columns */
 
@@ -520,7 +833,7 @@ footer p {
   align-items: flex-start;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 680px) {
   .grid-2clm {
     grid-template-columns: 1fr;
     justify-items: stretch;
@@ -535,29 +848,88 @@ footer p {
 }
 
 
-/* Layout: Flex Sidebar (SPIELPLAN)*/
+/* Layout: Flex Sidebar (SPIELPLAN)
+   Modes (bb-widgets.js from M / S / V):
+   layout-equal          — neither sticky
+   layout-sidebar-sticky — main taller / no-hero → sidebar sticks
+     · fills the sticky column (tabs keep multi-schedule as one article)
+   layout-main-sticky    — hero + sidebar taller → main sticks, page scrolls sidebar
+
+   Multiple schedules use .spielplan-tabs (one visible panel) so the sidebar
+   never stacks several iframe scrollports on top of each other. */
 
 .with-sidebar {
+  --sidebar-sticky-top: var(--header-height, 0px);
+  --sidebar-sticky-height: calc(100vh - var(--sidebar-sticky-top));
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
   border-bottom: none;
+  width: 100%;
+  min-height: 0;
 }
 
 .with-sidebar .main-content {
   border-bottom: none;
-  flex-basis: 500px;
-  flex-grow: 2;
+  flex: 2 1 500px;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+.with-sidebar .main-sticky-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
 }
 
 .with-sidebar .sidebar {
   border-left: var(--border-2px);
-  flex-basis: 500px;
-  text-align: center;
-  position: sticky;
-  top: var(--header-height, 0px);
+  flex: 0 0 clamp(280px, 36vw, 500px);
+  display: flex;
+  flex-direction: column;
   align-self: flex-start;
-  /* No max-height: let natural sticky release at the section bottom
-     so the full last spielplan stays visible above the footer. */
-  overflow: visible;
+  text-align: center;
+  background: var(--white);
+  min-height: 0;
+}
+
+/* Desktop only: sticky columns + internal scroll when content exceeds budget.
+   Mobile (≤680) resets these below — keep overflow rules out of that query. */
+@media screen and (min-width: 681px) {
+  /* Sticky sidebar column — scrollport when content exceeds max-height. */
+  .with-sidebar.layout-sidebar-sticky .sidebar {
+    position: sticky;
+    top: var(--sidebar-sticky-top);
+    max-height: var(--sidebar-sticky-height);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hero + sidebar taller: main sticks; sidebar stays in normal flow (page scroll). */
+  .with-sidebar.layout-main-sticky .main-content {
+    align-self: stretch;
+  }
+
+  .with-sidebar.layout-main-sticky .main-sticky-panel {
+    position: sticky;
+    top: var(--sidebar-sticky-top);
+    height: var(--sidebar-sticky-height);
+    max-height: var(--sidebar-sticky-height);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .with-sidebar.layout-main-sticky .sidebar {
+    align-self: stretch;
+  }
 }
 
 .with-sidebar .hero-image {
@@ -604,24 +976,19 @@ article.hero {
   background-repeat: no-repeat;
 }
 
-/* Sidebar Header */
-.sidebar h2 {
-  text-align: center;
-  background-color: var(--tiger-orange);
-  font-size: var(--font-size-md);
-  padding: var(--padding-responsive-md);
-}
-
-/* One black chrome block: brand headline + quiet widget chrome underneath */
+/* Sidebar titles — black chrome only (no leftover orange/blue bars). */
+.sidebar h2,
 .sidebar h2.spielplan-heading {
   display: flex;
   align-items: flex-start;
   gap: 0.55em;
+  margin: 0;
+  border: 0;
   text-align: left;
   background: var(--black);
   color: var(--white);
   font-family: var(--display-font);
-  font-size: clamp(1.05rem, 0.45vw + 0.95rem, 1.35rem);
+  font-size: var(--font-size-md);
   font-weight: normal;
   line-height: 1.25;
   padding: 0.95rem var(--padding-sm);
@@ -630,6 +997,7 @@ article.hero {
   text-wrap: balance;
 }
 
+.sidebar h2::before,
 .sidebar h2.spielplan-heading::before {
   content: "";
   flex-shrink: 0;
@@ -640,67 +1008,241 @@ article.hero {
   background: var(--tiger-orange);
 }
 
+.sidebar .dbv-spielplan h2::before,
 .sidebar .dbv-spielplan h2.spielplan-heading::before {
   background: var(--blue);
 }
 
-.sidebar .bb-widget {
-  --bb-title-crop: 2.35rem;
-  width: 100%;
+/* Spielplan: black headline + optional pills (multi only) + one panel */
+.sidebar > article.spielplan-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  /* Black article fill kills subpixel white seams between heading / pills / widget. */
+  background: var(--black);
+}
+
+/* No category dot on the Spielplan title — active pill carries it. */
+.sidebar > article.spielplan-tabs > h2::before,
+.sidebar > article.spielplan-tabs > h2.spielplan-heading::before {
+  content: none;
+  display: none;
+}
+
+.spielplan-tabs__list {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.15rem var(--padding-sm) 0.65rem;
   overflow: hidden;
+  background: var(--black);
+  border: 0;
+}
+
+/* Keep heading + pills as one continuous black block (no hairline gap). */
+.sidebar > article.spielplan-tabs > h2.spielplan-heading {
+  padding-bottom: 0.85rem;
+}
+
+.spielplan-tabs__tab {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  padding: 0.5em 1.5em;
+  border: var(--border-white-2px);
+  border-radius: 4rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--body-font);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.spielplan-tabs__tab:hover,
+.spielplan-tabs__tab:focus-visible {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.spielplan-tabs__tab:focus-visible {
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
+
+.spielplan-tabs__tab[aria-selected="true"] {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--white);
+}
+
+.spielplan-tabs__dot {
+  flex-shrink: 0;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.spielplan-tabs__tab--tiger[aria-selected="true"] .spielplan-tabs__dot {
+  background: var(--tiger-orange);
+}
+
+.spielplan-tabs__tab--dbv[aria-selected="true"] .spielplan-tabs__dot {
+  background: var(--blue);
+}
+
+.spielplan-tabs__panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  background: var(--black);
+}
+
+.spielplan-tabs__panel[hidden] {
+  display: none !important;
+}
+
+.spielplan-tabs__panel .bb-widget {
+  flex: 1 1 auto;
+}
+
+.sidebar .bb-widget {
+  /* BB title row is 48px; crop fully so accent titleBg (switch thumb) stays hidden. */
+  --bb-title-crop: 3rem;
+  flex: 1 1 auto;
+  width: 100%;
+  height: var(--bb-iframe-height, 600px);
+  min-height: var(--bb-iframe-height, 600px);
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  background: var(--black);
+}
+
+/* Single-schedule articles: same black fill so h2 → widget has no white seam. */
+.sidebar > article:not(.spielplan-tabs) {
   background: var(--black);
 }
 
 .sidebar .bb-widget iframe {
+  position: absolute;
+  left: 0;
+  top: calc(-1 * var(--bb-title-crop));
   width: 100% !important;
   max-width: 100%;
   display: block;
-  /* Crop redundant team-title row; keep filters / match list */
-  margin-top: calc(-1 * var(--bb-title-crop));
-  height: calc(var(--bb-iframe-height, 600px) + var(--bb-title-crop)) !important;
+  border: 0 !important;
+  /* Crop the widget's own title row; the rest fills the article. */
+  height: calc(100% + var(--bb-title-crop)) !important;
 }
 
-.sidebar>article {
-  border-bottom: var(--border-2px);
+/* Schedules stack at authored height; a lone schedule can fill the sticky box. */
+.sidebar > article {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+  min-height: 0;
   margin-top: 0;
+  border-bottom: var(--border-2px);
+}
+
+.sidebar > article:last-of-type {
+  border-bottom: 0;
+}
+
+.sidebar > article:only-of-type {
+  flex: 1 1 auto;
+  height: 100%;
+}
+
+.sidebar>article>h2 {
+  flex: 0 0 auto;
 }
 
 .sidebar>article div {
   margin-top: 0;
 }
 
-
-
-
-.decoration {
-  height: 100%;
-  border-radius: 100vw 100vw 0 0;
-  outline: var(--border-2px);
-}
-
-.sidebar:not(:has(.decoration))>article:last-of-type {
-  border-bottom: 0;
-}
-
-@media screen and (max-width: 800px) {
+/* Mobile (≤680): always stack main → sidebar. Kill every sticky/fill mode so
+   columns cannot sit side-by-side or slide over each other. */
+@media screen and (max-width: 680px) {
+  body > main.with-sidebar,
   .with-sidebar {
+    display: flex;
     flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  .with-sidebar .main-content,
+  .with-sidebar .main-sticky-panel,
+  .with-sidebar .sidebar,
+  .with-sidebar.layout-equal .main-content,
+  .with-sidebar.layout-equal .sidebar,
+  .with-sidebar.layout-sidebar-sticky .main-content,
+  .with-sidebar.layout-sidebar-sticky .sidebar,
+  .with-sidebar.layout-main-sticky .main-content,
+  .with-sidebar.layout-main-sticky .main-sticky-panel,
+  .with-sidebar.layout-main-sticky .sidebar {
+    position: static !important;
+    top: auto !important;
+    bottom: auto !important;
+    inset: auto;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0;
+    overflow: visible !important;
+    align-self: stretch !important;
+    float: none;
+  }
+
+  .with-sidebar .main-content {
+    order: 1;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .with-sidebar .main-sticky-panel {
+    flex: 0 0 auto;
+    width: 100%;
   }
 
   .with-sidebar .sidebar {
-    position: static;
-    top: auto;
-    overflow: visible;
+    order: 2;
     border-left: none;
-    flex-basis: unset;
+    border-top: var(--border-2px);
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
   }
 
-  .decoration {
-    display: none;
-  }
-
-  .sidebar>article:last-of-type {
-    border-bottom: 0;
+  .sidebar>article,
+  .sidebar>article:only-of-type,
+  .sidebar > article.spielplan-tabs {
+    flex: 0 0 auto;
+    height: auto;
   }
 }
 
@@ -794,6 +1336,226 @@ article.hero {
   aspect-ratio: 1/1;
 }
 
+/* Content photos: black 2px frame.
+   Exclude logos/seals, team cards, heroes, drawings/maps/video, sponsor marks. */
+main img {
+  border: var(--border-2px);
+}
+
+main .team-card-media img,
+main .team-card-media .img-placeholder,
+main .hero-image img,
+main .hero > img,
+main .hero .hero-quote,
+main .annotated img,
+main .video-poster img,
+main .video-container img,
+main .kinderschutz,
+main .kinderschutz img,
+main .turnier-logo,
+main .supporter-list img,
+/* Gallery: border lives on the thumb (below), not the img. */
+main .gallery-thumb img,
+.lightbox-content img {
+  border: none;
+}
+
+/* Square gallery + lightbox (DBV, Tiger-Turnier, …) */
+.gallery-block {
+  padding: var(--padding-lg) var(--padding-responsive-lg);
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--padding-responsive-md);
+}
+
+@media screen and (max-width: 1000px) {
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gallery li {
+  list-style-type: none;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.gallery-thumb {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: var(--border-2px);
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.gallery-thumb:hover img,
+.gallery-thumb:focus-visible img {
+  transform: scale(1.06);
+}
+
+.gallery-thumb:focus-visible {
+  outline-offset: -4px;
+}
+
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.lightbox.active {
+  display: flex;
+  opacity: 1;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  display: block;
+}
+
+/* Circular icon chrome — same language as .team-card-toggle / .video-play */
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: fixed;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 100%;
+  border: var(--border-2px);
+  background: var(--tiger-orange);
+  color: var(--black);
+  font-size: 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  line-height: 1;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover,
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible {
+  background: var(--white);
+  color: var(--black);
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus-visible {
+  transform: scale(1.06);
+}
+
+.lightbox-prev:hover,
+.lightbox-prev:focus-visible {
+  transform: translateY(-50%) scale(1.06);
+}
+
+.lightbox-next:hover,
+.lightbox-next:focus-visible {
+  transform: translateY(-50%) scale(1.06);
+}
+
+.lightbox-close:active,
+.lightbox-prev:active,
+.lightbox-next:active {
+  background: var(--black);
+  color: var(--white);
+}
+
+.lightbox-close:active {
+  transform: scale(0.96);
+}
+
+.lightbox-prev:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.lightbox-next:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.lightbox-close {
+  top: 20px;
+  right: 20px;
+  font-size: 1.75rem;
+}
+
+.lightbox-prev {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox-next {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@media screen and (max-width: 680px) {
+  .lightbox-close {
+    top: 10px;
+    right: 10px;
+  }
+
+  .lightbox-prev {
+    left: 10px;
+  }
+
+  .lightbox-next {
+    right: 10px;
+  }
+}
+
 
 
 
@@ -850,7 +1612,8 @@ article.hero {
 }
 
 .annotated .dot:hover,
-.annotated .dot.hover {
+.annotated .dot.hover,
+.annotated .dot:focus-visible {
   z-index: 5;
   outline: var(--border-tiger-orange-2px);
   outline-offset: .125rem;
@@ -858,7 +1621,8 @@ article.hero {
 }
 
 .annotated .dot:hover p,
-.annotated .dot.hover p {
+.annotated .dot.hover p,
+.annotated .dot:focus-visible p {
   z-index: 5;
   display: block;
 }
@@ -872,4 +1636,255 @@ article.hero {
 
 
   }
+}
+
+/* – – – – – – */
+/* TEAM CARDS (overview slider + team pages) */
+/* – – – – – – */
+
+.team-card-inner {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  cursor: default;
+}
+
+.team-card.has-extras .team-card-inner {
+  cursor: pointer;
+}
+
+.team-card-front,
+.team-card-panel {
+  transition: transform var(--duration-slow) var(--ease-out);
+  will-change: transform;
+}
+
+.team-card-front {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  padding-bottom: var(--padding-md);
+  transform: translate3d(0, 0, 0);
+}
+
+.team-card-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  overflow: auto;
+  padding: calc(2.5rem + var(--padding-sm)) var(--padding-md) var(--padding-md);
+  transform: translate3d(0, 100%, 0);
+  pointer-events: none;
+}
+
+.team-card.is-open .team-card-front {
+  transform: translate3d(0, -100%, 0);
+  pointer-events: none;
+}
+
+.team-card.is-open .team-card-panel {
+  transform: translate3d(0, 0, 0);
+  pointer-events: auto;
+}
+
+.team-card-media {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin-bottom: var(--padding-sm);
+  outline: var(--border-2px);
+  border-radius: 0 0 100vw 100vw;
+}
+
+.team-card-media img,
+.team-card-media .img-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 0 0 100vw 100vw;
+}
+
+.team-card-media .img-placeholder {
+  background: var(--light-gray);
+}
+
+.team-card-meta {
+  padding: var(--padding-sm) var(--padding-md) 0;
+}
+
+.team-card-name {
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.team-card-role {
+  margin: 0.15rem 0 0;
+  color: var(--medium-gray);
+  font-weight: var(--font-weight-base);
+}
+
+.team-card-toggle {
+  position: absolute;
+  top: var(--padding-sm);
+  right: var(--padding-sm);
+  z-index: 4;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 100%;
+  border: var(--border-2px);
+  background: var(--tiger-orange);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.team-card.has-extras:hover .team-card-toggle,
+.team-card.has-extras:focus-within .team-card-toggle,
+.team-card-toggle:hover,
+.team-card-toggle:focus-visible {
+  background: var(--white);
+  color: var(--black);
+  transform: scale(1.06);
+}
+
+/* Same pressed invert as .button:active */
+.team-card-toggle:active,
+.team-card.has-extras:hover .team-card-toggle:active,
+.team-card.has-extras:focus-within .team-card-toggle:active {
+  background: var(--black);
+  color: var(--white);
+  transform: scale(0.96);
+}
+
+.team-card-toggle:focus-visible {
+  outline-offset: -3px;
+}
+
+.team-card-toggle-icon {
+  position: relative;
+  width: 0.85rem;
+  height: 0.85rem;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.team-card-toggle-icon::before,
+.team-card-toggle-icon::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+}
+
+.team-card-toggle-icon::before {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.team-card-toggle-icon::after {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+
+.team-card.is-open .team-card-toggle-icon {
+  transform: rotate(45deg);
+}
+
+.team-card-panel-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--padding-sm);
+  text-align: left;
+}
+
+.team-card-panel-body--contact {
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+}
+
+.team-mail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.team-card-facts {
+  width: 100%;
+}
+
+.team-card-facts ul,
+.team-card-facts ol {
+  padding-left: 1.25em;
+  margin: 0;
+}
+
+.team-card-facts li {
+  list-style: disc;
+  margin-top: 0.35em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .button,
+  .menu a,
+  .subnavigation a,
+  .arrowLinks a,
+  .panel a,
+  .news-preview,
+  .news-preview img,
+  .news a img.rounded,
+  .video-container .video-play,
+  .team-slider-btn,
+  .video-container .video-poster::after,
+  .team-card-toggle,
+  .team-card-front,
+  .team-card-panel,
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next {
+    transition: none;
+  }
+}
+
+/* – – – – – – */
+/* UTILITIES */
+/* – – – – – – */
+
+/* Nur für Screenreader/Suchmaschinen sichtbar */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }

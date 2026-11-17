@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logo compare — Berlin Tiger ↔ DTB</title>
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --light-gray: #f5f1f0;
+      --blue: #242c53;
+      --orange: #fe5000;
+      --logo-height: 2.5rem;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--light-gray);
+      color: var(--black);
+      line-height: 1.4;
+    }
+    header {
+      padding: 1.5rem 2rem;
+      background: var(--white);
+      border-bottom: 2px solid var(--black);
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 0.35rem; }
+    p { margin: 0; max-width: 60ch; color: #555; }
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+      padding: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    .card {
+      background: var(--white);
+      border: 2px solid var(--black);
+      padding: 1.25rem;
+    }
+    .card h2 {
+      margin: 0 0 0.35rem;
+      font-size: 0.95rem;
+    }
+    .card .note {
+      font-size: 0.8rem;
+      color: #666;
+      margin: 0 0 1rem;
+      min-height: 2.6em;
+    }
+    .stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 5rem;
+      padding: 1rem 1.25rem;
+      border: 2px solid var(--black);
+      background: var(--white);
+    }
+    .stage--orange { background: var(--orange); }
+    .stage--blue { background: var(--blue); }
+    .stage--gray { background: var(--light-gray); }
+    .stage img {
+      height: var(--logo-height);
+      width: auto;
+      display: block;
+    }
+    .pair {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: stretch;
+      background: var(--white);
+      border: 2px solid var(--black);
+      padding: 1.25rem;
+    }
+    .pair h2 { grid-column: 1 / -1; margin: 0; font-size: 1rem; }
+    .pair .note { grid-column: 1 / -1; margin: 0; font-size: 0.85rem; color: #666; }
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.5rem;
+    }
+    .rec {
+      border-color: var(--orange);
+      box-shadow: inset 0 0 0 2px var(--orange);
+    }
+    .rec .badge {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--black);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Logo compare — preview only</h1>
+    <p>
+      Same header height (<code>2.5rem</code>) as the live site. Goal: make the swap between
+      main and DBV/DTB feel like a related variant, not a different brand.
+    </p>
+  </header>
+
+  <section class="pair">
+    <h2>A — Current live pair (drastic)</h2>
+    <p class="note">
+      Main = orange tiger + “TIGER”. DBV = navy “DTB” wordmark + gold tiger.
+      Different mark, color, and optical weight — biggest jump when navigating to /dtb.
+    </p>
+    <div>
+      <div class="label">Main (current)</div>
+      <div class="stage stage--orange">
+        <img src="../assets/logo/berlintiger-logo.svg" alt="Main logo">
+      </div>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div>
+      <div class="label">DBV (current)</div>
+      <div class="stage stage--blue">
+        <img src="../assets/logo/berlintiger-logo_dbv.svg" alt="DBV logo current">
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <article class="card rec">
+      <div class="badge">Closest match</div>
+      <h2>B — Blue twin of main (`_dbv_2`)</h2>
+      <p class="note">
+        Same silhouette as main; orange → blue. Smallest visual jump. Loses explicit “DTB”
+        lettering but stays unmistakably Berlin Tiger.
+      </p>
+      <div class="stage stage--blue">
+        <img src="../assets/logo/berlintiger-logo_dbv_2.svg" alt="DBV logo blue twin">
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>C — Cropped DTB (`_dbv_3`)</h2>
+      <p class="note">
+        Same DTB artwork as current, tighter viewBox. Still a different mark from main —
+        jump stays large, but framing may sit better in the header slot.
+      </p>
+      <div class="stage stage--blue">
+        <img src="../assets/logo/berlintiger-logo_dbv_3.svg" alt="DBV logo cropped">
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>D — Main on gray (reference)</h2>
+      <p class="note">How the main mark reads on the light header background (not orange).</p>
+      <div class="stage stage--gray">
+        <img src="../assets/logo/berlintiger-logo.svg" alt="Main on gray">
+      </div>
+    </article>
+
+    <article class="card">
+      <h2>E — Current DBV on gray</h2>
+      <p class="note">Current DTB mark on light header — gold tiger + navy DTB.</p>
+      <div class="stage stage--gray">
+        <img src="../assets/logo/berlintiger-logo_dbv.svg" alt="DBV on gray">
+      </div>
+    </article>
+  </div>
+
+  <section class="pair">
+    <h2>F — Proposed swap: main ↔ blue twin</h2>
+    <p class="note">
+      If we switch the DBV header to <code>berlintiger-logo_dbv_2.svg</code>, the transition
+      keeps the same tiger + TIGER lockup and only changes the accent color to DBV blue.
+      Prefer this if “same family” matters more than showing “DTB” in the mark.
+    </p>
+    <div>
+      <div class="label">Main</div>
+      <div class="stage stage--gray">
+        <img src="../assets/logo/berlintiger-logo.svg" alt="Main">
+      </div>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div>
+      <div class="label">DBV via blue twin</div>
+      <div class="stage stage--gray">
+        <img src="../assets/logo/berlintiger-logo_dbv_2.svg" alt="Blue twin">
+      </div>
+    </div>
+  </section>
+
+  <section class="pair" style="margin: 0 2rem 2rem;">
+    <h2>G — Alternative: keep DTB letters, recolor tiger toward orange family</h2>
+    <p class="note">
+      Would need an SVG edit (gold <code>#CD983A</code> → closer to tiger orange or a shared navy+orange system).
+      Not applied yet — say if you want this direction and I’ll mock a recolored DTB file next.
+    </p>
+    <div>
+      <div class="label">Current DTB colors</div>
+      <div class="stage stage--gray">
+        <img src="../assets/logo/berlintiger-logo_dbv.svg" alt="DTB current colors">
+      </div>
+    </div>
+    <div class="arrow" aria-hidden="true">?</div>
+    <div>
+      <div class="label">Needs new asset</div>
+      <div class="stage stage--gray" style="color:#888;font-size:0.85rem;">
+        Recolored DTB SVG (preview on request)
+      </div>
+    </div>
+  </section>
+</body>
+</html>

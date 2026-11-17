@@ -30,16 +30,25 @@ main section article:not(.hero):not(.container):not(:last-of-type) {
   flex-shrink: 0;
 }
 
-@media screen and (min-width: 800px) {
+/* White title bar — don't hover to white (border-only). */
+.hero-title .button:hover,
+.hero-title .button:focus-visible,
+.hero-title .button:active {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+/* Spielplan jump CTA: mobile only (shared --bp-mobile 680). */
+@media screen and (min-width: 680px) {
   .hero-title .button {
     display: none;
   }
 }
 
-/* Team Cards */
+/* Team Cards — no flex-grow: stretching left a tall sticky column
+   leaves an empty gap under the coach row. */
 .container {
   container: container / inline-size;
-  flex-grow: 1;
 }
 
 .container * {
@@ -55,14 +64,20 @@ main section article:not(.hero):not(.container):not(:last-of-type) {
   grid-template-columns: repeat(3, 1fr);
 }
 
-/* Line under the cards — not on the stretching article, so it
-   does not stack with footer border-top when the column is flush. */
-.container .team-card-grid {
-  border-bottom: var(--border-2px);
+.team-card-grid .team-card {
+  width: auto;
+  min-width: 0;
+  border-right: var(--border-2px);
 }
 
-.team-card:not(:nth-of-type(3)) {
-  border-right: var(--border-2px);
+/* Drop the right rule only when the card sits on the grid’s trailing
+   edge (next to the parent / sidebar). A lone 1st or 2nd card keeps it. */
+.team-card-grid .team-card:nth-of-type(3n) {
+  border-right: none;
+}
+
+.team-card-grid .team-card-inner {
+  min-height: 420px;
 }
 
 @container container (max-width: 600px) {
@@ -70,31 +85,11 @@ main section article:not(.hero):not(.container):not(:last-of-type) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .team-card:not(:nth-of-type(3)) {
-    border-right: none;
-  }
-
-  .team-card:not(:nth-of-type(2)) {
+  .team-card-grid .team-card {
     border-right: var(--border-2px);
   }
-}
 
-.team-card h3,
-.team-card p {
-  padding-inline: var(--padding-responsive-md);
-}
-
-.team-card p {
-  color: var(--medium-gray);
-  margin-bottom: var(--padding-responsive-md);
-}
-
-.team-card img,
-.team-card .placeholder {
-  width: 100%;
-  aspect-ratio: 1/1;
-  overflow: hidden;
-  border-radius: 0 0 100vw 100vw;
-  outline: var(--border-2px);
-  margin-bottom: var(--padding-responsive-md);
+  .team-card-grid .team-card:nth-of-type(2n) {
+    border-right: none;
+  }
 }

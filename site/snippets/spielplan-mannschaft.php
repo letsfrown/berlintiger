@@ -1,8 +1,9 @@
 <?php
 $titleColor = $titleColor ?? 'FFFFFF';
-$titleBgColor = $titleBgColor ?? '000000';
 $tapBgColorActive = $tapBgColorActive ?? 'FE5000';
 $tapBorderColorActive = $tapBorderColorActive ?? 'FE5000';
+// BB uses titleBgColor for the checked switch thumb; keep it on the accent.
+$titleBgColor = $titleBgColor ?? $tapBgColorActive;
 $iframeHeight = (int)($iframeHeight ?? 600);
 $widgetDomId = 'widget_' . $schedule->widgetNumber();
 ?>

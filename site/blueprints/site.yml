@@ -62,6 +62,8 @@ tabs:
         fields:
           meta:
             extends: fields/site-meta
+          seo:
+            extends: fields/site-seo
       - width: 4/12
         fields:
           links:

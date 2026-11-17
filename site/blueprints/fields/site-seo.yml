@@ -1,0 +1,17 @@
+type: group
+fields:
+  metaDescription:
+    label: Standard-Beschreibung
+    type: textarea
+    buttons: false
+    maxlength: 160
+    help: Fallback für Google und Link-Vorschauen, wenn eine Seite keine eigene Beschreibung hat.
+  ogImage:
+    label: Standard-Teilen-Bild
+    type: files
+    max: 1
+    layout: cards
+    image:
+      ratio: 1200/630
+      cover: true
+    help: Ideal 1200 × 630 px.

@@ -1,44 +1,61 @@
-<img src="http://getkirby.com/assets/images/github/starterkit.jpg" width="300">
+# Berlin Tiger – Website
 
-**Kirby: the CMS that adapts to any project, loved by developers and editors alike.**
-The Starterkit is a full-blown Kirby installation with a lot of example content, blueprints, templates and more.
-It is ideal for new users to explore many of Kirby's options and get to know the Panel.
+Website von **Berlin Tiger – Basketball in Kreuzberg e.V.** auf Basis von [Kirby CMS](https://getkirby.com) (4.x).
+Live: https://berlintiger.de · Panel: https://berlintiger.de/panel
 
-You can learn more about Kirby at [getkirby.com](https://getkirby.com).
+## Grundprinzip
 
-<img src="http://getkirby.com/assets/images/github/starterkit-screen.png" />
+| Was | Quelle der Wahrheit | Weg |
+|---|---|---|
+| **Code** (`assets/`, `kirby/`, `site/`) | dieses Git-Repo | `scripts/deploy-code.sh` → Server |
+| **Inhalte** (`content/`) | **Live-Panel** | Server → Repo (nächtliche GitHub Action / `scripts/content-pull.sh`) |
+| **Uploads** (`media/`) | wird von Kirby generiert | nie versioniert, nie deployt |
 
-### Try Kirby for free
+Inhalte werden **nie** von lokal nach live geschoben. Was live im Panel gepflegt wird, gewinnt immer.
 
-You can try Kirby and the Starterkit on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://getkirby.com/buy).
+## Lokal einrichten
 
-The Starterkit is a demo of basic Kirby features. It's not recommended to be used "as is" in production. Please, follow our documentation closely for more features and guides on how to build secure, high-quality websites with Kirby.
+1. Repo klonen und mit [Laravel Herd](https://herd.laravel.com) verlinken → `https://berlintiger.test`.
+2. PHP 8.1–8.3 verwenden (Kirby 4.x).
+3. Aktuellen Live-Content holen: `git pull` (die Action committet ihn täglich) oder direkt `scripts/content-pull.sh`.
+4. Panel-Account lokal anlegen: `https://berlintiger.test/panel` (Accounts sind nicht im Repo).
 
-While Kirby as the CMS software itself requires you to purchase a license, we consider the files primarily connected to this Starterkit (assets, templates, snippets...) free to use under the MIT license. Feel free to start building your own project with them.
+## Konfiguration
 
-### Get going
+Kirby lädt automatisch `site/config/config.php` und danach die Datei passend zum Host:
 
-Read our guide on [how to get started with Kirby](https://getkirby.com/docs/guide/quickstart).
+| Datei | Wo | Inhalt | In Git |
+|---|---|---|---|
+| `config.php` | überall | Basis, `debug => false` | ja |
+| `config.berlintiger.test.php` | lokal | `debug => true` | ja |
+| `config.berlintiger.de.php` | live | Secrets (reCAPTCHA) | **nein** |
+| `config.www.berlintiger.de.php` | live (www) | lädt die Datei darüber | ja |
 
-You can download the latest version of the Starterkit from https://download.getkirby.com/.
-If you are familiar with Git, you can clone Kirby's Starterkit repository from Github.
+Die Live-Config aus `config.berlintiger.de.example.php` erstellen. Sie wird von `deploy-code.sh` separat hochgeladen und von `--delete` nie angefasst.
 
-    git clone https://github.com/getkirby/starterkit.git
+## Deploy (nur Code)
 
-## What's Kirby?
+FTPS-Zugang in `scripts/.env.ftps` (Vorlage `.env.ftps.example`) oder im macOS-Schlüsselbund. Benötigt `lftp` (`brew install lftp`).
 
--   **[getkirby.com](https://getkirby.com)** – Get to know the CMS.
--   **[Try it](https://getkirby.com/try)** – Take a test ride with our online demo. Or download one of our kits to get started.
--   **[Documentation](https://getkirby.com/docs/guide)** – Read the official guide, reference and cookbook recipes.
--   **[Issues](https://github.com/getkirby/kirby/issues)** – Report bugs and other problems.
--   **[Feedback](https://feedback.getkirby.com)** – You have an idea for Kirby? Share it.
--   **[Forum](https://forum.getkirby.com)** – Whenever you get stuck, don't hesitate to reach out for questions and support.
--   **[Discord](https://chat.getkirby.com)** – Hang out and meet the community.
--   **[YouTube](https://youtube.com/kirbyCasts)** - Watch the latest video tutorials visually with Bastian.
--   **[Mastodon](https://mastodon.social/@getkirby)** – Spread the word.
--   **[Instagram](https://www.instagram.com/getkirby/)** – Share your creations: #madewithkirby.
+```bash
+scripts/deploy-code.sh             # Dry-Run: zeigt Uploads und Löschungen
+scripts/deploy-code.sh --execute   # wirklich hochladen
+scripts/deploy-code.sh --execute --no-delete   # ohne Aufräumen verwaister Dateien
+```
 
----
+- Lädt nur `assets/`, `kirby/`, `site/`, `index.php`, `.htaccess`, `composer.json`.
+- Löscht verwaiste Dateien **nur** in diesen drei Ordnern. Nie betroffen: `content/`, `media/`, `site/accounts|cache|sessions`, Lizenz, Live-Config.
+- Immer erst den Dry-Run lesen.
 
-© 2009 Bastian Allgeier
-[getkirby.com](https://getkirby.com) · [License agreement](https://getkirby.com/license)
+## Content-Sync & Backups
+
+- **GitHub Action „Content pull“** (`.github/workflows/content-pull.yml`): lädt nachts den Live-Content per FTPS herunter (nur lesend) und committet Änderungen auf `main`. Manuell startbar unter *Actions → Content pull → Run workflow*. Benötigt die Repository-Secrets `FTPS_HOST`, `FTPS_USER`, `FTPS_PASS` (optional `FTPS_PORT`, `FTPS_REMOTE_ROOT`).
+- `scripts/content-pull.sh`: dasselbe lokal; ersetzt `content/` und legt vorher eine Sicherheitskopie in `../berlintiger-live-backups/` ab.
+- `scripts/backup-live.sh`: vollständiges Backup vom Server.
+
+## Struktur
+
+- `site/templates`, `site/snippets`, `site/controllers` – Ausgabe
+- `site/blueprints` – Panel-Formulare
+- `assets/css/templates/<template>.css` und `assets/js/templates/<template>.js` werden per `@auto` geladen
+- Spielplan-Widgets: `assets/js/bb-widgets.js` (basketball-bund.net)

@@ -8,7 +8,7 @@ section {
 }
 
 h2 {
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-xl);
   font-family: var(--display-font);
   text-align: center;
 }
@@ -28,8 +28,11 @@ h3 {
 }
 
 .turnier-logo {
+  width: 200px;
+  height: auto;
   margin-top: var(--padding-responsive-md);
   margin-inline: auto;
+  object-fit: contain;
 }
 
 .turnier-logo.placeholder {
@@ -40,14 +43,4 @@ h3 {
 }
 
 
-.gallery {
-  margin-top: var(--padding-responsive-lg);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-  gap: var(--padding-responsive-md);
-}
-
-.gallery li {
-  list-style-type: none;
-  margin-inline: auto;
-}
+/* Outer padding comes from shared .gallery-block */

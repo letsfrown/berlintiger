@@ -1,4 +1,4 @@
-title: Impressun
+title: Impressum
 icon: info
 options:
   delete: false
@@ -11,8 +11,9 @@ columns:
 
   - width: 1/3
     sections:
-      files: true
+      files:
         label: Bilder
+        type: files
       fields:
         type: fields
         fields:
