@@ -19,7 +19,7 @@ Date: 2026-07-20 12:00:00
 
 ----
 
-Cover: 
+Cover: - file://fb0gdwfqtg5euj6a
 
 ----
 
@@ -32,7 +32,3 @@ Ogimage:
 ----
 
 Uuid: 6hz1bjuwk1wisja8
-
-----
-
-Lock: FVLFg7hW
